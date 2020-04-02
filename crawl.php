@@ -48,9 +48,9 @@
                 $tag = 'h4';
             }
             if($newHtml->find('p > img')){
-                $src = $newHtml->find('p > img', 0)->src;
-                $tag = 'img';
                 getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
+                $src = '/image/item'.$item_index[$i].'/pic'.($content_index+1).'.png';
+                $tag = 'img';
             }
             if($src != '' || $content != '')
                 $recode_content[] = [$id++, $content_index++, $item_index[$i], $src, $content, $tag];
@@ -60,4 +60,11 @@
     }
     // print_r($recode_item);
     // print_r($recode_content);
+    $fp = fopen('items.json', 'w');
+    fwrite($fp, json_encode($recode_item));
+    fclose($fp);
+
+    $fp = fopen('contents.json', 'w');
+    fwrite($fp, json_encode($recode_content));
+    fclose($fp);
 ?>

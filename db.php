@@ -102,9 +102,20 @@
             return self::$mysql->affected_rows;
         }
     }
+    Db::delete_item(1);
+    Db::delete_item(2);
+    Db::delete_item(3);
+    Db::delete_item(4);
+    Db::delete_item(5);
+    Db::delete_item(6);
+    Db::delete_item(7);
+    Db::delete_item(8);
+    Db::delete_item(9);
+    Db::delete_item(10);
+    Db::delete_item(11);
+    Db::delete_item(12);
     
     
-    // $tt = 'ngô minh toàn, chú voi con ở bản đôn chưa có nghề nên làm trẻ con';
     // $a = new Item(2, $tt, 60, '2019-12-3');
     // $a = new Content(3, 3, 1, 'ai ma bik', 'NGO ', 'p');
     // Db::add_item($a);
