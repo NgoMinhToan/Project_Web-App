@@ -3,6 +3,8 @@
     require_once 'items.php';
     require_once 'contents.php';
     function decode_item_from_json($path){
+        if(!file_exists($path))
+            return [];
         $textFile = json_decode(file_get_contents($path));
         $rs = [];
         foreach($textFile as $elem){
@@ -12,6 +14,8 @@
         return $rs;
     }
     function decode_content_from_json($path){
+        if(!file_exists($path))
+            return [];
         $textFile = json_decode(file_get_contents($path));
         $rs = [];
         foreach($textFile as $elem){
@@ -27,5 +31,5 @@
     
     foreach($contents as $elem)
         Db::add_content($elem);
-        
+
 ?>
