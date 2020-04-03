@@ -2,7 +2,7 @@
  Trang web đặt phòng khách sạn
 
 [db.php]
-<!-- // các thuộc tính dc trả về khi stmt gọi 1 câu truy vấn từ db (thành công) | lỗi
+// các thuộc tính dc trả về khi stmt gọi 1 câu truy vấn từ db (thành công) | lỗi
         // [affected_rows] 1 | -1
         // [insert_id] 0
         // [num_rows] 0
@@ -25,4 +25,13 @@
             //item_index int: item mà content này thuộc về
             //src varchar(100): thư mục chứa ảnh, nếu thẻ là <img>,
             //content varchar(20000): chứa nội dung nếu thẻ này là <p> or <h4>,
-            //tag varchar(10): chứa tên thẻ (p | h4 | img). -->
+            //tag varchar(10): chứa tên thẻ (p | h4 | img).
+[class Db]
+// at: mysql - gọi sql
+// fn: get_items($start = 1, $limit = null): trả về mảng đối tượng Item_Object bắt đầu từ item (param 1), giới hạn trả về (param 2), không ghi auto trả về hết.
+// fn: add_item($row): thêm item vào db, đầu vào là đối tượng Item_Object
+// fn: get_contents($start = 1, $limit = null): giống get_items nhưng đối tượng trả về là mảng Content_Object
+// fn: get_content_from_item($item_index) trả về mảng đối tượng Content_Object mà thuộc item_index đầu vào (nội dung của trang web nào đó)
+// fn: add_content($row): giống add_item với đầu vào là Content_Object
+// fn: delete_item($item_index): xóa 1 item trên db, cũng xóa luôn các content thuộc về item này.
+

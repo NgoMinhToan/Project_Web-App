@@ -65,7 +65,7 @@
             $stmt->close();
             return $log;
         }
-        static function get_content($start = 1, $limit = null){
+        static function get_contents($start = 1, $limit = null){
             $rs = [];
             $result=self::$mysql->query("SELECT MIN(ID) AS 'start', MAX(ID) AS 'range' FROM contents");
             $range=0;
@@ -110,7 +110,7 @@
         }
         static function delete_item($item_index){
             self::$mysql->query("DELETE FROM contents WHERE ITEM_INDEX=$item_index");
-            if(self::$mysql->affected_rows==0)
+            if(self::$mysql->affected_rows==-1)
                 return self::$mysql->affected_rows;
             $stmt = self::$mysql->query("DELETE FROM items WHERE ITEM_INDEX=$item_index");
             return self::$mysql->affected_rows;
@@ -129,7 +129,7 @@
     // Db::delete_item(11);
     // Db::delete_item(12);
     
-    // print_r(get_content(1, 3));
+    // print_r(get_contents(1, 3));
     // print_r(get_items(2));
     // print_r(get_content_from_item(1));
 ?>
