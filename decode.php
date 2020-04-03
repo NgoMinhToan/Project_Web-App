@@ -2,6 +2,7 @@
     require_once 'db.php';
     require_once 'items.php';
     require_once 'contents.php';
+    // đưa từ file json sang đối tượng Item_Object
     function decode_item_from_json($path){
         if(!file_exists($path))
             return [];
@@ -13,6 +14,7 @@
         }
         return $rs;
     }
+    // đưa từ file json sang đối tượng Content_Object
     function decode_content_from_json($path){
         if(!file_exists($path))
             return [];
@@ -23,13 +25,5 @@
         }
         return $rs;
     }
-    $items = decode_item_from_json('.\items.json');
-    $contents = decode_content_from_json('.\contents.json');
-
-    foreach($items as $elem)
-        print_r($elem);
-    
-    foreach($contents as $elem)
-        Db::add_content($elem);
 
 ?>

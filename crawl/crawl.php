@@ -1,6 +1,7 @@
 <?php
     require_once 'simple_html_dom.php';
     require_once 'getImage.php';
+    chdir('../');
     // Crawl Item
     $item_index = [];
     $title = '';
@@ -48,7 +49,7 @@
                 $tag = 'h4';
             }
             if($newHtml->find('p > img')){
-                getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
+                // getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
                 $src = '/image/item'.$item_index[$i].'/pic'.($content_index+1).'.png';
                 $tag = 'img';
             }
@@ -60,6 +61,11 @@
     }
     // print_r($recode_item);
     // print_r($recode_content);
+    if(!is_dir('./json') || !file_exists('./json'))
+        mkdir('json');
+    
+    chdir('./json');
+
     $fp = fopen('items.json', 'w');
     fwrite($fp, json_encode($recode_item));
     fclose($fp);
@@ -67,4 +73,6 @@
     $fp = fopen('contents.json', 'w');
     fwrite($fp, json_encode($recode_content));
     fclose($fp);
+
+    chdir('../');
 ?>
