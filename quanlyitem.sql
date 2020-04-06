@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 03, 2020 lúc 02:48 AM
+-- Thời gian đã tạo: Th4 06, 2020 lúc 01:07 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.4
 
@@ -62,6 +62,78 @@ CREATE TABLE `items` (
   `DATE` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `khachhang`
+--
+
+CREATE TABLE `khachhang` (
+  `masokhach` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `tenho` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `ten` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `gioitinh` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `lichsu`
+--
+
+CREATE TABLE `lichsu` (
+  `mathanhtoan` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `masokhach` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `maphong` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `ngaydat` datetime NOT NULL DEFAULT current_timestamp(),
+  `thoigiandau` datetime NOT NULL DEFAULT current_timestamp(),
+  `thoigiancuoi` datetime NOT NULL DEFAULT current_timestamp(),
+  `tongchiphi` char(15) COLLATE utf8_vietnamese_ci NOT NULL,
+  `hinhthuc` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'tien mat'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `loaiphong`
+--
+
+CREATE TABLE `loaiphong` (
+  `maloai` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `mota` varchar(1000) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `phangia` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `dientich` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `phongconlai` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `nguoidung`
+--
+
+CREATE TABLE `nguoidung` (
+  `maso` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `tenho` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `ten` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `phai` tinyint(1) NOT NULL,
+  `administrator` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `phong`
+--
+
+CREATE TABLE `phong` (
+  `maphong` char(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `loai` char(20) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'normal',
+  `isempty` tinyint(1) NOT NULL DEFAULT 1,
+  `thoigiandat` datetime NOT NULL DEFAULT current_timestamp(),
+  `thoigianketthuc` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -80,6 +152,39 @@ ALTER TABLE `items`
   ADD PRIMARY KEY (`ITEM_INDEX`);
 
 --
+-- Chỉ mục cho bảng `khachhang`
+--
+ALTER TABLE `khachhang`
+  ADD PRIMARY KEY (`masokhach`);
+
+--
+-- Chỉ mục cho bảng `lichsu`
+--
+ALTER TABLE `lichsu`
+  ADD PRIMARY KEY (`mathanhtoan`),
+  ADD KEY `FK_LICHSU_PHONG` (`maphong`),
+  ADD KEY `FK_LICHSU_KHACHHANG` (`masokhach`);
+
+--
+-- Chỉ mục cho bảng `loaiphong`
+--
+ALTER TABLE `loaiphong`
+  ADD PRIMARY KEY (`maloai`);
+
+--
+-- Chỉ mục cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  ADD PRIMARY KEY (`maso`);
+
+--
+-- Chỉ mục cho bảng `phong`
+--
+ALTER TABLE `phong`
+  ADD PRIMARY KEY (`maphong`),
+  ADD KEY `FK_PHONG_LOAIPHONG` (`loai`);
+
+--
 -- Các ràng buộc cho các bảng đã đổ
 --
 
@@ -88,6 +193,19 @@ ALTER TABLE `items`
 --
 ALTER TABLE `contents`
   ADD CONSTRAINT `FK_CONTENTS_ITEMS` FOREIGN KEY (`ITEM_INDEX`) REFERENCES `items` (`ITEM_INDEX`);
+
+--
+-- Các ràng buộc cho bảng `lichsu`
+--
+ALTER TABLE `lichsu`
+  ADD CONSTRAINT `FK_LICHSU_KHACHHANG` FOREIGN KEY (`masokhach`) REFERENCES `khachhang` (`masokhach`),
+  ADD CONSTRAINT `FK_LICHSU_PHONG` FOREIGN KEY (`maphong`) REFERENCES `phong` (`maphong`);
+
+--
+-- Các ràng buộc cho bảng `phong`
+--
+ALTER TABLE `phong`
+  ADD CONSTRAINT `FK_PHONG_LOAIPHONG` FOREIGN KEY (`loai`) REFERENCES `loaiphong` (`maloai`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
