@@ -56,8 +56,8 @@
                 $tag = 'h4';
             }
             if($newHtml->find('p > img')){
-                getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
-                $src = '/image/item'.$item_index[$i].'/pic'.($content_index+1).'.png';
+                getImage($newHtml->find('p > img', 0)->src, "/image/CamLang/item$item_index[$i]", 'pic'.($content_index+1).'.png');
+                $src = '/image/CamLang/item'.$item_index[$i].'/pic'.($content_index+1).'.png';
                 $tag = 'img';
             }
             if($src != '' || $content != '')
