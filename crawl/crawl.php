@@ -19,11 +19,18 @@
     // Crawl
     $num = 1;
     $link_item = [];
-    $html = file_get_html('https://mytour.vn/location?page=1');
-    foreach($html->find('.blog-item') as $elem){
-        $item_index[] = $num++;
-        $link_item[] = $elem->find('a', 0)->href;
+
+    
+    for($page=1;$page<=3;$page++){    
+        //--------------
+        $html = file_get_html('https://mytour.vn/location?page='.$page);
+        foreach($html->find('.blog-item') as $elem){
+            $item_index[] = $num++;
+            $link_item[] = $elem->find('a', 0)->href;
+        }
+        //----------------
     }
+
     $sites = array_map(fn($site)=> file_get_html('https://mytour.vn'.$site)->find('.col-md-9', 0), $link_item);
     $i = 0;
     foreach($sites as $site){
@@ -49,7 +56,7 @@
                 $tag = 'h4';
             }
             if($newHtml->find('p > img')){
-                // getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
+                getImage($newHtml->find('p > img', 0)->src, "/image/item$item_index[$i]", 'pic'.($content_index+1).'.png');
                 $src = '/image/item'.$item_index[$i].'/pic'.($content_index+1).'.png';
                 $tag = 'img';
             }

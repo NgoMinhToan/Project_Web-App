@@ -26,7 +26,7 @@
     require_once 'contents.php';
     require_once 'items.php';
     date_default_timezone_set("Asia/Ho_Chi_Minh");
-    Db::$mysql = new mysqli('localhost', 'root', '', 'QUANLYITEM');
+    Db::$mysql = new mysqli('localhost', 'root', '', 'khachsan');
     if(mysqli_connect_errno()){
         die('Lỗi Kết Nối CSDL: '.mysqli_connect_error());
     }
@@ -132,4 +132,26 @@
     // print_r(get_contents(1, 3));
     // print_r(get_items(2));
     // print_r(get_content_from_item(1));
+    
+    
+//==========================================================================================//
+//===================== PHẦN QUẢN LÝ KHÁCH SẠN ============================================//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
