@@ -33,13 +33,12 @@
         }
     }
     class MoTa{
-        function __construct($ten, $scrHinh, $loaiGiuong, $toiDaSoNguoi, $buaSang, $hoanHuy, $uuDai, $giaGoc, $soPhong){
+        function __construct($ten, $scrHinh, $productContent, $toiDaSoNguoi, $tuyChon, $uuDai, $giaGoc, $soPhong){
             $this->ten = $ten;
             $this->srcHinh = $scrHinh;
-            $this->loaiGiuong = $loaiGiuong;
+            $this->productContent = $productContent;
             $this->toiDaSoNguoi = $toiDaSoNguoi;
-            $this->buaSang = $buaSang;
-            $this->hoanHuy = $hoanHuy;
+            $this->tuyChon = $tuyChon;
             $this->uuDai = $uuDai;
             $this->giaGoc = $giaGoc;
             $this->giaGiam = floor($giaGoc*(100-$uuDai)/1000)*10;
