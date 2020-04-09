@@ -6,10 +6,6 @@
     $page = 'https://mytour.vn/';
     $html = file_get_html($page);
 
-    
-    if(!is_dir('./json') || !file_exists('./json'))
-        mkdir('json');
-    chdir('./json');
 
     // ===============================================
     // Crawl Khu Vực
@@ -21,10 +17,14 @@
         $khuvuc[] = ['KHUVUC'.$i, $array[$i]->find('h3', 0)->plaintext];
     }
     // print_r($khuvuc);
+    if(!is_dir('./json') || !file_exists('./json'))
+        mkdir('json');
+    chdir('./json');
+
     $fp = fopen('khuVuc.json', 'w');
     fwrite($fp, json_encode($khuvuc));
     fclose($fp);
-
+    chdir('../');
     // ===============================================
     // Crawl Khách sạn
     $khachSan = [];
@@ -42,9 +42,15 @@
             }
         }
     print_r($khachSan);
+
+    if(!is_dir('./json') || !file_exists('./json'))
+        mkdir('json');
+    chdir('./json');
+
     $fp = fopen('khachSan.json', 'w');
     fwrite($fp, json_encode($khachSan));
     fclose($fp);
+    chdir('../');
     
     // ===============================================
     // Crawl LoaiPhong
@@ -52,34 +58,37 @@
     $phong = [];
     for($kv = 1; $kv <= count($khuvuc); $kv++)
         for($ks = 1; $ks <= count($khachSan); $ks++)
-            for($i = 1; $i < 100; $i++){
-                if(!file_exists('./html/'.$kv.'_'.$ks.'_'.$i.'.html'))
+            for($j = 1; $j < 100; $j++){
+                if(!file_exists('./html/'.$kv.'_'.$ks.'_'.$j.'.html'))
                     break;
                 $html = file_get_html('./html/'.$kv.'_'.$ks.'_'.$i.'.html')->find('.table-detail.table > tbody', 0);
                 for($i=0; $i< count($html->find('.book-choose')); $i++){
-                    $title = $html->find('.title-room',$i)->plaintext;
+                    $title = trim($html->find('.title-room',$i)->plaintext);
                     $srcHinh = str_replace('480x360', '1000x600', $html->find('.product-image > img', $i)->src);
                     $dienTich = trim($html->find('.product-content > p', 1 + $i*5)->plaintext);
                     $loaiGiuong = trim($html->find('.product-content > p', 3 + $i*5)->plaintext);
                     $conTrong = trim($html->find('.product-content > p', 4 + $i*5)->plaintext);
                     foreach($html->find('td.room', $i)->find('tr') as $elem){
-                        $toiDaSoNguoi = $elem->find('.user-group', 0)->plaintext;
-                        $buaSang = $elem->find('.room-condition > p', 0)->plaintext;
-                        $hoanHuy = $elem->find('.room-condition > p', 1)->plaintext;
+                        $toiDaSoNguoi = trim($elem->find('.user-group', 0)->plaintext);
+                        $buaSang = trim($elem->find('.room-condition > p', 0)->plaintext);
+                        $hoanHuy = trim($elem->find('.room-condition > p', 1)->plaintext);
                         preg_match_all('!\d+!', $elem->find('.item-price > p', 0)->plaintext, $matches);
                         $uuDai =$matches[0][0];
                         preg_match_all('!\d+!', str_replace(',', '', $elem->find('.item-price > p', 1)->plaintext), $matches);
                         $giaGoc = $matches[0][0];
                         $soPhong = count($elem->find('td.select-df  option')) -1;
             
-                        $loaiPhong[] = ['LOAIPHONG'.$kv.'_'.$ks.'_'.$i, [$title, $srcHinh, $loaiGiuong, $toiDaSoNguoi, $buaSang, $hoanHuy, $uuDai, $giaGoc, $soPhong], $dienTich, $conTrong];
+                        $loaiPhong[] = ['LOAIPHONG'.$kv.'_'.$ks.'_'.$j, [$title, $srcHinh, $loaiGiuong, $toiDaSoNguoi, $buaSang, $hoanHuy, $uuDai, $giaGoc, $soPhong], $dienTich, $conTrong];
 
                         for($p=1;$p<=$soPhong;$p++)
-                            $phong[] = ['MAPHONG'.$kv.'_'.$ks.'_'.$i.'_'.$p, 'LOAIPHONG'.$kv.'_'.$ks.'_'.$i, 'MAKHACHSAN'.$kv.'_'.$ks];
+                            $phong[] = ['MAPHONG'.$kv.'_'.$ks.'_'.$j.'_'.$p, 'LOAIPHONG'.$kv.'_'.$ks.'_'.$j, 'MAKHACHSAN'.$kv.'_'.$ks];
                     }
                 }
             }
-    
+    if(!is_dir('./json') || !file_exists('./json'))
+        mkdir('json');
+    chdir('./json');
+
     $fp = fopen('loaiPhong.json', 'w');
     fwrite($fp, json_encode($loaiPhong));
     fclose($fp);
