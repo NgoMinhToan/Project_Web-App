@@ -115,7 +115,6 @@
             $stmt = self::$mysql->query("DELETE FROM items WHERE ITEM_INDEX=$item_index");
             return self::$mysql->affected_rows;
         }
-    }
     // Db::delete_item(1);
     // Db::delete_item(2);
     // Db::delete_item(3);
@@ -138,9 +137,10 @@
 //===================== PHẦN QUẢN LÝ KHÁCH SẠN ============================================//
 
 
+        static function 
 
 
-
+    }
 
 
 

@@ -3,7 +3,7 @@
     require_once 'getImage.php';
     chdir('../');
     include 'LoaiPhong.php';
-    $page = 'https://mytour.vn/';
+    $page = './html/0.html';
     $html = file_get_html($page);
 
 
@@ -45,14 +45,7 @@
     }
     // print_r($khachSan);
 
-    if(!is_dir('./json') || !file_exists('./json'))
-        mkdir('json');
-    chdir('./json');
-
-    $fp = fopen('khachSan.json', 'w');
-    fwrite($fp, json_encode($khachSan));
-    fclose($fp);
-    chdir('../');
+    
     
     // ===============================================
     // Crawl LoaiPhong
@@ -62,7 +55,16 @@
         for($ks = 1; $ks <= count($khachSan); $ks++){
             if(!file_exists('./html/'.$kv.'_'.$ks.'.html'))
                 break;
-            $html = file_get_html('./html/'.$kv.'_'.$ks.'.html')->find('.table-detail.table > tbody', 0);
+            $html = file_get_html('./html/'.$kv.'_'.$ks.'.html');
+            $diemDen = $html->find('h4.ins-title ~ ul>li');
+            $diemDen = array_map(fn($a)=>[$a->find('span.location',0)->plaintext, $a->find('span.distance',0)->plaintext], $diemDen);
+            
+            $khachSan[$kv-1][] = $diemDen;
+            $tienNghi = $html->find('div.attribute-hotel .attribute-value');
+            echo (count($html->find('div.attribute-hotel')).'<br>');
+            $tienNghi = array_map(fn($a)=>trim($a->plaintext), $tienNghi);
+
+            $html = $html->find('.table-detail.table > tbody', 0);
             $index = 0;
             for($i=0; $i< count($html->find('.book-choose')); $i++){
                 $title = trim($html->find('.title-room',$i)->plaintext);
@@ -83,7 +85,7 @@
                     $tuyChon = $elem->find('.room-condition > p');
                     $tuyChon = array_map(fn($a)=>trim($a->plaintext), $tuyChon);
                     array_pop($tuyChon);
-                    $matches = [['']];
+                    $matches = [[0]];
                     if(isset($elem->find('.item-price > p > strong.label.bg-red', 0)->plaintext))
                         preg_match_all('!\d+!', $elem->find('.item-price > p > strong.label.bg-red', 0)->plaintext, $matches);
                     $uuDai =$matches[0][0];
@@ -99,6 +101,15 @@
                 }
             }
         }
+    if(!is_dir('./json') || !file_exists('./json'))
+    mkdir('json');
+    chdir('./json');
+
+    $fp = fopen('khachSan.json', 'w');
+    fwrite($fp, json_encode($khachSan));
+    fclose($fp);
+    chdir('../');
+
     if(!is_dir('./json') || !file_exists('./json'))
         mkdir('json');
     chdir('./json');
