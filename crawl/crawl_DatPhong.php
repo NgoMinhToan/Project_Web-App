@@ -56,21 +56,38 @@
             if(!file_exists('./html/'.$kv.'_'.$ks.'.html'))
                 break;
             $html = file_get_html('./html/'.$kv.'_'.$ks.'.html');
+            // -------------------------------------------------------------- KHACH SAN
+            // ĐIỂM GẦN ĐÓ
             $diemDen = $html->find('h4.ins-title ~ ul>li');
             $diemDen = array_map(fn($a)=>[$a->find('span.location',0)->plaintext, $a->find('span.distance',0)->plaintext], $diemDen);
-            
             $khachSan[$kv-1][] = $diemDen;
-            $tienNghi = $html->find('div.attribute-hotel .attribute-value');
-            echo (count($html->find('div.attribute-hotel')).'<br>');
-            $tienNghi = array_map(fn($a)=>trim($a->plaintext), $tienNghi);
 
+            // TIỆN ÍCH CỦA KS
+            $tienNghi = $html->find('div.attribute-hotel .attribute-value');
+            $tienNghi = array_map(fn($a)=>trim($a->plaintext), $tienNghi);
+            
+            // LẤY ẢNH REVIEW TỪ CÁC FILE ( .a )
+            $getImg = file_get_html('./html/'.$kv.'_'.$ks.'_a.html');
+            $anhReview = $getImg->find('div.thumb-wrapper > img');
+            for($e=0;$e<count($anhReview);$e++){
+                // getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './image/reviewKS', $kv.'-'.$ks.'-'.$e.'.png');
+                $anhReview[$e] = './image/reviewKS/'. $kv.'-'.$ks.'-'.$e.'.png';
+            }
+            $khachSan[$kv-1][] = $anhReview;
+            // ------------------------------------------------------------ PHONG - LOAIPHONG
             $html = $html->find('.table-detail.table > tbody', 0);
             $index = 0;
             for($i=0; $i< count($html->find('.book-choose')); $i++){
+
+                // LẤY CÁC THÔNG TIN CỦA CÁC LOẠI PHÒNG
                 $title = trim($html->find('.title-room',$i)->plaintext);
-                $srcHinh = str_replace('480x360', '1000x600', $html->find('.product-image > img', $i)->src);
+                $html_New = $html->find('.book-choose', $i);
+
                 // tai anh ve
-                $productContent = $html->find('.product-content > p');
+                getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
+                $srcHinh = './image/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
+
+                $productContent = $html_New->find('.product-content > p');
                 array_shift($productContent);
                 $dienTich = '0 m';
                 $conTrong = '0';
@@ -80,7 +97,8 @@
                     $conTrong = trim(array_pop($productContent)->plaintext);
                 
                 $productContent = array_map(fn($a)=>trim($a->plaintext), $productContent);
-                foreach($html->find('td.room', $i)->find('tr') as $elem){
+
+                foreach($html_New->find('td.room', 0)->find('tr') as $elem){
                     $toiDaSoNguoi = trim($elem->find('.user-group', 0)->plaintext);
                     $tuyChon = $elem->find('.room-condition > p');
                     $tuyChon = array_map(fn($a)=>trim($a->plaintext), $tuyChon);
@@ -93,12 +111,13 @@
                     $giaGoc = $matches[0][0];
                     $soPhong = count($elem->find('td.select-df  option')) -1;
                     
-                    $conTrong = $soPhong; // cho trong het
+                    $conTrong = $soPhong; // BỎ TRỐNG CÁC PHÒNG
                     $loaiPhong[] = ['LOAIPHONG'.$kv.'_'.$ks.'_'.++$index, [$title, $srcHinh, $productContent, $toiDaSoNguoi, $tuyChon, $uuDai, $giaGoc, $soPhong], $dienTich, $conTrong];
 
                     for($p=1;$p<=$soPhong;$p++)
                         $phong[] = ['MAPHONG'.$kv.'_'.$ks.'_'.$index.'_'.$p, 'LOAIPHONG'.$kv.'_'.$ks.'_'.$index, 'MAKHACHSAN'.$kv.'_'.$ks];
                 }
+                echo 'done i = '.$i.'<br>';
             }
         }
     if(!is_dir('./json') || !file_exists('./json'))
