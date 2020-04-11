@@ -1,31 +1,7 @@
 <?php
-//  {
-    //     loaiphong: {
-    //         ten:
-    //         srcHinh:
-    //         dientich:
-    //         loaigiuong:
-    //         dambao:
-    //     }
-    //     toiDaSoNguoi: 
-    //     tuyChon: {
-    //         baoGomBuaSang: 1
-    //         khongHuyHoan: 1
-    //     }
-    //     gia1Dem: {
-    //         datSomGiaTot: %
-    //         giaCu:
-    //         giaMoi:
-    //     }
-    //     soLuong: {
-    //         soPhong:
-    //         giuongPhu: 0
-    //     }
-    // }
     class LoaiPhong{
-        static $index = 1;
-        function __construct($moTa, $dienTich, $controng){
-            $this->maLoaiPhong = 'LOAIPHONG'.LoaiPhong::$index++;
+        function __construct($maLoaiPhong, $moTa, $dienTich, $controng){
+            $this->maLoaiPhong = $maLoaiPhong;
             $this->moTa = $moTa;
             $this->dienTich = $dienTich;
             $this->controng = $controng;

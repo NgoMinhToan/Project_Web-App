@@ -89,10 +89,11 @@
 
                 $productContent = $html_New->find('.product-content > p');
                 array_shift($productContent);
-                $dienTich = '0 m';
+                $dienTich = 0;
                 $conTrong = '0';
                 if($productContent[0]->title == 'Diện tích phòng')
-                    $dienTich = trim(array_shift($productContent)->plaintext);
+                    preg_match_all('!\d+!', trim(array_shift($productContent)->plaintext), $matches);
+                $dienTich = intval($matches[0][0]);
                 if($productContent[count($productContent)-1]->plaintext != '')
                     $conTrong = trim(array_pop($productContent)->plaintext);
                 
