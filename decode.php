@@ -37,6 +37,16 @@
         }
         return $rs;
     }
+    function decode_khachSan_table($path){
+        if(!file_exists($path))
+            return [];
+        $textFile = json_decode(file_get_contents($path));
+        $rs = [];
+        foreach($textFile as $elem){
+            $rs[] = [$elem[0], $elem[1], $elem[2], $elem[3], $elem[4], json_encode($elem[5]), json_encode($elem[6]), json_encode($elem[7])];
+        }
+        return $rs;
+    }
     function decode_loaiPhong_table($path){
         if(!file_exists($path))
             return [];

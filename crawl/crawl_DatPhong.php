@@ -2,7 +2,7 @@
     require_once 'simple_html_dom.php';
     require_once 'getImage.php';
     chdir('../');
-    include 'LoaiPhong.php';
+    include 'object.php';
     $page = './html/0.html';
     $html = file_get_html($page);
 
@@ -65,7 +65,8 @@
             // TIỆN ÍCH CỦA KS
             $tienNghi = $html->find('div.attribute-hotel .attribute-value');
             $tienNghi = array_map(fn($a)=>trim($a->plaintext), $tienNghi);
-            
+            $khachSan[$kv-1][] = $tienNghi;
+
             // LẤY ẢNH REVIEW TỪ CÁC FILE ( .a )
             $getImg = file_get_html('./html/'.$kv.'_'.$ks.'_a.html');
             $anhReview = $getImg->find('div.thumb-wrapper > img');
@@ -84,7 +85,7 @@
                 $html_New = $html->find('.book-choose', $i);
 
                 // tai anh ve
-                getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
+                // getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
                 $srcHinh = './image/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
 
                 $productContent = $html_New->find('.product-content > p');
