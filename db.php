@@ -145,8 +145,17 @@
                 $ID = $lastID[0][0]+1;
                 // echo $ID;
             }
+            $maTruyCap = 'MTC';
+            for($i=0;$i<4-strlen($ID);$i++)
+                $maTruyCap .= '0';
+            $maTruyCap.=$ID;
+            // echo $maTruyCap;
+
             $diaChi_IP = get_user_ip();
-            return self::$mysql->query("INSERT INTO khachTruyCap (diaChi_IP, maTruyCap, STT) VALUES('$diaChi_IP', 'MTC$ID', $ID)");
+            // echo $diaChi_IP;
+            self::$mysql->query("INSERT INTO khachTruyCap (diaChi_IP, maTruyCap, STT) VALUES('$diaChi_IP', '$maTruyCap', $ID)");
+            if (self::$mysql->affected_rows==1)
+                return ['success'=>true, 'msg'=>'Đã tạo mã truy cập', 'maTruyCap'=>$maTruyCap, 'diaChi_IP'=>$diaChi_IP];
         }
         static function resetID(){
             self::$mysql->query("DELETE FROM khachtruycap");
@@ -191,7 +200,45 @@
             $stmt->close();
             return $log;
         }
+        static function dangKy($hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND){
+            $lastID = self::$mysql->query("SELECT maSo_ND from nguoiDung");
+            $rs = [1];
+            while ($result = $lastID->fetch_assoc()){
+                preg_match_all('!\d+!', $result['maSo_ND'], $match);
+                $rs[] = $match[0][0]+1;
+            }
+            $maSo_ND = 'ND';
+            for($i=0;$i<4-strlen(max($rs));$i++)
+                $maSo_ND .= '0';
+            $maSo_ND.=max($rs);
+            $stmt = self::$mysql->prepare("INSERT INTO nguoiDung (maSo_ND, hoTen_ND, tenDangNhap, matKhau_ND, email_ND, SDT_ND, quyenQuanTri, diaChi_ND, tinhThanhPho_ND) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('sssssiiss', $maSo_ND, $hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND);
+            $stmt->execute();
+            $log = $stmt->affected_rows;
+            $stmt->close();
+            if($log==1)
+                return ['success'=>true, 'msg'=>'Đăng ký thành công!'];
+            return ['success'=>false, 'msg'=>'Tên người dùng không hợp lệ hoặc đã tồn tại!'];
+        }
+        static function dangNhap($tenDangNhap_email_ND, $matKhau_ND_SDT_ND, $truyCap){
+            
+            $result = self::$mysql->query("SELECT * FROM nguoiDung WHERE tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_ND_SDT_ND' OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_ND_SDT_ND'");
+            if ($result->num_rows==1){
+                $result = $result->fetch_assoc();
+                $maTruyCap = $truyCap['maTruyCap'];
+                $maSo_ND = $result['maSo_ND'];
+                echo $maTruyCap.'<br>';
+                echo $maSo_ND.'<br>';
+                self::$mysql->query("INSERT INTO dangNhap (maTruyCap, maSo_ND) VALUES('$maTruyCap', '$maSo_ND')");
+                if(self::$mysql->affected_rows==1)
+                    return ['success'=>true, 'msg'=>'Đăng nhập thành công!', $result];
+                return ['success'=>false, 'msg'=>'Đăng nhập thất bại!'];
+            }
+            return ['success'=>false, 'msg'=>'Sai tên đăng nhập hoặc mật khẩu!', $result->error_list];
+        }
+
     }
+    
 
 
 
