@@ -201,6 +201,12 @@
             return $log;
         }
         static function dangKy($hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND){
+            // nếu tồn tại trong người dùng
+            $result = self::$mysql->query("SELECT maSo_ND FROM nguoiDung WHERE tenDangNhap='$tenDangNhap'");
+            if ($result->num_rows==1){
+                return ['success'=>false, 'msg'=>'Tên người dùng đã tồn tại!'];
+            }
+            // lấy ID cuối cùng ra
             $lastID = self::$mysql->query("SELECT maSo_ND from nguoiDung");
             $rs = [1];
             while ($result = $lastID->fetch_assoc()){
@@ -220,22 +226,54 @@
                 return ['success'=>true, 'msg'=>'Đăng ký thành công!'];
             return ['success'=>false, 'msg'=>'Tên người dùng không hợp lệ hoặc đã tồn tại!'];
         }
-        static function dangNhap($tenDangNhap_email_ND, $matKhau_ND_SDT_ND, $truyCap){
-            
-            $result = self::$mysql->query("SELECT * FROM nguoiDung WHERE tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_ND_SDT_ND' OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_ND_SDT_ND'");
+        static function dangNhap($tenDangNhap_email_ND, $matKhau_SDT_ND, $truyCap){
+            // nếu tồn tại trong đăng nhâp
+            $diaChi_IP = $truyCap['diaChi_IP'];
+            $result = self::$mysql->query("SELECT dangNhap.maSo_ND, dangNhap.maTruyCap
+                FROM dangNhap JOIN nguoiDung ON dangNhap.maSo_ND=nguoiDung.maSo_ND
+                                JOIN khachTruyCap ON dangNhap.maTruyCap = khachTruyCap.maTruyCap
+                WHERE (tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
+                    OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND') AND khachTruyCap.diaChi_IP='$diaChi_IP'");
+            // print_r($diaChi_IP);
+            // print_r($result);
+            if ($result->num_rows==1){
+                $result = $result->fetch_assoc();
+                $maSo_ND = $result['maSo_ND'];
+                $maTruyCap = $result['maTruyCap'];
+                self::$mysql->query("DELETE FROM dangNhap WHERE maSo_ND='$maSo_ND' AND maTruyCap='$maTruyCap'");
+            }
+            $result = self::$mysql->query("SELECT * FROM nguoiDung WHERE tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND'");
             if ($result->num_rows==1){
                 $result = $result->fetch_assoc();
                 $maTruyCap = $truyCap['maTruyCap'];
                 $maSo_ND = $result['maSo_ND'];
-                echo $maTruyCap.'<br>';
-                echo $maSo_ND.'<br>';
+                // echo $maTruyCap.'<br>';
+                // echo $maSo_ND.'<br>';
                 self::$mysql->query("INSERT INTO dangNhap (maTruyCap, maSo_ND) VALUES('$maTruyCap', '$maSo_ND')");
                 if(self::$mysql->affected_rows==1)
-                    return ['success'=>true, 'msg'=>'Đăng nhập thành công!', $result];
+                    return array_merge(['success'=>true, 'msg'=>'Đăng nhập thành công!'], $result);
                 return ['success'=>false, 'msg'=>'Đăng nhập thất bại!'];
             }
-            return ['success'=>false, 'msg'=>'Sai tên đăng nhập hoặc mật khẩu!', $result->error_list];
+            return ['success'=>false, 'msg'=>'Sai tên đăng nhập hoặc mật khẩu!', $result];
         }
+        static function khachDatPhong($maTruyCap, $maPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
+            self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
+                                VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', $SDT_KTC, '$tinhThanhPho_KTC')");
+            if(self::$mysql->affected_rows==1)
+                return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+            return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+        }//db -1
+        static function ndDatPhong($maSo_ND, $maPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc){
+            self::$mysql->query("INSERT INTO ndDatPhong(maSo_ND, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc)
+                                VALUES('$maSo_ND', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc')");
+            if(self::$mysql->affected_rows==1)
+                return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+            return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+        }//db -1
+        //huy dat phong nd | db +1
+        //huy dat phong khach | db +1
+        //luu lai thong tin da dat cua khach ko dang nhap
+        //lua thong tin sang bang khach hang
 
     }
     
