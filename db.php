@@ -256,24 +256,42 @@
             }
             return ['success'=>false, 'msg'=>'Sai tên đăng nhập hoặc mật khẩu!', $result];
         }
-        static function khachDatPhong($maTruyCap, $maPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
-            self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
-                                VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', $SDT_KTC, '$tinhThanhPho_KTC')");
-            if(self::$mysql->affected_rows==1)
-                return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+        static function khachDatPhong($maTruyCap, $maLoaiPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
+            $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
+            if($phongConLai = $result->fetch_assoc()){
+                if($phongConLai['phongConLai'] < 1)
+                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
+                $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
+                $maPhong = $result->fetch_assoc()['maPhong'];
+                
+                self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
+                                    VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', $SDT_KTC, '$tinhThanhPho_KTC')");
+                if(self::$mysql->affected_rows==1)
+                    return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+            }
             return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
         }//db -1
-        static function ndDatPhong($maSo_ND, $maPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc){
-            self::$mysql->query("INSERT INTO ndDatPhong(maSo_ND, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc)
-                                VALUES('$maSo_ND', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc')");
-            if(self::$mysql->affected_rows==1)
-                return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+        static function ndDatPhong($maSo_ND, $maLoaiPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc){
+            $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
+            if($phongConLai = $result->fetch_assoc()){
+                if($phongConLai['phongConLai'] < 1)
+                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
+                $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
+                $maPhong = $result->fetch_assoc()['maPhong'];
+
+                self::$mysql->query("INSERT INTO ndDatPhong(maSo_ND, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc)
+                                    VALUES('$maSo_ND', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc')");
+                if(self::$mysql->affected_rows==1)
+                    return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+            }
             return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
         }//db -1
-        //huy dat phong nd | db +1
-        //huy dat phong khach | db +1
-        //luu lai thong tin da dat cua khach ko dang nhap
-        //lua thong tin sang bang khach hang
+        // static function K_huyPhong()
+        //hủy đặt phong nd | db +1
+        //hủy đặt phong khach | db +1
+        //lưu lại thông tin của khách không đăng nhập
+        //lưu thông tin sang bảng khách hàng
+        //thống kê số phòng đã đặt như loại phòng
 
     }
     

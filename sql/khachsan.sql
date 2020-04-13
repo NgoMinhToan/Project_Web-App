@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 11, 2020 lúc 05:51 AM
+-- Thời gian đã tạo: Th4 13, 2020 lúc 06:27 AM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.4
 
@@ -35,6 +35,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_CONTENT` (`p_ID` INT, `p_CON
         END IF;
     END$$
 
+DROP PROCEDURE IF EXISTS `xoaLichSuDangNhap`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `xoaLichSuDangNhap` (`maSo_ND` CHARACTER(20))  BEGIN
+   DELETE FROM dangnhap WHERE dangnhap.maSo_ND = maSo_ND;
+
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -42,9 +48,11 @@ DELIMITER ;
 --
 -- Cấu trúc bảng cho bảng `contents`
 --
+-- Tạo: Th4 02, 2020 lúc 12:43 PM
+--
 
 DROP TABLE IF EXISTS `contents`;
-CREATE TABLE `contents` (
+CREATE TABLE IF NOT EXISTS `contents` (
   `ID` int(11) NOT NULL,
   `CONTENT_INDEX` int(11) NOT NULL,
   `ITEM_INDEX` int(11) NOT NULL,
@@ -55,8 +63,6 @@ CREATE TABLE `contents` (
 
 --
 -- RELATIONSHIPS FOR TABLE `contents`:
---   `ITEM_INDEX`
---       `items` -> `ITEM_INDEX`
 --
 
 --
@@ -1775,29 +1781,39 @@ INSERT INTO `contents` (`ID`, `CONTENT_INDEX`, `ITEM_INDEX`, `SRC`, `CONTENT`, `
 --
 -- Cấu trúc bảng cho bảng `dangnhap`
 --
+-- Tạo: Th4 13, 2020 lúc 03:19 AM
+--
 
 DROP TABLE IF EXISTS `dangnhap`;
-CREATE TABLE `dangnhap` (
+CREATE TABLE IF NOT EXISTS `dangnhap` (
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL
+  `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `thoiGianDangNhap` datetime DEFAULT current_timestamp(),
+  UNIQUE KEY `maTruyCap` (`maTruyCap`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- RELATIONSHIPS FOR TABLE `dangnhap`:
---   `maSo_ND`
---       `nguoidung` -> `maSo_ND`
---   `maTruyCap`
---       `khachtruycap` -> `maTruyCap`
 --
+
+--
+-- Đang đổ dữ liệu cho bảng `dangnhap`
+--
+
+INSERT INTO `dangnhap` (`maTruyCap`, `maSo_ND`, `thoiGianDangNhap`) VALUES
+('MTC0012', 'ND0002', '2020-04-13 10:12:16'),
+('MTC0068', 'ND0002', '2020-04-13 11:16:50');
 
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `items`
 --
+-- Tạo: Th4 02, 2020 lúc 12:46 PM
+--
 
 DROP TABLE IF EXISTS `items`;
-CREATE TABLE `items` (
+CREATE TABLE IF NOT EXISTS `items` (
   `ITEM_INDEX` int(11) NOT NULL,
   `TITLE` varchar(1000) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `VIEW` int(11) DEFAULT NULL,
@@ -1855,12 +1871,14 @@ INSERT INTO `items` (`ITEM_INDEX`, `TITLE`, `VIEW`, `DATE`) VALUES
 --
 -- Cấu trúc bảng cho bảng `khachdatphong`
 --
+-- Tạo: Th4 13, 2020 lúc 03:24 AM
+--
 
 DROP TABLE IF EXISTS `khachdatphong`;
-CREATE TABLE `khachdatphong` (
+CREATE TABLE IF NOT EXISTS `khachdatphong` (
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `ngayDat` datetime DEFAULT NULL,
+  `ngayDat` datetime DEFAULT current_timestamp(),
   `thoiGianBatDau` datetime DEFAULT NULL,
   `thoiGianKetThuc` datetime DEFAULT NULL,
   `tongChiPhi` int(11) DEFAULT NULL,
@@ -1868,7 +1886,9 @@ CREATE TABLE `khachdatphong` (
   `hoTen_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `email_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `SDT_KTC` decimal(10,0) DEFAULT NULL,
-  `tinhThanhPho_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
+  `tinhThanhPho_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  PRIMARY KEY (`maTruyCap`,`maPhong`),
+  KEY `FK_khachDatPhong_phong` (`maPhong`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -1879,14 +1899,32 @@ CREATE TABLE `khachdatphong` (
 --       `phong` -> `maPhong`
 --
 
+--
+-- Đang đổ dữ liệu cho bảng `khachdatphong`
+--
+
+INSERT INTO `khachdatphong` (`maTruyCap`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `hinhThuc`, `hoTen_KTC`, `email_KTC`, `SDT_KTC`, `tinhThanhPho_KTC`) VALUES
+('MTC0017', 'MAPHONG6_1_2_32', '2020-04-13 10:53:00', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0018', 'MAPHONG6_1_2_32', '2020-04-13 10:53:08', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0021', 'MAPHONG6_1_2_32', '2020-04-13 10:53:56', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0022', 'MAPHONG6_1_2_32', '2020-04-13 11:01:17', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0023', 'MAPHONG6_1_2_32', '2020-04-13 11:03:12', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0024', 'MAPHONG6_1_2_32', '2020-04-13 11:03:37', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0025', 'MAPHONG6_1_2_32', '2020-04-13 11:03:48', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0026', 'MAPHONG6_1_2_32', '2020-04-13 11:03:53', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0027', 'MAPHONG6_1_2_32', '2020-04-13 11:04:28', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
+('MTC0028', 'MAPHONG6_1_2_32', '2020-04-13 11:04:41', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm');
+
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `khachhang`
 --
+-- Tạo: Th4 08, 2020 lúc 08:57 AM
+--
 
 DROP TABLE IF EXISTS `khachhang`;
-CREATE TABLE `khachhang` (
+CREATE TABLE IF NOT EXISTS `khachhang` (
   `maSo_KH` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `hoTen_KH` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `email_KH` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
@@ -1903,9 +1941,11 @@ CREATE TABLE `khachhang` (
 --
 -- Cấu trúc bảng cho bảng `khachsan`
 --
+-- Tạo: Th4 10, 2020 lúc 03:24 AM
+--
 
 DROP TABLE IF EXISTS `khachsan`;
-CREATE TABLE `khachsan` (
+CREATE TABLE IF NOT EXISTS `khachsan` (
   `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maKhuVuc` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `tenKhachSan` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
@@ -1913,7 +1953,9 @@ CREATE TABLE `khachsan` (
   `Review` varchar(1000) COLLATE utf8_vietnamese_ci NOT NULL,
   `diemDen` longtext COLLATE utf8_vietnamese_ci NOT NULL,
   `tienNghi` longtext COLLATE utf8_vietnamese_ci NOT NULL,
-  `anhReview` longtext COLLATE utf8_vietnamese_ci NOT NULL
+  `anhReview` longtext COLLATE utf8_vietnamese_ci NOT NULL,
+  PRIMARY KEY (`maKhachSan`),
+  KEY `FK_KHACHSAN_FK_KHACHS_KHUVUC` (`maKhuVuc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -1946,12 +1988,15 @@ INSERT INTO `khachsan` (`maKhachSan`, `maKhuVuc`, `tenKhachSan`, `diaChi_KS`, `R
 --
 -- Cấu trúc bảng cho bảng `khachtruycap`
 --
+-- Tạo: Th4 12, 2020 lúc 12:58 PM
+--
 
 DROP TABLE IF EXISTS `khachtruycap`;
-CREATE TABLE `khachtruycap` (
+CREATE TABLE IF NOT EXISTS `khachtruycap` (
   `diaChi_IP` varchar(15) COLLATE utf8_vietnamese_ci NOT NULL,
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `STT` int(11) NOT NULL
+  `STT` int(11) NOT NULL,
+  PRIMARY KEY (`maTruyCap`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -1963,67 +2008,100 @@ CREATE TABLE `khachtruycap` (
 --
 
 INSERT INTO `khachtruycap` (`diaChi_IP`, `maTruyCap`, `STT`) VALUES
-('::1', 'MTC1', 1),
-('::1', 'MTC10', 10),
-('::1', 'MTC11', 11),
-('::1', 'MTC12', 12),
-('::1', 'MTC13', 13),
-('::1', 'MTC14', 14),
-('::1', 'MTC15', 15),
-('::1', 'MTC16', 16),
-('::1', 'MTC17', 17),
-('::1', 'MTC18', 18),
-('::1', 'MTC19', 19),
-('::1', 'MTC2', 2),
-('::1', 'MTC20', 20),
-('::1', 'MTC21', 21),
-('::1', 'MTC22', 22),
-('::1', 'MTC23', 23),
-('::1', 'MTC24', 24),
-('::1', 'MTC25', 25),
-('::1', 'MTC26', 26),
-('::1', 'MTC27', 27),
-('::1', 'MTC28', 28),
-('::1', 'MTC29', 29),
-('::1', 'MTC3', 3),
-('::1', 'MTC30', 30),
-('::1', 'MTC31', 31),
-('::1', 'MTC32', 32),
-('::1', 'MTC33', 33),
-('::1', 'MTC34', 34),
-('::1', 'MTC35', 35),
-('::1', 'MTC36', 36),
-('::1', 'MTC37', 37),
-('::1', 'MTC38', 38),
-('::1', 'MTC39', 39),
-('::1', 'MTC4', 4),
-('::1', 'MTC40', 40),
-('::1', 'MTC41', 41),
-('::1', 'MTC42', 42),
-('::1', 'MTC43', 43),
-('::1', 'MTC44', 44),
-('::1', 'MTC45', 45),
-('::1', 'MTC46', 46),
-('::1', 'MTC47', 47),
-('::1', 'MTC48', 48),
-('::1', 'MTC49', 49),
-('::1', 'MTC5', 5),
-('::1', 'MTC50', 50),
-('::1', 'MTC6', 6),
-('::1', 'MTC7', 7),
-('::1', 'MTC8', 8),
-('::1', 'MTC9', 9);
+('192.168.1.54', 'MTC0001', 1),
+('192.168.1.54', 'MTC0002', 2),
+('192.168.1.54', 'MTC0003', 3),
+('::1', 'MTC0004', 4),
+('192.168.1.54', 'MTC0005', 5),
+('::1', 'MTC0006', 6),
+('::1', 'MTC0007', 7),
+('::1', 'MTC0008', 8),
+('192.168.1.54', 'MTC0009', 9),
+('192.168.1.54', 'MTC0010', 10),
+('192.168.1.54', 'MTC0011', 11),
+('192.168.1.54', 'MTC0012', 12),
+('::1', 'MTC0013', 13),
+('::1', 'MTC0014', 14),
+('::1', 'MTC0015', 15),
+('::1', 'MTC0016', 16),
+('::1', 'MTC0017', 17),
+('::1', 'MTC0018', 18),
+('::1', 'MTC0019', 19),
+('::1', 'MTC0020', 20),
+('::1', 'MTC0021', 21),
+('::1', 'MTC0022', 22),
+('::1', 'MTC0023', 23),
+('::1', 'MTC0024', 24),
+('::1', 'MTC0025', 25),
+('::1', 'MTC0026', 26),
+('::1', 'MTC0027', 27),
+('::1', 'MTC0028', 28),
+('::1', 'MTC0029', 29),
+('::1', 'MTC0030', 30),
+('::1', 'MTC0031', 31),
+('::1', 'MTC0032', 32),
+('::1', 'MTC0033', 33),
+('::1', 'MTC0034', 34),
+('::1', 'MTC0035', 35),
+('::1', 'MTC0036', 36),
+('::1', 'MTC0037', 37),
+('::1', 'MTC0038', 38),
+('::1', 'MTC0039', 39),
+('::1', 'MTC0040', 40),
+('::1', 'MTC0041', 41),
+('::1', 'MTC0042', 42),
+('::1', 'MTC0043', 43),
+('::1', 'MTC0044', 44),
+('::1', 'MTC0045', 45),
+('::1', 'MTC0046', 46),
+('::1', 'MTC0047', 47),
+('::1', 'MTC0048', 48),
+('::1', 'MTC0049', 49),
+('::1', 'MTC0050', 50),
+('::1', 'MTC0051', 51),
+('::1', 'MTC0052', 52),
+('::1', 'MTC0053', 53),
+('::1', 'MTC0054', 54),
+('::1', 'MTC0055', 55),
+('::1', 'MTC0056', 56),
+('::1', 'MTC0057', 57),
+('::1', 'MTC0058', 58),
+('::1', 'MTC0059', 59),
+('::1', 'MTC0060', 60),
+('::1', 'MTC0061', 61),
+('::1', 'MTC0062', 62),
+('::1', 'MTC0063', 63),
+('::1', 'MTC0064', 64),
+('::1', 'MTC0065', 65),
+('::1', 'MTC0066', 66),
+('::1', 'MTC0067', 67),
+('::1', 'MTC0068', 68);
+
+--
+-- Bẫy `khachtruycap`
+--
+DROP TRIGGER IF EXISTS `check_KTC`;
+DELIMITER $$
+CREATE TRIGGER `check_KTC` BEFORE DELETE ON `khachtruycap` FOR EACH ROW BEGIN
+DELETE FROM dangnhap WHERE dangnhap.maTruyCap = OLD.maTruyCap;
+
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `khuvuc`
 --
+-- Tạo: Th4 08, 2020 lúc 08:57 AM
+--
 
 DROP TABLE IF EXISTS `khuvuc`;
-CREATE TABLE `khuvuc` (
+CREATE TABLE IF NOT EXISTS `khuvuc` (
   `maKhuVuc` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `tenKhuVuc` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
+  `tenKhuVuc` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  PRIMARY KEY (`maKhuVuc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -2053,13 +2131,16 @@ INSERT INTO `khuvuc` (`maKhuVuc`, `tenKhuVuc`) VALUES
 --
 -- Cấu trúc bảng cho bảng `loaiphong`
 --
+-- Tạo: Th4 08, 2020 lúc 08:57 AM
+--
 
 DROP TABLE IF EXISTS `loaiphong`;
-CREATE TABLE `loaiphong` (
+CREATE TABLE IF NOT EXISTS `loaiphong` (
   `maLoaiPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `moTa` longtext COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `dienTich` int(11) DEFAULT NULL,
-  `phongConLai` int(11) DEFAULT NULL
+  `phongConLai` int(11) DEFAULT NULL,
+  PRIMARY KEY (`maLoaiPhong`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -2137,16 +2218,20 @@ INSERT INTO `loaiphong` (`maLoaiPhong`, `moTa`, `dienTich`, `phongConLai`) VALUE
 --
 -- Cấu trúc bảng cho bảng `nddatphong`
 --
+-- Tạo: Th4 13, 2020 lúc 04:15 AM
+--
 
 DROP TABLE IF EXISTS `nddatphong`;
-CREATE TABLE `nddatphong` (
+CREATE TABLE IF NOT EXISTS `nddatphong` (
   `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `ngayDat` datetime DEFAULT NULL,
+  `ngayDat` datetime NOT NULL DEFAULT current_timestamp(),
   `thoiGianBatDau` datetime DEFAULT NULL,
   `thoiGianKetThuc` datetime DEFAULT NULL,
   `tongChiPhi` int(11) DEFAULT NULL,
-  `hinhThuc` varchar(20) COLLATE utf8_vietnamese_ci DEFAULT NULL
+  `hinhThuc` varchar(20) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  PRIMARY KEY (`maSo_ND`,`maPhong`,`ngayDat`) USING BTREE,
+  KEY `FK_NDDATPHO_NDDATPHON_PHONG` (`maPhong`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -2157,40 +2242,74 @@ CREATE TABLE `nddatphong` (
 --       `phong` -> `maPhong`
 --
 
+--
+-- Đang đổ dữ liệu cho bảng `nddatphong`
+--
+
+INSERT INTO `nddatphong` (`maSo_ND`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `hinhThuc`) VALUES
+('ND0002', 'MAPHONG6_1_2_32', '2020-04-13 11:16:50', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online');
+
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `nguoidung`
 --
+-- Tạo: Th4 12, 2020 lúc 01:20 PM
+--
 
 DROP TABLE IF EXISTS `nguoidung`;
-CREATE TABLE `nguoidung` (
+CREATE TABLE IF NOT EXISTS `nguoidung` (
   `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `hoTen_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `tenDanhNhap` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `tenDangNhap` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
   `matKhau_ND` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
   `email_ND` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
   `SDT_ND` decimal(10,0) DEFAULT NULL,
   `quyenQuanTri` blob DEFAULT NULL,
   `diaChi_ND` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `timhThanhPho_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
+  `tinhThanhPho_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  PRIMARY KEY (`maSo_ND`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- RELATIONSHIPS FOR TABLE `nguoidung`:
 --
 
+--
+-- Đang đổ dữ liệu cho bảng `nguoidung`
+--
+
+INSERT INTO `nguoidung` (`maSo_ND`, `hoTen_ND`, `tenDangNhap`, `matKhau_ND`, `email_ND`, `SDT_ND`, `quyenQuanTri`, `diaChi_ND`, `tinhThanhPho_ND`) VALUES
+('ND0001', 'ngo toan', 'mtoan453', 'mtoan453', 'mtoan@@gm332ail', '12345699', 0x30, 'sdd3233scdcsdc', 't33hcmd'),
+('ND0002', 'ngo toan', 'mtoan4', 'mtoan4', 'mtoan@@gm332ail', '12345699', 0x30, 'sdd3233scdcsdc', 't33hcmd');
+
+--
+-- Bẫy `nguoidung`
+--
+DROP TRIGGER IF EXISTS `check_ND`;
+DELIMITER $$
+CREATE TRIGGER `check_ND` BEFORE DELETE ON `nguoidung` FOR EACH ROW BEGIN
+	DELETE FROM dangnhap WHERE dangnhap.maSo_ND = OLD.maSo_ND;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `phong`
 --
+-- Tạo: Th4 08, 2020 lúc 08:57 AM
+--
 
 DROP TABLE IF EXISTS `phong`;
-CREATE TABLE `phong` (
+CREATE TABLE IF NOT EXISTS `phong` (
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maLoaiPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL
+  `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  PRIMARY KEY (`maPhong`),
+  KEY `FK_PHONG_FK_PHONG__KHACHSAN` (`maKhachSan`),
+  KEY `FK_PHONG_FK_PHONG__LOAIPHON` (`maLoaiPhong`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
@@ -3060,111 +3179,15 @@ INSERT INTO `phong` (`maPhong`, `maLoaiPhong`, `maKhachSan`) VALUES
 ('MAPHONG9_1_5_9', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1');
 
 --
--- Chỉ mục cho các bảng đã đổ
---
-
---
--- Chỉ mục cho bảng `contents`
---
-ALTER TABLE `contents`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `FK_CONTENTS_ITEMS` (`ITEM_INDEX`);
-
---
--- Chỉ mục cho bảng `dangnhap`
---
-ALTER TABLE `dangnhap`
-  ADD PRIMARY KEY (`maTruyCap`,`maSo_ND`),
-  ADD KEY `FK_DANGNHAP_DANGNHAP2_NGUOIDUN` (`maSo_ND`);
-
---
--- Chỉ mục cho bảng `items`
---
-ALTER TABLE `items`
-  ADD PRIMARY KEY (`ITEM_INDEX`);
-
---
--- Chỉ mục cho bảng `khachdatphong`
---
-ALTER TABLE `khachdatphong`
-  ADD PRIMARY KEY (`maTruyCap`,`maPhong`),
-  ADD KEY `FK_KHACHDAT_KHACHDATP_PHONG` (`maPhong`);
-
---
--- Chỉ mục cho bảng `khachhang`
---
-ALTER TABLE `khachhang`
-  ADD PRIMARY KEY (`maSo_KH`);
-
---
--- Chỉ mục cho bảng `khachsan`
---
-ALTER TABLE `khachsan`
-  ADD PRIMARY KEY (`maKhachSan`),
-  ADD KEY `FK_KHACHSAN_FK_KHACHS_KHUVUC` (`maKhuVuc`);
-
---
--- Chỉ mục cho bảng `khachtruycap`
---
-ALTER TABLE `khachtruycap`
-  ADD PRIMARY KEY (`maTruyCap`);
-
---
--- Chỉ mục cho bảng `khuvuc`
---
-ALTER TABLE `khuvuc`
-  ADD PRIMARY KEY (`maKhuVuc`);
-
---
--- Chỉ mục cho bảng `loaiphong`
---
-ALTER TABLE `loaiphong`
-  ADD PRIMARY KEY (`maLoaiPhong`);
-
---
--- Chỉ mục cho bảng `nddatphong`
---
-ALTER TABLE `nddatphong`
-  ADD PRIMARY KEY (`maSo_ND`,`maPhong`),
-  ADD KEY `FK_NDDATPHO_NDDATPHON_PHONG` (`maPhong`);
-
---
--- Chỉ mục cho bảng `nguoidung`
---
-ALTER TABLE `nguoidung`
-  ADD PRIMARY KEY (`maSo_ND`);
-
---
--- Chỉ mục cho bảng `phong`
---
-ALTER TABLE `phong`
-  ADD PRIMARY KEY (`maPhong`),
-  ADD KEY `FK_PHONG_FK_PHONG__KHACHSAN` (`maKhachSan`),
-  ADD KEY `FK_PHONG_FK_PHONG__LOAIPHON` (`maLoaiPhong`);
-
---
 -- Các ràng buộc cho các bảng đã đổ
 --
-
---
--- Các ràng buộc cho bảng `contents`
---
-ALTER TABLE `contents`
-  ADD CONSTRAINT `FK_CONTENTS_ITEMS` FOREIGN KEY (`ITEM_INDEX`) REFERENCES `items` (`ITEM_INDEX`);
-
---
--- Các ràng buộc cho bảng `dangnhap`
---
-ALTER TABLE `dangnhap`
-  ADD CONSTRAINT `FK_DANGNHAP_DANGNHAP2_NGUOIDUN` FOREIGN KEY (`maSo_ND`) REFERENCES `nguoidung` (`maSo_ND`),
-  ADD CONSTRAINT `FK_DANGNHAP_DANGNHAP_KHACHTRU` FOREIGN KEY (`maTruyCap`) REFERENCES `khachtruycap` (`maTruyCap`);
 
 --
 -- Các ràng buộc cho bảng `khachdatphong`
 --
 ALTER TABLE `khachdatphong`
-  ADD CONSTRAINT `FK_KHACHDAT_KHACHDATP_KHACHTRU` FOREIGN KEY (`maTruyCap`) REFERENCES `khachtruycap` (`maTruyCap`),
-  ADD CONSTRAINT `FK_KHACHDAT_KHACHDATP_PHONG` FOREIGN KEY (`maPhong`) REFERENCES `phong` (`maPhong`);
+  ADD CONSTRAINT `FK_khachDatPhong_khachTruyCap` FOREIGN KEY (`maTruyCap`) REFERENCES `khachtruycap` (`maTruyCap`),
+  ADD CONSTRAINT `FK_khachDatPhong_phong` FOREIGN KEY (`maPhong`) REFERENCES `phong` (`maPhong`);
 
 --
 -- Các ràng buộc cho bảng `khachsan`
@@ -3185,6 +3208,64 @@ ALTER TABLE `nddatphong`
 ALTER TABLE `phong`
   ADD CONSTRAINT `FK_PHONG_FK_PHONG__KHACHSAN` FOREIGN KEY (`maKhachSan`) REFERENCES `khachsan` (`maKhachSan`),
   ADD CONSTRAINT `FK_PHONG_FK_PHONG__LOAIPHON` FOREIGN KEY (`maLoaiPhong`) REFERENCES `loaiphong` (`maLoaiPhong`);
+
+
+--
+-- Siêu dữ liệu
+--
+USE `phpmyadmin`;
+
+--
+-- Siêu dữ liệu cho bảng contents
+--
+
+--
+-- Siêu dữ liệu cho bảng dangnhap
+--
+
+--
+-- Siêu dữ liệu cho bảng items
+--
+
+--
+-- Siêu dữ liệu cho bảng khachdatphong
+--
+
+--
+-- Siêu dữ liệu cho bảng khachhang
+--
+
+--
+-- Siêu dữ liệu cho bảng khachsan
+--
+
+--
+-- Siêu dữ liệu cho bảng khachtruycap
+--
+
+--
+-- Siêu dữ liệu cho bảng khuvuc
+--
+
+--
+-- Siêu dữ liệu cho bảng loaiphong
+--
+
+--
+-- Siêu dữ liệu cho bảng nddatphong
+--
+
+--
+-- Siêu dữ liệu cho bảng nguoidung
+--
+
+--
+-- Siêu dữ liệu cho bảng phong
+--
+
+--
+-- Siêu dữ liệu cho cơ sở dữ liệu khachsan
+--
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
