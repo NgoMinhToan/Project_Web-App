@@ -3,7 +3,7 @@
     require_once 'getImage.php';
     chdir('../');
     include 'object.php';
-    $page = './html/0.html';
+    $page = './crawl/html/0.html';
     $html = file_get_html($page);
 
 
@@ -29,10 +29,10 @@
     // Crawl Khách sạn
     $khachSan = [];
     for($kv = 1; $kv <= count($khuvuc); $kv++){
-        if(!file_exists('./html/'.$kv.'.html'))
+        if(!file_exists('./crawl/html/'.$kv.'.html'))
             break; 
         
-        $html = file_get_html('./html/'.$kv.'.html');
+        $html = file_get_html('./crawl/html/'.$kv.'.html');
         $index = 0;
         foreach($html->find('div.product-item.row') as $elem){
             $tenKhachSan = trim($elem->find('div > h2.title-sm', 0)->plaintext);
@@ -53,9 +53,9 @@
     $phong = [];
     for($kv = 1; $kv <= count($khuvuc); $kv++)
         for($ks = 1; $ks <= count($khachSan); $ks++){
-            if(!file_exists('./html/'.$kv.'_'.$ks.'.html'))
+            if(!file_exists('./crawl/html/'.$kv.'_'.$ks.'.html'))
                 break;
-            $html = file_get_html('./html/'.$kv.'_'.$ks.'.html');
+            $html = file_get_html('./crawl/html/'.$kv.'_'.$ks.'.html');
             // -------------------------------------------------------------- KHACH SAN
             // ĐIỂM GẦN ĐÓ
             $diemDen = $html->find('h4.ins-title ~ ul>li');
@@ -68,7 +68,7 @@
             $khachSan[$kv-1][] = $tienNghi;
 
             // LẤY ẢNH REVIEW TỪ CÁC FILE ( .a )
-            $getImg = file_get_html('./html/'.$kv.'_'.$ks.'_a.html');
+            $getImg = file_get_html('./crawl/html/'.$kv.'_'.$ks.'_a.html');
             $anhReview = $getImg->find('div.thumb-wrapper > img');
             for($e=0;$e<count($anhReview);$e++){
                 // getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './image/reviewKS', $kv.'-'.$ks.'-'.$e.'.png');

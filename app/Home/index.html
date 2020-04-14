@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="animate.css">
+    <title>Index</title>
+</head>
+
+<body>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="./index.html">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="#"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="#"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                        <input type="text" class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <a href="../Login/login.html">
+                                            <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng ký</a></li>
+                                        </a>
+                                        <li class="list-group-item"><a href="../Footer/quydinhchung.html">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="body" id="body">
+        <div class="holder">
+            <div class="container">
+                <div class="row">
+                    <div class="search-box wow slideInDown col-lg-4">
+                        <div class="bed fa fa-suitcase"><input id="search" type="text" name="text" value="" placeholder="Nhập tên khách sạn, địa danh...">
+                            <nav class="list danhsach" id="list_2">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="#">Sapa</a></li>
+                                    <li class="list-group-item"><a href="#">Hà Nội</a></li>
+                                    <li class="list-group-item"><a href="#">Hội An</a></li>
+                                    <li class="list-group-item"><a href="#">Hạ Long</a></li>
+                                    <li class="list-group-item"><a href="#">Đà Nẵng</a></li>
+                                    <li class="list-group-item"><a href="#">Huế</a></li>
+                                </ul>
+                                <ul class="list-group" id="list_3">
+                                    <li class="list-group-item"><a href="#">Phú Quốc</a></li>
+                                    <li class="list-group-item"><a href="#">Nha Trang</a></li>
+                                    <li class="list-group-item"><a href="#">Đà Lạt </a></li>
+                                    <li class="list-group-item"><a href="#">Phan Thiết</a></li>
+                                    <li class="list-group-item"><a href="#">Vũng Tàu</a></li>
+                                    <li class="list-group-item"><a href="#">Hồ Chí Mnh</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="calendar">
+                            <span class="fa fa-calendar icon-calendar-1"></span><input type="text" class="calendar-all calendar-first fa fa-calendar" id="calendar" placeholder="05 Thg 05" style="font-size: 15px;">
+                            <span class="arrow fa fa-arrow-right"></span>
+                            <span class="fa fa-calendar icon-calendar icon-calendar-2"></span><input type="text" class="calendar-all calendar-second fa fa-calendar" id="calendar-2" placeholder="06 Thg 05" style="font-size: 15px;">
+                        </div>
+                        <div class="guest">
+                            <a href="#">
+                                <span class="guest-all guest-first fa fa-key" id="room"><span class="room"> 1 phòng</span></span>
+                            </a>
+                            <a href="#">
+                                <span class="guest-all guest-second fa fa-users" id="room-1"> <span class="people"> 2 khách</span></span>
+                            </a>
+                            <br>
+                            <br>
+                            <div class="add" id="add">
+                                <input id="demo0" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
+                                    data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                    data-bts-button-up-class="btn btn-default">
+                                <input id="demo01" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
+                                    data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                    data-bts-button-up-class="btn btn-default">
+                            </div>
+                        </div>
+                        <button class="nut btn btn-danger">Tìm Khách Sạn</button>
+                    </div>
+                    <div class="slide col-lg-8">
+                        <div id="carouselExampleIndicators" class="tuong carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="img d-block w-100" src="./images/slide-3.jpg" alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="img d-block w-100" src="./images/slide-3.jpg" alt="Third slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="img d-block w-100" src="./images/slide-4.jpg" alt="Third slide">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <p class="p-body">ĐIỂM ĐẾN PHỔ BIẾN MIỀN BẮC</p>
+                <hr>
+                <div class="row">
+                    <div class="number one col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all sp">
+                                <img class="img-area sapa" src="./images/sapa.jpg" alt="">
+                                <h5>Sapa</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number two col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all hn">
+                                <img class="img-area hanoi" src="./images/hanoi.jpg" alt="">
+                                <h5>Hà Nội</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number three col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all pq">
+                                <img class="img-area phuquoc" src="./images/phuquoc.jpg" alt="">
+                                <h5>Phú Quốc</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number four col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all hl">
+                                <img class="img-area halong" src="./images/halong.jpg" alt="">
+                                <h5>Hạ Long</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <p class="p-body">ĐIỂM ĐẾN PHỔ BIẾN MIỀN TRUNG</p>
+                <hr>
+                <div class="row">
+                    <div class="number five col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all dn">
+                                <img class="img-area danang" src="./images/danang.jpg" alt="">
+                                <h5>Đà Nẵng</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number six col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all nt">
+                                <img class="img-area nhatrang" src="./images/nhatrang.jpg" alt="">
+                                <h5>Nha Trang</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number seven col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all ha">
+                                <img class="img-area hoian" src="./images/hoian.jpg" alt="">
+                                <h5>Hội An</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number eight col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all h">
+                                <img class="img-area hue" src="./images/hue.jpg" alt="">
+                                <h5>Huế</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <p class="p-body">ĐIỂM ĐẾN PHỔ BIẾN MIỀN NAM</p>
+                <hr>
+                <div class="row">
+                    <div class="number nine col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all dl">
+                                <img class="img-area dalat" src="./images/dalat.jpg" alt="">
+                                <h5>Đà Lạt</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number ten col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInLeft ctn-all pt">
+                                <img class="img-area phanthiet" src="./images/phanthiet.jpg" alt="">
+                                <h5>Phan Thiết</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number eleven col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all vt">
+                                <img class="img-area vungtau" src="./images/vungtau.jpg" alt="">
+                                <h5>Vũng Tàu</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="number twelve col-sm-3">
+                        <a href="#">
+                            <div class="wow bounceInRight ctn-all hcm">
+                                <img class="img-area hochiminh" src="./images/hcm.jpg" alt="">
+                                <h5>Hồ Chí Minh</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="left col-sm-6"></div>
+                    <div class="wow jackInTheBox right col-sm-6">
+                        <h2>Hotel Tourist</h2>
+                        <div class="content">
+                            <div class="fa fa-check-circle"><i> <b> Giá tốt hơn </b>so với đặt phòng trực tiếp tại khách sạn</i></div><br>
+                            <div class="fa fa-check-circle"><i> Đảm bảo <b> giá tốt nhất</b> </i></div><br>
+                            <div class="fa fa-check-circle"><i> Đảm bảo <b>hoàn tiền</b></i></div><br>
+                            <div class="fa fa-check-circle"><i> Nhân viên chăm sóc, tư vấn nhiều kinh nghiệm</i></div><br>
+                            <div class="fa fa-check-circle"><i> Hơn <b> 5000 </b>khách sạn tại Việt Nam với đánh giá thực</i></div>
+                            <div class="fa fa-check-circle"><i> Nhiều chương trình khuyến mãi và tích lũy điểm</i></div><br>
+                            <div class="fa fa-check-circle"><i> Thanh toán <b>dễ dàng, đa dạng</b> </i></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer">
+                <div class="container">
+                    <h2>Hotel Tourist</h2>
+                    <div class="row">
+                        <div class="end line-1 col-sm-4">
+                            <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                            <p>Hà Nội: 024 7109 9999</p>
+                            <p>Hồ Chí Minh: 028 7109 9998</p>
+                            <p>Email: admin@Hotel-Tourist.vn</p>
+                            <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                            <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                            <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                            <p>Địa chỉ tên miền: Hotel-Tourist.vn</p>
+                        </div>
+                        <div class="end line-2 col-sm-4">
+                            <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                            <a href="../Footer/quydinhchung.html">
+                                <p>Chính sách và quy định chung</p>
+                            </a>
+                            <a href="../Footer/quydinhthanhtoan.html">
+                                <p>Quy định về thanh toán</p>
+                            </a>
+                            <a href="../Footer/xacnhandatphong.html">
+                                <p>Quy định về xác nhận thông tin đặt phòng</p>
+                            </a>
+                            <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt=""></a>
+                            <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+
+                            <p>Chính sách bảo mật</p>
+
+
+                            <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                            <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt=""></a>
+                        </div>
+                        <div class="end line-3 col-sm-4">
+                            <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+
+                            <p>Tích lũy Vpoint</p>
+
+                            <h5>TẢI MOBILE APP: Hotel-Tourist.VN</h5>
+                            <img src="./images/app.jpg" alt="">
+                            <img src="./images/gg.jpg" alt=""><br>
+                            <br>
+                            <h5>KẾT NỐI VỚI Hotel-Tourist.VN</h5>
+                            <div class="icon-fa">
+                                <a href="#">
+                                    <div class="fa fa-facebook-square"></div>
+                                </a>
+                                <a href="#">
+                                    <div class="fa fa-google-plus-square"></div>
+                                </a>
+                                <a href="#">
+                                    <div class="fa fa-instagram"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script src="http://hocwebgiare.com/thiet_ke_web_chuan_demo/Bootstrap_TouchSpin/js/jquery.bootstrap-touchspin.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
