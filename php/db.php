@@ -157,6 +157,16 @@
             if (self::$mysql->affected_rows==1)
                 return ['success'=>true, 'msg'=>'Đã tạo mã truy cập', 'maTruyCap'=>$maTruyCap, 'diaChi_IP'=>$diaChi_IP];
         }
+        static function getTruyCap($maTruyCap){
+            $result = self::$mysql->query("SELECT * FROM khachTruyCap WHERE maTruyCap='$maTruyCap'");
+            return $result->fetch_assoc();
+        }
+        static function capNhat_IP($maTruyCap){
+            $diaChi_IP = get_user_ip();
+            self::$mysql->query("UPDATE khachTruyCap SET diaChi_IP='$diaChi_IP' WHERE maTruyCap='$maTruyCap'");
+            if(self::$mysql->affected_rows==1)
+                return ['success'=>true, 'msg'=>'Đã cập nhật IP!'];
+        }
         static function resetID(){
             self::$mysql->query("DELETE FROM khachtruycap");
             if(self::$mysql->affected_rows!=0)
@@ -202,9 +212,11 @@
         }
         static function dangKy($hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND){
             // nếu tồn tại trong người dùng
-            $result = self::$mysql->query("SELECT maSo_ND FROM nguoiDung WHERE tenDangNhap='$tenDangNhap'");
-            if ($result->num_rows==1){
-                return ['success'=>false, 'msg'=>'Tên người dùng đã tồn tại!'];
+            if($tenDangNhap!=NULL){
+                $result = self::$mysql->query("SELECT maSo_ND FROM nguoiDung WHERE tenDangNhap='$tenDangNhap'");
+                if ($result->num_rows==1){
+                    return ['success'=>false, 'msg'=>'Tên người dùng đã tồn tại!'];
+                }
             }
             // lấy ID cuối cùng ra
             $lastID = self::$mysql->query("SELECT maSo_ND from nguoiDung");
@@ -218,7 +230,7 @@
                 $maSo_ND .= '0';
             $maSo_ND.=max($rs);
             $stmt = self::$mysql->prepare("INSERT INTO nguoiDung (maSo_ND, hoTen_ND, tenDangNhap, matKhau_ND, email_ND, SDT_ND, quyenQuanTri, diaChi_ND, tinhThanhPho_ND) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param('sssssiiss', $maSo_ND, $hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND);
+            $stmt->bind_param('ssssssiss', $maSo_ND, $hoTen_ND, $tenDangNhap, $matKhau_ND, $email_ND, $SDT_ND, $quyenQuanTri, $diaChi_ND, $tinhThanhPho_ND);
             $stmt->execute();
             $log = $stmt->affected_rows;
             $stmt->close();
@@ -232,8 +244,8 @@
             $result = self::$mysql->query("SELECT dangNhap.maSo_ND, dangNhap.maTruyCap
                 FROM dangNhap JOIN nguoiDung ON dangNhap.maSo_ND=nguoiDung.maSo_ND
                                 JOIN khachTruyCap ON dangNhap.maTruyCap = khachTruyCap.maTruyCap
-                WHERE (tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
-                    OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND') AND khachTruyCap.diaChi_IP='$diaChi_IP'");
+                WHERE (email_ND='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
+                    OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND') AND khachTruyCap.diaChi_IP='$diaChi_IP'");
             // print_r($diaChi_IP);
             // print_r($result);
             if ($result->num_rows==1){
@@ -242,7 +254,7 @@
                 $maTruyCap = $result['maTruyCap'];
                 self::$mysql->query("DELETE FROM dangNhap WHERE maSo_ND='$maSo_ND' AND maTruyCap='$maTruyCap'");
             }
-            $result = self::$mysql->query("SELECT * FROM nguoiDung WHERE tenDangNhap='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' OR email_ND='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND'");
+            $result = self::$mysql->query("SELECT * FROM nguoiDung WHERE email_ND='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND'");
             if ($result->num_rows==1){
                 $result = $result->fetch_assoc();
                 $maTruyCap = $truyCap['maTruyCap'];
@@ -256,6 +268,22 @@
             }
             return ['success'=>false, 'msg'=>'Sai tên đăng nhập hoặc mật khẩu!', $result];
         }
+        static function tonTai_ND($tenDangNhap_email_ND, $matKhau_SDT_ND){
+            // $diaChi_IP = $truyCap['diaChi_IP'];
+            $result = self::$mysql->query("SELECT maSo_ND FROM nguoiDung 
+                WHERE email_ND='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
+                    OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND'");
+            if($result = $result->fetch_assoc())
+                return array_merge(['success'=>true, 'msg'=>'Tồn tại người dùng!'], $result);
+            return ['success'=>false, 'msg'=>'Người dùng không tồn tại!'];
+        }
+        static function tonTai_ND_DK($email_ND){
+            // $diaChi_IP = $truyCap['diaChi_IP'];
+            $result = self::$mysql->query("SELECT maSo_ND FROM nguoiDung WHERE email_ND='$email_ND'");
+            if($result = $result->fetch_assoc())
+                return array_merge(['success'=>false, 'msg'=>'Email đã tồn tại!'], $result);
+            return ['success'=>true, 'msg'=>'Không trùng lặp!'];
+        }
         static function khachDatPhong($maTruyCap, $maLoaiPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
             $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
             if($phongConLai = $result->fetch_assoc()){
@@ -265,7 +293,7 @@
                 $maPhong = $result->fetch_assoc()['maPhong'];
                 
                 self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
-                                    VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', $SDT_KTC, '$tinhThanhPho_KTC')");
+                                    VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', '$SDT_KTC', '$tinhThanhPho_KTC')");
                 if(self::$mysql->affected_rows==1)
                     return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
             }

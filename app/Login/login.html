@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- <?php
+        require_once '../../php/login.php';
+    ?> -->
 
 <head>
     <meta charset="UTF-8">
@@ -10,6 +13,18 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="animate.css">
     <title>Login</title>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="login.js"></script>
+    
+    <!-- Script -->
+    <!-- <script type="text/javascript">
+    </script> -->
+    <!-- Script -->
 </head>
 
 <body>
@@ -132,37 +147,37 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 left wow zoomIn">
-                    <form action="#" class="dangnhap" name="form" onsubmit="return login()">
-                        <p>Đăng nhập bằng Email</p>
+                    <form action="../../php/login.php" method="POST" class="dangnhap"  name="form" onsubmit="return onLogin()"> <!--../../php/login.php-->
+                        <p id="title-login">Đăng nhập bằng Email</p>
                         <div class="form-group">
-                            <label for="email">Email <span class="sao">*</span></label>
+                            <label for="email" id="email-label">Email <span class="sao">*</span></label>
                             <input type="email" required class="form-control" id="email" name="email">
                             <p id="error"></p>
                         </div>
                         <div class="form-group">
-                            <label for="pwd">Mật khẩu <span class="sao">*</span></label>
+                            <label for="pwd" id="pwd-label">Mật khẩu <span class="sao">*</span></label>
                             <input type="password" class="form-control" id="pwd" name="pwd">
                             <p id="error-message"></p>
                         </div>
                         <div class="container">
                             <div class="row">
-                                <div class="left-1 col-sm-6">
+                                <div class="left-1 col-sm-6" id="remember-pass-check">
                                     <input type="checkbox">
-                                    <p>Nhớ mật khẩu</p>
+                                    <p id="remember-pass-check">Nhớ mật khẩu</p>
                                 </div>
                                 <div class="right-1 col-sm-6">
-                                    <p><a href="#">Quên mật khẩu?</a> </p>
+                                    <p><a href="#" onclick="forgetPass(this)">Quên mật khẩu?</a> </p>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-light" id="sub" onclick="Check(); return false;">Đăng nhập</button>
+                        <button type="submit" class="btn btn-light" id="sub" name="btn_submit_login" onclick="return onCheck()">Đăng nhập</button>
                         <div class="container">
                             <div class="row">
                                 <div class="left-2 col-sm-6">
                                     <p>Chưa có tài khoản?</p>
                                 </div>
                                 <div class="right-2 col-sm-6">
-                                    <button class="btn btn-light quadangky"><a href="#"> Tạo tài khoản</a></button>
+                                    <button type="button" class="btn btn-light quadangky"><a href="#"> Tạo tài khoản</a></button>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +196,7 @@
             </div>
             <div class="row">
                 <div class="dangki col-sm-6">
-                    <form action="#" name="form" onsubmit="return login()">
+                    <form action="../../php/login.php" method="POST" name="form" onsubmit="return onSignUp()">
                         <p>ĐĂNG KÝ BẰNG EMAIL</p>
                         <div class="form-group">
                             <label for="email">Email <span class="sao">*</span></label>
@@ -204,7 +219,7 @@
                                 <p class="chondangky">Chọn đăng ký là bạn đã đồng ý với các <a href="#"> Điều khoản dịch vụ</a> của Hotel-Tourist.vn</p>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-default" id="sub-2" onclick="Check_2(); return false;">Đăng Ký</button>
+                        <button type="submit" class="btn btn-default" name="btn_submit_login" id="sub-2" onclick="return onCheck_2()">Đăng Ký</button>
                         <hr>
                         <div class="container">
                             <div class="row">
@@ -284,13 +299,7 @@
 
 
 
-    <script src="jquery-3.4.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="./wow.min.js"></script>
-    <script src="./wow.js"></script>
-    <script src="login.js"></script>
+
 </body>
 
 </html>
