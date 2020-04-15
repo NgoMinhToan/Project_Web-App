@@ -24,14 +24,33 @@
     if(isset($_REQUEST['btn_submit_login'])){
         $email = $_POST['email'];
         $pwd = $_POST['pwd'];
+        
+        $maTruyCap = Db::taoTruyCap()['maTruyCap'];
+        
+        setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
+        $result = Db::dangNhap($email, $pwd, Db::getTruyCap($maTruyCap));
+        echo json_encode($result);
+        if($result['success'])
+            header('location: ../app/Home/index.html');
+        else
+            echo json_encode(['success'=>false, 'msg'=>'Lỗi không xác định! | login.php ']);
+        // echo json_encode(Db::getTruyCap($maTruyCap));
+
+    }
+
+    // Auto Login
+    if($action == 'Auto-Login'){
         if(isset($_COOKIE['maTruyCap'])){
             $maTruyCap = $_COOKIE['maTruyCap'];
             Db::capNhat_IP($maTruyCap);
+
+            $loginInfo = Db::getUser($maTruyCap);
+            // print_r($loginInfo);
+            echo json_encode(Db::dangNhap($loginInfo['email_ND'], $loginInfo['matKhau_ND'], Db::getTruyCap($maTruyCap)));
         }
-        else{
-            $maTruyCap = Db::taoTruyCap()['maTruyCap'];
-        }
+        else
+            $maTruyCap = Db::taoTruyCap();
+        
         setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
-        Db::dangNhap($email, $pwd, Db::getTruyCap($maTruyCap));
     }
-    ?>
+?>

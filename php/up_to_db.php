@@ -43,7 +43,7 @@
     // foreach($khachSan as $elem)
     //     Db::khachSan(...$elem);
 
-    // $phong = decode_table('../json/phong.json');
-    // foreach($phong as $elem)
-    //     Db::phong(...$elem);
+    $phong = decode_table('../json/phong.json');
+    foreach($phong as $elem)
+        Db::phong(...$elem);
 ?>

@@ -1,5 +1,17 @@
-//Phản hồi
+// Tự động đăng nhập
+$.ajax({
+    type: 'POST',
+    url: '../../php/login.php',
+    async: false,
+    data: {action: 'Auto-Login'},
+    dataType: 'json',
+    success: (response)=>{
+        if(response['success'])
+            window.location.href = '../Home/index.html';
+    }
+});
 
+//Phản hồi
 $(document).ready(()=>{
     document.addEventListener("DOMContentLoaded", function() {
         emoj = document.getElementsByClassName("fa");
@@ -166,7 +178,7 @@ function onCheck_2() {
     }
     return true;
 }
-//Kiểm tra đăng kí
+//Kiểm tra đăng kí - Server
 function onSignUp(){
     var cont_signUp = false;
     var email=$('#email-2').val();

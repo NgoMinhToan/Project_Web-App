@@ -12,6 +12,11 @@
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+    function toDateTime($time){
+        $newTime = str_replace('/', '-', $time);
+        return date('Y-m-d h:i:s', strtotime($newTime));
+    }
+    // echo toDateTime('26/10/1999 10:12:30');
     // echo get_user_ip();
     // function 
     // if(isset($_REQUEST["action"]));

@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="animate.css">
     <title>Index</title>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script src="http://hocwebgiare.com/thiet_ke_web_chuan_demo/Bootstrap_TouchSpin/js/jquery.bootstrap-touchspin.js">
+    </script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="./index.js"></script>
 </head>
 
 <body>
@@ -51,64 +59,68 @@
                         </div>
                     </div>
                     <div class="three-icon">
-                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                        <a href="#" type="button" id="danhGia-btn" data-toggle="modal" data-target="#exampleModal">
                             <div class="login feedback fa fa-comments"></div>
                         </a>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content note">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
-                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
-                                            <p>Rất không hài lòng</p>
+                                    <!-- <form id="form-rate"> -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <div class="fa emoj fa-stop-circle">
-                                            <p>Không hài lòng</p>
+                                        <div class="modal-body">
+                                            <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                            
+                                            <div class="fa emoj fa-minus-circle" role="radio" name="doHaiLong" value="1" data-mk="tuong">
+                                                <p>Rất không hài lòng</p>
+                                            </div>
+                                            <div class="fa emoj fa-stop-circle" role="radio" name="doHaiLong" value="2">
+                                                <p>Không hài lòng</p>
+                                            </div>
+                                            <div class="fa emoj fa-pause-circle" role="radio" name="doHaiLong" value="3">
+                                                <p>Bình thường</p>
+                                            </div>
+                                            <div class="fa emoj fa-times-circle" role="radio" name="doHaiLong" value="4">
+                                                <p>Hài Lòng</p>
+                                            </div>
+                                            <div class="fa emoj fa-plus-circle" role="radio" name="doHaiLong" value="5">
+                                                <p>Rất Hài Lòng</p>
+                                            </div>
+
+                                            <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                            <label class="check">
+                                                <p class="text-2">Góp ý Website</p>
+                                                <input class="int" type="radio" checked="checked" value="Góp ý Website" name="gopY">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="check">
+                                                <p class="text-2">Liên hệ</p>
+                                                <input class="int" type="radio" checked="checked" value="Liên hệ" name="gopY">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="check">
+                                                <p class="text-2">Đối tác khách sạn</p>
+                                                <input class="int" type="radio" checked="checked" value="Đối tác khách sạn" name="gopY">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="check">
+                                                <p class="text-2">Đối tác Maketing</p>
+                                                <input class="int" type="radio" checked="checked" value="Đối tác Maketing" name="gopY">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <textarea name="cauHoi" id="placetext-1" cols="60" rows="5" placeholder="Bạn muốn hỏi?..."></textarea>
+                                            <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                            <input type="text" id="email_sdt_lienhe" class="input-1" placeholder="Email/Số điện thoại của bạn">
                                         </div>
-                                        <div class="fa emoj fa-pause-circle">
-                                            <p>Bình thường</p>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
                                         </div>
-                                        <div class="fa emoj fa-times-circle">
-                                            <p>Hài Lòng</p>
-                                        </div>
-                                        <div class="fa emoj fa-plus-circle">
-                                            <p>Rất Hài Lòng</p>
-                                        </div>
-                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
-                                        <label class="check">
-                                            <p class="text-2">Góp ý Website</p>
-                                            <input class="int" type="radio" checked="checked" name="radio">
-                                            <span class="checkmark"></span>
-                                          </label>
-                                        <label class="check">
-                                            <p class="text-2">Liên hệ</p>
-                                            <input class="int" type="radio" checked="checked" name="radio">
-                                            <span class="checkmark"></span>
-                                          </label>
-                                        <label class="check">
-                                            <p class="text-2">Đối tác khách sạn</p>
-                                            <input class="int" type="radio" checked="checked" name="radio">
-                                            <span class="checkmark"></span>
-                                          </label>
-                                        <label class="check">
-                                            <p class="text-2">Đối tác Maketing</p>
-                                            <input class="int" type="radio" checked="checked" name="radio">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
-                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
-                                        <input type="text" class="input-1" placeholder="Email/Số điện thoại của bạn">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
-                                        <button type="button" class="btn btn-primary">Gửi</button>
-                                    </div>
+                                    <!-- </form> -->
                                 </div>
                             </div>
                         </div>
@@ -117,9 +129,13 @@
                                 <nav class="list" id="list">
                                     <ul class="list-group">
                                         <a href="../Login/login.html">
-                                            <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng ký</a></li>
+                                            <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng
+                                                    ký</a></li>
                                         </a>
-                                        <li class="list-group-item"><a href="../Footer/quydinhchung.html">Chính sách và quy định</a></li>
+                                        <a href="../Footer/quydinhchung.html">
+                                            <li class="list-group-item"><a href="../Footer/quydinhchung.html">Chính sách
+                                                    và quy định</a></li>
+                                        </a>
                                     </ul>
                                 </nav>
                             </div>
@@ -137,7 +153,8 @@
             <div class="container">
                 <div class="row">
                     <div class="search-box wow slideInDown col-lg-4">
-                        <div class="bed fa fa-suitcase"><input id="search" type="text" name="text" value="" placeholder="Nhập tên khách sạn, địa danh...">
+                        <div class="bed fa fa-suitcase"><input id="search" type="text" name="text" value=""
+                                placeholder="Nhập tên khách sạn, địa danh...">
                             <nav class="list danhsach" id="list_2">
                                 <ul class="list-group">
                                     <li class="list-group-item"><a href="#">Sapa</a></li>
@@ -158,25 +175,41 @@
                             </nav>
                         </div>
                         <div class="calendar">
-                            <span class="fa fa-calendar icon-calendar-1"></span><input type="text" class="calendar-all calendar-first fa fa-calendar" id="calendar" placeholder="05 Thg 05" style="font-size: 15px;">
+                            <span class="fa fa-calendar icon-calendar-1"></span><input type="text"
+                                class="calendar-all calendar-first fa fa-calendar" id="calendar" placeholder="05 Thg 05"
+                                style="font-size: 15px;">
                             <span class="arrow fa fa-arrow-right"></span>
-                            <span class="fa fa-calendar icon-calendar icon-calendar-2"></span><input type="text" class="calendar-all calendar-second fa fa-calendar" id="calendar-2" placeholder="06 Thg 05" style="font-size: 15px;">
+                            <span class="fa fa-calendar icon-calendar icon-calendar-2"></span><input type="text"
+                                class="calendar-all calendar-second fa fa-calendar" id="calendar-2"
+                                placeholder="06 Thg 05" style="font-size: 15px;">
                         </div>
                         <div class="guest">
                             <a href="#">
-                                <span class="guest-all guest-first fa fa-key" id="room"><span class="room"> 1 phòng</span></span>
+                                <span class="guest-all guest-first fa fa-key" id="room"><span class="room"> 1
+                                        phòng</span></span>
                             </a>
                             <a href="#">
-                                <span class="guest-all guest-second fa fa-users" id="room-1"> <span class="people"> 2 khách</span></span>
+                                <span class="guest-all guest-second fa fa-users" id="room-1"> <span class="people"> 2
+                                        khách</span></span>
                             </a>
                             <br>
                             <br>
                             <div class="add" id="add">
-                                <input id="demo0" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
-                                    data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                <input id="demo0" type="text" value="55" name="demo0" data-bts-min="0"
+                                    data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0"
+                                    data-bts-step-interval="100" data-bts-force-step-divisibility="round"
+                                    data-bts-step-interval-delay="500" data-bts-prefix="" data-bts-postfix=""
+                                    data-bts-prefix-extra-class="" data-bts-postfix-extra-class=""
+                                    data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false"
+                                    data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
                                     data-bts-button-up-class="btn btn-default">
-                                <input id="demo01" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
-                                    data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                <input id="demo01" type="text" value="55" name="demo0" data-bts-min="0"
+                                    data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0"
+                                    data-bts-step-interval="100" data-bts-force-step-divisibility="round"
+                                    data-bts-step-interval-delay="500" data-bts-prefix="" data-bts-postfix=""
+                                    data-bts-prefix-extra-class="" data-bts-postfix-extra-class=""
+                                    data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false"
+                                    data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
                                     data-bts-button-up-class="btn btn-default">
                             </div>
                         </div>
@@ -200,11 +233,13 @@
                                     <img class="img d-block w-100" src="./images/slide-4.jpg" alt="Third slide">
                                 </div>
                             </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                                data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="sr-only">Previous</span>
                             </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                                data-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="sr-only">Next</span>
                             </a>
@@ -324,12 +359,16 @@
                     <div class="wow jackInTheBox right col-sm-6">
                         <h2>Hotel Tourist</h2>
                         <div class="content">
-                            <div class="fa fa-check-circle"><i> <b> Giá tốt hơn </b>so với đặt phòng trực tiếp tại khách sạn</i></div><br>
+                            <div class="fa fa-check-circle"><i> <b> Giá tốt hơn </b>so với đặt phòng trực tiếp tại khách
+                                    sạn</i></div><br>
                             <div class="fa fa-check-circle"><i> Đảm bảo <b> giá tốt nhất</b> </i></div><br>
                             <div class="fa fa-check-circle"><i> Đảm bảo <b>hoàn tiền</b></i></div><br>
-                            <div class="fa fa-check-circle"><i> Nhân viên chăm sóc, tư vấn nhiều kinh nghiệm</i></div><br>
-                            <div class="fa fa-check-circle"><i> Hơn <b> 5000 </b>khách sạn tại Việt Nam với đánh giá thực</i></div>
-                            <div class="fa fa-check-circle"><i> Nhiều chương trình khuyến mãi và tích lũy điểm</i></div><br>
+                            <div class="fa fa-check-circle"><i> Nhân viên chăm sóc, tư vấn nhiều kinh nghiệm</i></div>
+                            <br>
+                            <div class="fa fa-check-circle"><i> Hơn <b> 5000 </b>khách sạn tại Việt Nam với đánh giá
+                                    thực</i></div>
+                            <div class="fa fa-check-circle"><i> Nhiều chương trình khuyến mãi và tích lũy điểm</i></div>
+                            <br>
                             <div class="fa fa-check-circle"><i> Thanh toán <b>dễ dàng, đa dạng</b> </i></div>
                         </div>
                     </div>
@@ -361,7 +400,8 @@
                             <a href="../Footer/xacnhandatphong.html">
                                 <p>Quy định về xác nhận thông tin đặt phòng</p>
                             </a>
-                            <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt=""></a>
+                            <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg"
+                                    alt=""></a>
                             <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
 
                             <p>Chính sách bảo mật</p>
@@ -369,7 +409,8 @@
 
                             <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
 
-                            <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt=""></a>
+                            <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg"
+                                    alt=""></a>
                         </div>
                         <div class="end line-3 col-sm-4">
                             <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
@@ -405,13 +446,7 @@
 
 
 
-    <script src="jquery-3.4.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-    <script src="http://hocwebgiare.com/thiet_ke_web_chuan_demo/Bootstrap_TouchSpin/js/jquery.bootstrap-touchspin.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="./wow.min.js"></script>
-    <script src="./wow.js"></script>
-    <script src="index.js"></script>
+
 </body>
 
 </html>
