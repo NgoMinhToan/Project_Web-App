@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 13, 2020 lúc 06:27 AM
+-- Thời gian đã tạo: Th4 15, 2020 lúc 04:47 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.4
 
@@ -20,14 +20,11 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `khachsan`
 --
-CREATE DATABASE IF NOT EXISTS `khachsan` DEFAULT CHARACTER SET utf8 COLLATE utf8_vietnamese_ci;
-USE `khachsan`;
 
 DELIMITER $$
 --
 -- Thủ tục
 --
-DROP PROCEDURE IF EXISTS `INSERT_CONTENT`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_CONTENT` (`p_ID` INT, `p_CONTENT_INDEX` INT, `p_ITEM_INDEX` INT, `p_SRC` VARCHAR(100), `p_CONTENT` VARCHAR(20000), `p_TAG` VARCHAR(10))  BEGIN
     	IF EXISTS(SELECT ITEM_INDEX FROM ITEMS WHERE ITEMS.ITEM_INDEX = p_ITEM_INDEX)
         THEN
@@ -35,7 +32,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_CONTENT` (`p_ID` INT, `p_CON
         END IF;
     END$$
 
-DROP PROCEDURE IF EXISTS `xoaLichSuDangNhap`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `xoaLichSuDangNhap` (`maSo_ND` CHARACTER(20))  BEGIN
    DELETE FROM dangnhap WHERE dangnhap.maSo_ND = maSo_ND;
 
@@ -48,11 +44,8 @@ DELIMITER ;
 --
 -- Cấu trúc bảng cho bảng `contents`
 --
--- Tạo: Th4 02, 2020 lúc 12:43 PM
---
 
-DROP TABLE IF EXISTS `contents`;
-CREATE TABLE IF NOT EXISTS `contents` (
+CREATE TABLE `contents` (
   `ID` int(11) NOT NULL,
   `CONTENT_INDEX` int(11) NOT NULL,
   `ITEM_INDEX` int(11) NOT NULL,
@@ -60,10 +53,6 @@ CREATE TABLE IF NOT EXISTS `contents` (
   `CONTENT` varchar(20000) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `TAG` varchar(10) CHARACTER SET utf8 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `contents`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `contents`
@@ -1781,48 +1770,32 @@ INSERT INTO `contents` (`ID`, `CONTENT_INDEX`, `ITEM_INDEX`, `SRC`, `CONTENT`, `
 --
 -- Cấu trúc bảng cho bảng `dangnhap`
 --
--- Tạo: Th4 13, 2020 lúc 03:19 AM
---
 
-DROP TABLE IF EXISTS `dangnhap`;
-CREATE TABLE IF NOT EXISTS `dangnhap` (
+CREATE TABLE `dangnhap` (
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `thoiGianDangNhap` datetime DEFAULT current_timestamp(),
-  UNIQUE KEY `maTruyCap` (`maTruyCap`)
+  `thoiGianDangNhap` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `dangnhap`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `dangnhap`
 --
 
 INSERT INTO `dangnhap` (`maTruyCap`, `maSo_ND`, `thoiGianDangNhap`) VALUES
-('MTC0012', 'ND0002', '2020-04-13 10:12:16'),
-('MTC0068', 'ND0002', '2020-04-13 11:16:50');
+('MTC0105', 'ND0015', '2020-04-15 21:37:56');
 
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `items`
 --
--- Tạo: Th4 02, 2020 lúc 12:46 PM
---
 
-DROP TABLE IF EXISTS `items`;
-CREATE TABLE IF NOT EXISTS `items` (
+CREATE TABLE `items` (
   `ITEM_INDEX` int(11) NOT NULL,
   `TITLE` varchar(1000) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `VIEW` int(11) DEFAULT NULL,
   `DATE` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `items`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `items`
@@ -1871,11 +1844,8 @@ INSERT INTO `items` (`ITEM_INDEX`, `TITLE`, `VIEW`, `DATE`) VALUES
 --
 -- Cấu trúc bảng cho bảng `khachdatphong`
 --
--- Tạo: Th4 13, 2020 lúc 03:24 AM
---
 
-DROP TABLE IF EXISTS `khachdatphong`;
-CREATE TABLE IF NOT EXISTS `khachdatphong` (
+CREATE TABLE `khachdatphong` (
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `ngayDat` datetime DEFAULT current_timestamp(),
@@ -1885,46 +1855,48 @@ CREATE TABLE IF NOT EXISTS `khachdatphong` (
   `hinhThuc` varchar(20) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `hoTen_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `email_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `SDT_KTC` decimal(10,0) DEFAULT NULL,
-  `tinhThanhPho_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  PRIMARY KEY (`maTruyCap`,`maPhong`),
-  KEY `FK_khachDatPhong_phong` (`maPhong`)
+  `SDT_KTC` char(10) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `tinhThanhPho_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
--- RELATIONSHIPS FOR TABLE `khachdatphong`:
---   `maTruyCap`
---       `khachtruycap` -> `maTruyCap`
---   `maPhong`
---       `phong` -> `maPhong`
+-- Bẫy `khachdatphong`
 --
-
---
--- Đang đổ dữ liệu cho bảng `khachdatphong`
---
-
-INSERT INTO `khachdatphong` (`maTruyCap`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `hinhThuc`, `hoTen_KTC`, `email_KTC`, `SDT_KTC`, `tinhThanhPho_KTC`) VALUES
-('MTC0017', 'MAPHONG6_1_2_32', '2020-04-13 10:53:00', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0018', 'MAPHONG6_1_2_32', '2020-04-13 10:53:08', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0021', 'MAPHONG6_1_2_32', '2020-04-13 10:53:56', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0022', 'MAPHONG6_1_2_32', '2020-04-13 11:01:17', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0023', 'MAPHONG6_1_2_32', '2020-04-13 11:03:12', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0024', 'MAPHONG6_1_2_32', '2020-04-13 11:03:37', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0025', 'MAPHONG6_1_2_32', '2020-04-13 11:03:48', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0026', 'MAPHONG6_1_2_32', '2020-04-13 11:03:53', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0027', 'MAPHONG6_1_2_32', '2020-04-13 11:04:28', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm'),
-('MTC0028', 'MAPHONG6_1_2_32', '2020-04-13 11:04:41', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online', 'ngo minh toan', 'mtoan', '60344479', 'tphcm');
+DELIMITER $$
+CREATE TRIGGER `K_HuyPhong` AFTER DELETE ON `khachdatphong` FOR EACH ROW BEGIN
+	UPDATE phong SET phong.conTrong = phong.conTrong+1
+    WHERE phong.maPhong = OLD.maPhong;
+    
+    
+    UPDATE loaiphong SET loaiphong.phongConLai=loaiphong.phongConLai+1
+    WHERE loaiphong.maLoaiPhong = (SELECT phong.maLoaiPhong
+    FROM phong WHERE phong.maPhong=OLD.maPhong);
+    
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `K_datPhong` AFTER INSERT ON `khachdatphong` FOR EACH ROW BEGIN
+    UPDATE phong SET phong.conTrong = phong.conTrong- 1 
+    WHERE phong.maPhong = NEW.maPhong;
+    
+   
+    UPDATE loaiphong SET loaiphong.phongConLai=loaiphong.phongConLai-1
+    WHERE loaiphong.maLoaiPhong = (SELECT phong.maLoaiPhong
+    FROM phong WHERE phong.maPhong=NEW.maPhong);
+    
+    
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `khachhang`
 --
--- Tạo: Th4 08, 2020 lúc 08:57 AM
---
 
-DROP TABLE IF EXISTS `khachhang`;
-CREATE TABLE IF NOT EXISTS `khachhang` (
+CREATE TABLE `khachhang` (
   `maSo_KH` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `hoTen_KH` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `email_KH` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
@@ -1932,20 +1904,13 @@ CREATE TABLE IF NOT EXISTS `khachhang` (
   `tinhThanhPho_KH` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
---
--- RELATIONSHIPS FOR TABLE `khachhang`:
---
-
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `khachsan`
 --
--- Tạo: Th4 10, 2020 lúc 03:24 AM
---
 
-DROP TABLE IF EXISTS `khachsan`;
-CREATE TABLE IF NOT EXISTS `khachsan` (
+CREATE TABLE `khachsan` (
   `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maKhuVuc` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `tenKhachSan` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
@@ -1953,16 +1918,8 @@ CREATE TABLE IF NOT EXISTS `khachsan` (
   `Review` varchar(1000) COLLATE utf8_vietnamese_ci NOT NULL,
   `diemDen` longtext COLLATE utf8_vietnamese_ci NOT NULL,
   `tienNghi` longtext COLLATE utf8_vietnamese_ci NOT NULL,
-  `anhReview` longtext COLLATE utf8_vietnamese_ci NOT NULL,
-  PRIMARY KEY (`maKhachSan`),
-  KEY `FK_KHACHSAN_FK_KHACHS_KHUVUC` (`maKhuVuc`)
+  `anhReview` longtext COLLATE utf8_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `khachsan`:
---   `maKhuVuc`
---       `khuvuc` -> `maKhuVuc`
---
 
 --
 -- Đang đổ dữ liệu cho bảng `khachsan`
@@ -1988,38 +1945,30 @@ INSERT INTO `khachsan` (`maKhachSan`, `maKhuVuc`, `tenKhachSan`, `diaChi_KS`, `R
 --
 -- Cấu trúc bảng cho bảng `khachtruycap`
 --
--- Tạo: Th4 12, 2020 lúc 12:58 PM
---
 
-DROP TABLE IF EXISTS `khachtruycap`;
-CREATE TABLE IF NOT EXISTS `khachtruycap` (
+CREATE TABLE `khachtruycap` (
   `diaChi_IP` varchar(15) COLLATE utf8_vietnamese_ci NOT NULL,
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `STT` int(11) NOT NULL,
-  PRIMARY KEY (`maTruyCap`)
+  `STT` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `khachtruycap`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `khachtruycap`
 --
 
 INSERT INTO `khachtruycap` (`diaChi_IP`, `maTruyCap`, `STT`) VALUES
-('192.168.1.54', 'MTC0001', 1),
-('192.168.1.54', 'MTC0002', 2),
-('192.168.1.54', 'MTC0003', 3),
+('::1', 'MTC0001', 1),
+('::1', 'MTC0002', 2),
+('::1', 'MTC0003', 3),
 ('::1', 'MTC0004', 4),
-('192.168.1.54', 'MTC0005', 5),
+('::1', 'MTC0005', 5),
 ('::1', 'MTC0006', 6),
 ('::1', 'MTC0007', 7),
 ('::1', 'MTC0008', 8),
-('192.168.1.54', 'MTC0009', 9),
-('192.168.1.54', 'MTC0010', 10),
-('192.168.1.54', 'MTC0011', 11),
-('192.168.1.54', 'MTC0012', 12),
+('::1', 'MTC0009', 9),
+('::1', 'MTC0010', 10),
+('::1', 'MTC0011', 11),
+('::1', 'MTC0012', 12),
 ('::1', 'MTC0013', 13),
 ('::1', 'MTC0014', 14),
 ('::1', 'MTC0015', 15),
@@ -2075,12 +2024,48 @@ INSERT INTO `khachtruycap` (`diaChi_IP`, `maTruyCap`, `STT`) VALUES
 ('::1', 'MTC0065', 65),
 ('::1', 'MTC0066', 66),
 ('::1', 'MTC0067', 67),
-('::1', 'MTC0068', 68);
+('::1', 'MTC0068', 68),
+('::1', 'MTC0069', 69),
+('::1', 'MTC0070', 70),
+('::1', 'MTC0071', 71),
+('::1', 'MTC0072', 72),
+('::1', 'MTC0073', 73),
+('::1', 'MTC0074', 74),
+('::1', 'MTC0075', 75),
+('::1', 'MTC0076', 76),
+('::1', 'MTC0077', 77),
+('::1', 'MTC0078', 78),
+('::1', 'MTC0079', 79),
+('::1', 'MTC0080', 80),
+('::1', 'MTC0081', 81),
+('::1', 'MTC0082', 82),
+('::1', 'MTC0083', 83),
+('::1', 'MTC0084', 84),
+('::1', 'MTC0085', 85),
+('::1', 'MTC0086', 86),
+('::1', 'MTC0087', 87),
+('::1', 'MTC0088', 88),
+('::1', 'MTC0089', 89),
+('::1', 'MTC0090', 90),
+('::1', 'MTC0091', 91),
+('::1', 'MTC0092', 92),
+('::1', 'MTC0093', 93),
+('::1', 'MTC0094', 94),
+('::1', 'MTC0095', 95),
+('::1', 'MTC0096', 96),
+('::1', 'MTC0097', 97),
+('::1', 'MTC0098', 98),
+('::1', 'MTC0099', 99),
+('::1', 'MTC0100', 100),
+('::1', 'MTC0101', 101),
+('::1', 'MTC0102', 102),
+('::1', 'MTC0103', 103),
+('::1', 'MTC0104', 104),
+('::1', 'MTC0105', 105);
 
 --
 -- Bẫy `khachtruycap`
 --
-DROP TRIGGER IF EXISTS `check_KTC`;
 DELIMITER $$
 CREATE TRIGGER `check_KTC` BEFORE DELETE ON `khachtruycap` FOR EACH ROW BEGIN
 DELETE FROM dangnhap WHERE dangnhap.maTruyCap = OLD.maTruyCap;
@@ -2094,19 +2079,11 @@ DELIMITER ;
 --
 -- Cấu trúc bảng cho bảng `khuvuc`
 --
--- Tạo: Th4 08, 2020 lúc 08:57 AM
---
 
-DROP TABLE IF EXISTS `khuvuc`;
-CREATE TABLE IF NOT EXISTS `khuvuc` (
+CREATE TABLE `khuvuc` (
   `maKhuVuc` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  `tenKhuVuc` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
-  PRIMARY KEY (`maKhuVuc`)
+  `tenKhuVuc` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `khuvuc`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `khuvuc`
@@ -2131,21 +2108,13 @@ INSERT INTO `khuvuc` (`maKhuVuc`, `tenKhuVuc`) VALUES
 --
 -- Cấu trúc bảng cho bảng `loaiphong`
 --
--- Tạo: Th4 08, 2020 lúc 08:57 AM
---
 
-DROP TABLE IF EXISTS `loaiphong`;
-CREATE TABLE IF NOT EXISTS `loaiphong` (
+CREATE TABLE `loaiphong` (
   `maLoaiPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `moTa` longtext COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `dienTich` int(11) DEFAULT NULL,
-  `phongConLai` int(11) DEFAULT NULL,
-  PRIMARY KEY (`maLoaiPhong`)
+  `phongConLai` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `loaiphong`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `loaiphong`
@@ -2218,75 +2187,90 @@ INSERT INTO `loaiphong` (`maLoaiPhong`, `moTa`, `dienTich`, `phongConLai`) VALUE
 --
 -- Cấu trúc bảng cho bảng `nddatphong`
 --
--- Tạo: Th4 13, 2020 lúc 04:15 AM
---
 
-DROP TABLE IF EXISTS `nddatphong`;
-CREATE TABLE IF NOT EXISTS `nddatphong` (
+CREATE TABLE `nddatphong` (
   `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `ngayDat` datetime NOT NULL DEFAULT current_timestamp(),
   `thoiGianBatDau` datetime DEFAULT NULL,
   `thoiGianKetThuc` datetime DEFAULT NULL,
   `tongChiPhi` int(11) DEFAULT NULL,
-  `hinhThuc` varchar(20) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  PRIMARY KEY (`maSo_ND`,`maPhong`,`ngayDat`) USING BTREE,
-  KEY `FK_NDDATPHO_NDDATPHON_PHONG` (`maPhong`)
+  `hinhThuc` varchar(20) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
--- RELATIONSHIPS FOR TABLE `nddatphong`:
---   `maSo_ND`
---       `nguoidung` -> `maSo_ND`
---   `maPhong`
---       `phong` -> `maPhong`
+-- Bẫy `nddatphong`
 --
-
---
--- Đang đổ dữ liệu cho bảng `nddatphong`
---
-
-INSERT INTO `nddatphong` (`maSo_ND`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `hinhThuc`) VALUES
-('ND0002', 'MAPHONG6_1_2_32', '2020-04-13 11:16:50', '2020-05-01 00:00:00', '2020-06-01 00:00:00', 1600000, 'thanh toan online');
+DELIMITER $$
+CREATE TRIGGER `ND_datPhong` AFTER INSERT ON `nddatphong` FOR EACH ROW BEGIN
+    UPDATE phong SET phong.conTrong = phong.conTrong- 1 
+    WHERE phong.maPhong = NEW.maPhong;
+    
+    UPDATE loaiphong SET loaiphong.phongConLai= loaiphong.phongConLai-1
+    WHERE loaiphong.maLoaiPhong = (SELECT phong.maLoaiPhong FROM phong WHERE phong.maPhong=NEW.maPhong);
+   
+    
+    
+    
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ND_huyPhong` AFTER DELETE ON `nddatphong` FOR EACH ROW BEGIN
+    
+    UPDATE phong SET phong.conTrong = phong.conTrong + 1
+    WHERE phong.maPhong = OLD.maPhong;
+    
+    UPDATE loaiphong SET loaiphong.phongConLai= loaiphong.phongConLai+1
+    WHERE loaiphong.maLoaiPhong = (SELECT phong.maLoaiPhong
+    FROM phong WHERE phong.maPhong=OLD.maPhong);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `nguoidung`
 --
--- Tạo: Th4 12, 2020 lúc 01:20 PM
---
 
-DROP TABLE IF EXISTS `nguoidung`;
-CREATE TABLE IF NOT EXISTS `nguoidung` (
+CREATE TABLE `nguoidung` (
   `maSo_ND` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `hoTen_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `tenDangNhap` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `tenDangNhap` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `matKhau_ND` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
   `email_ND` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
-  `SDT_ND` decimal(10,0) DEFAULT NULL,
-  `quyenQuanTri` blob DEFAULT NULL,
+  `SDT_ND` char(10) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `quyenQuanTri` bit(1) DEFAULT b'0',
   `diaChi_ND` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `tinhThanhPho_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  PRIMARY KEY (`maSo_ND`)
+  `tinhThanhPho_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `nguoidung`:
---
 
 --
 -- Đang đổ dữ liệu cho bảng `nguoidung`
 --
 
 INSERT INTO `nguoidung` (`maSo_ND`, `hoTen_ND`, `tenDangNhap`, `matKhau_ND`, `email_ND`, `SDT_ND`, `quyenQuanTri`, `diaChi_ND`, `tinhThanhPho_ND`) VALUES
-('ND0001', 'ngo toan', 'mtoan453', 'mtoan453', 'mtoan@@gm332ail', '12345699', 0x30, 'sdd3233scdcsdc', 't33hcmd'),
-('ND0002', 'ngo toan', 'mtoan4', 'mtoan4', 'mtoan@@gm332ail', '12345699', 0x30, 'sdd3233scdcsdc', 't33hcmd');
+('ND0001', 'ngo minh toan', 'minhtoan', 'toan2610', 'mtoan12610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0002', 'ngo minh toan', 'minhtoan1', 'toan2610', 'mtoan22610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0003', 'ngo minh toan', 'minhtoan2', 'toan2610', 'mtoan32610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0004', 'ngo minh toan', 'minhtoan3', 'toan2610', 'mtoan42610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0005', 'ngo minh toan', 'minhtoan4', 'toan2610', 'mtoan52610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0006', 'ngo minh toan', 'minhtoan5', 'toan2610', 'mtoan62610@gmail.com', '0346144237', b'0', 'sddscdcsdc', 'thcmd'),
+('ND0007', '', '', 'toan1234', 'Minhtoan261099@gmail.com', '', b'0', '', ''),
+('ND0008', NULL, NULL, '12345678', 'mtoan@gmail.com', NULL, b'0', NULL, NULL),
+('ND0009', NULL, NULL, 'qwqwqwqwqw', 'mtoan@gmail.comss', NULL, b'0', NULL, NULL),
+('ND0010', NULL, NULL, '12345678', 'mtoan23@gmail.com', NULL, b'0', NULL, NULL),
+('ND0011', NULL, NULL, 'aaaaaaaa', 'mtoan11@gmail.com', NULL, b'0', NULL, NULL),
+('ND0012', NULL, NULL, 'toan2610', 'mtoan2610@gmail.com', NULL, b'0', NULL, NULL),
+('ND0013', NULL, NULL, 'tttttttt', 'fgfv@gmail.con', NULL, b'0', NULL, NULL),
+('ND0014', NULL, NULL, '123456789', 'mmtt@gmail.com', NULL, b'0', NULL, NULL),
+('ND0015', NULL, NULL, '321321321', 'toan@gmail.com', NULL, b'0', NULL, NULL),
+('ND0016', NULL, NULL, 'toantoan', 'toantoan@gmail.com', NULL, b'0', NULL, NULL);
 
 --
 -- Bẫy `nguoidung`
 --
-DROP TRIGGER IF EXISTS `check_ND`;
 DELIMITER $$
 CREATE TRIGGER `check_ND` BEFORE DELETE ON `nguoidung` FOR EACH ROW BEGIN
 	DELETE FROM dangnhap WHERE dangnhap.maSo_ND = OLD.maSo_ND;
@@ -2299,884 +2283,938 @@ DELIMITER ;
 --
 -- Cấu trúc bảng cho bảng `phong`
 --
--- Tạo: Th4 08, 2020 lúc 08:57 AM
---
 
-DROP TABLE IF EXISTS `phong`;
-CREATE TABLE IF NOT EXISTS `phong` (
+CREATE TABLE `phong` (
   `maPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maLoaiPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
-  PRIMARY KEY (`maPhong`),
-  KEY `FK_PHONG_FK_PHONG__KHACHSAN` (`maKhachSan`),
-  KEY `FK_PHONG_FK_PHONG__LOAIPHON` (`maLoaiPhong`)
+  `conTrong` int(1) NOT NULL DEFAULT 1,
+  `thoiGianDau` datetime NOT NULL DEFAULT current_timestamp(),
+  `thoiGianCuoi` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- RELATIONSHIPS FOR TABLE `phong`:
---   `maKhachSan`
---       `khachsan` -> `maKhachSan`
---   `maLoaiPhong`
---       `loaiphong` -> `maLoaiPhong`
---
 
 --
 -- Đang đổ dữ liệu cho bảng `phong`
 --
 
-INSERT INTO `phong` (`maPhong`, `maLoaiPhong`, `maKhachSan`) VALUES
-('MAPHONG1_1_1_1', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_10', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_11', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_12', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_13', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_14', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_15', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_16', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_17', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_18', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_19', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_2', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_20', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_21', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_22', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_3', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_4', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_5', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_6', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_7', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_8', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_1_9', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_1', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_10', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_11', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_2', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_3', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_4', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_5', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_6', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_7', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_8', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_2_9', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_1', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_10', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_11', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_12', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_2', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_3', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_4', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_5', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_6', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_7', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_8', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_3_9', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_1', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_2', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_3', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_4', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_5', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_4_6', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_1', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_10', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_11', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_2', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_3', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_4', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_5', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_6', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_7', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_8', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_5_9', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_1', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_10', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_11', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_2', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_3', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_4', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_5', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_6', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_7', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_8', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG1_1_6_9', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1'),
-('MAPHONG10_1_1_1', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_10', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_11', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_12', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_2', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_3', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_4', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_5', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_6', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_7', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_8', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_1_9', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_2_1', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_2_2', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_2_3', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_1', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_2', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_3', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_4', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_5', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_6', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_7', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_8', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_3_9', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_1', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_2', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_3', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_4', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_5', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_4_6', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_1', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_2', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_3', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_4', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_5', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_5_6', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_6_1', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_6_2', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1'),
-('MAPHONG10_1_6_3', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1'),
-('MAPHONG11_1_1_1', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_1_2', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_1_3', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_1_4', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_1_5', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_2_1', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_2_2', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_2_3', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_2_4', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_2_5', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_1', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_10', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_11', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_12', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_2', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_3', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_4', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_5', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_6', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_7', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_8', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_3_9', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_4_1', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_4_2', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_4_3', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_4_4', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_4_5', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_5_1', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_5_2', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_5_3', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_5_4', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_5_5', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_1', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_2', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_3', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_4', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_5', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_6', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG11_1_6_7', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1'),
-('MAPHONG12_1_1_1', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_1_2', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_1_3', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_1_4', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_1_5', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_1_6', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_2_1', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_2_2', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_2_3', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_2_4', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_2_5', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_3_1', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_3_2', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_3_3', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_3_4', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_3_5', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_4_1', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_4_2', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_4_3', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_5_1', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_5_2', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_5_3', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_6_1', 'LOAIPHONG12_1_6', 'MAKHACHSAN12_1'),
-('MAPHONG12_1_6_2', 'LOAIPHONG12_1_6', 'MAKHACHSAN12_1'),
-('MAPHONG2_1_1_1', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_1_2', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_1_3', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_1_4', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_1_5', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_2_1', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_2_2', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_2_3', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_2_4', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_2_5', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_3_1', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_3_2', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_3_3', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_3_4', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_3_5', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_4_1', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_4_2', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_4_3', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_4_4', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_4_5', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_5_1', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_5_2', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_5_3', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_6_1', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_6_2', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1'),
-('MAPHONG2_1_6_3', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1'),
-('MAPHONG3_1_1_1', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_10', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_2', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_3', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_4', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_5', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_6', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_7', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_8', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG3_1_1_9', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1'),
-('MAPHONG4_1_1_1', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_10', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_11', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_12', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_13', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_14', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_15', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_16', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_17', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_18', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_19', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_2', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_20', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_21', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_22', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_23', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_24', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_25', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_26', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_27', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_28', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_29', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_3', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_30', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_31', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_32', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_33', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_34', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_35', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_36', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_37', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_38', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_39', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_4', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_40', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_41', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_42', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_43', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_44', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_45', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_46', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_47', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_48', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_49', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_5', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_50', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_51', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_52', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_53', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_54', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_55', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_56', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_57', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_58', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_59', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_6', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_60', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_7', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_8', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_1_9', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_1', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_10', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_11', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_12', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_13', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_14', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_15', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_16', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_17', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_18', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_19', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_2', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_20', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_21', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_22', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_23', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_24', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_25', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_26', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_27', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_28', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_29', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_3', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_30', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_31', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_32', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_33', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_34', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_35', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_36', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_37', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_38', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_39', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_4', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_40', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_41', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_42', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_43', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_44', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_45', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_46', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_47', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_48', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_49', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_5', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_50', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_51', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_52', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_53', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_54', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_55', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_56', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_57', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_58', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_59', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_6', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_60', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_7', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_8', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_2_9', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_1', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_10', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_11', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_12', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_13', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_14', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_15', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_16', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_17', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_18', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_19', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_2', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_20', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_21', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_22', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_23', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_24', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_25', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_26', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_27', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_28', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_29', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_3', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_30', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_31', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_32', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_33', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_34', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_35', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_36', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_37', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_38', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_39', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_4', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_40', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_41', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_42', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_43', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_44', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_45', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_46', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_47', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_5', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_6', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_7', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_8', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_3_9', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_1', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_10', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_11', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_12', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_13', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_14', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_15', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_16', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_17', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_18', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_19', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_2', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_20', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_21', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_22', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_23', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_24', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_25', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_26', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_27', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_28', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_29', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_3', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_30', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_31', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_32', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_33', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_34', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_35', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_36', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_37', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_38', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_39', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_4', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_40', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_41', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_42', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_43', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_44', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_45', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_46', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_47', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_5', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_6', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_7', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_8', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_4_9', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_1', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_10', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_11', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_12', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_13', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_14', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_15', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_16', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_17', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_18', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_19', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_2', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_20', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_21', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_22', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_23', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_24', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_3', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_4', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_5', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_6', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_7', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_8', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_5_9', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_1', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_10', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_11', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_12', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_13', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_14', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_15', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_16', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_17', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_18', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_19', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_2', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_20', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_21', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_22', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_23', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_24', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_3', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_4', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_5', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_6', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_7', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_8', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_6_9', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_1', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_10', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_11', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_12', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_13', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_14', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_15', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_16', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_17', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_18', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_19', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_2', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_20', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_21', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_22', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_23', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_24', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_3', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_4', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_5', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_6', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_7', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_8', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_7_9', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_1', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_10', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_11', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_12', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_13', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_14', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_15', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_16', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_17', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_18', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_19', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_2', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_20', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_21', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_22', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_23', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_24', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_3', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_4', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_5', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_6', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_7', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_8', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG4_1_8_9', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1'),
-('MAPHONG5_1_1_1', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_10', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_11', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_12', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_13', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_14', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_15', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_16', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_17', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_18', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_19', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_2', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_20', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_21', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_22', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_23', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_24', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_25', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_26', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_27', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_28', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_29', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_3', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_30', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_31', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_32', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_33', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_34', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_35', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_36', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_37', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_4', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_5', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_6', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_7', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_8', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_1_9', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_1', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_10', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_11', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_12', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_13', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_14', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_15', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_16', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_17', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_18', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_19', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_2', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_20', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_21', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_22', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_23', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_24', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_25', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_26', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_27', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_28', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_3', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_4', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_5', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_6', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_7', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_8', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_2_9', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_3_1', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_3_2', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_3_3', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_3_4', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_3_5', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_1', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_10', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_11', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_12', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_13', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_14', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_15', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_16', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_17', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_18', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_19', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_2', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_20', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_3', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_4', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_5', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_6', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_7', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_8', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_4_9', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_1', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_10', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_11', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_12', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_13', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_2', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_3', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_4', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_5', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_6', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_7', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_8', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG5_1_5_9', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1'),
-('MAPHONG6_1_1_1', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_10', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_11', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_12', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_13', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_14', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_15', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_16', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_17', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_18', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_19', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_2', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_20', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_21', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_22', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_23', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_24', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_25', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_26', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_27', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_28', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_29', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_3', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_30', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_31', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_32', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_33', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_34', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_4', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_5', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_6', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_7', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_8', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_1_9', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_1', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_10', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_11', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_12', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_13', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_14', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_15', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_16', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_17', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_18', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_19', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_2', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_20', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_21', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_22', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_23', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_24', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_25', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_26', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_27', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_28', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_29', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_3', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_30', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_31', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_32', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_33', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_34', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_35', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_36', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_37', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_38', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_39', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_4', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_40', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_41', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_42', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_43', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_44', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_45', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_5', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_6', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_7', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_8', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_2_9', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_1', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_2', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_3', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_4', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_5', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_6', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_7', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG6_1_3_8', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1'),
-('MAPHONG7_1_1_1', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_10', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_2', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_3', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_4', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_5', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_6', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_7', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_8', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_1_9', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_2_1', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_2_2', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_2_3', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_2_4', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_2_5', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_3_1', 'LOAIPHONG7_1_3', 'MAKHACHSAN7_1'),
-('MAPHONG7_1_4_1', 'LOAIPHONG7_1_4', 'MAKHACHSAN7_1'),
-('MAPHONG8_1_1_1', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_2', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_3', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_4', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_5', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_6', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_1_7', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_1', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_10', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_11', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_12', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_13', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_14', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_15', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_2', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_3', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_4', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_5', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_6', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_7', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_8', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_2_9', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_1', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_10', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_2', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_3', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_4', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_5', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_6', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_7', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_8', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_3_9', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1'),
-('MAPHONG8_1_4_1', 'LOAIPHONG8_1_4', 'MAKHACHSAN8_1'),
-('MAPHONG9_1_1_1', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_10', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_11', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_12', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_13', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_14', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_2', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_3', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_4', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_5', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_6', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_7', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_8', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_1_9', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_1', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_10', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_11', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_12', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_13', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_14', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_15', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_16', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_17', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_18', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_19', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_2', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_20', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_3', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_4', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_5', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_6', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_7', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_8', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_2_9', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_1', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_10', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_11', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_12', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_13', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_14', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_15', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_16', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_17', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_18', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_19', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_2', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_20', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_21', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_22', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_23', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_24', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_25', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_26', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_27', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_28', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_29', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_3', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_30', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_31', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_32', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_33', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_34', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_35', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_36', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_37', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_38', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_4', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_5', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_6', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_7', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_8', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_3_9', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_1', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_2', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_3', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_4', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_5', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_4_6', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_1', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_10', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_11', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_12', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_13', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_2', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_3', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_4', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_5', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_6', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_7', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_8', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1'),
-('MAPHONG9_1_5_9', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1');
+INSERT INTO `phong` (`maPhong`, `maLoaiPhong`, `maKhachSan`, `conTrong`, `thoiGianDau`, `thoiGianCuoi`) VALUES
+('MAPHONG1_1_1_1', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_10', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_11', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_12', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_13', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_14', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_15', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_16', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_17', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_18', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_19', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_2', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_20', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_21', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_22', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_3', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_4', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_5', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_6', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_7', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_8', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_1_9', 'LOAIPHONG1_1_1', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_1', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_10', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_11', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_2', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_3', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_4', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_5', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_6', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_7', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_8', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_2_9', 'LOAIPHONG1_1_2', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_1', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_10', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_11', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_12', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_2', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_3', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_4', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_5', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_6', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_7', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_8', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_3_9', 'LOAIPHONG1_1_3', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_1', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_2', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_3', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_4', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_5', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_4_6', 'LOAIPHONG1_1_4', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_1', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_10', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_11', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_2', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_3', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_4', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_5', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_6', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_7', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_8', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_5_9', 'LOAIPHONG1_1_5', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_1', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_10', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_11', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_2', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_3', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_4', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_5', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_6', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_7', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_8', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG1_1_6_9', 'LOAIPHONG1_1_6', 'MAKHACHSAN1_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG10_1_1_1', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_10', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_11', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_12', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_2', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_3', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_4', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_5', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_6', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_7', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_8', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_1_9', 'LOAIPHONG10_1_1', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_2_1', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_2_2', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_2_3', 'LOAIPHONG10_1_2', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_1', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_2', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_3', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_4', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_5', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_6', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_7', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_8', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_3_9', 'LOAIPHONG10_1_3', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_1', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_2', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_3', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_4', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_5', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_4_6', 'LOAIPHONG10_1_4', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_1', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_2', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_3', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_4', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_5', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_5_6', 'LOAIPHONG10_1_5', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_6_1', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_6_2', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG10_1_6_3', 'LOAIPHONG10_1_6', 'MAKHACHSAN10_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_1_1', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_1_2', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_1_3', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_1_4', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_1_5', 'LOAIPHONG11_1_1', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_2_1', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_2_2', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_2_3', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_2_4', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_2_5', 'LOAIPHONG11_1_2', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_1', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_10', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_11', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_12', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_2', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_3', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_4', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_5', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG11_1_3_6', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_7', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_8', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_3_9', 'LOAIPHONG11_1_3', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_4_1', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_4_2', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_4_3', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_4_4', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_4_5', 'LOAIPHONG11_1_4', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_5_1', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_5_2', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_5_3', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_5_4', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_5_5', 'LOAIPHONG11_1_5', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_1', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_2', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_3', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_4', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_5', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_6', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG11_1_6_7', 'LOAIPHONG11_1_6', 'MAKHACHSAN11_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_1', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_2', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_3', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_4', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_5', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_1_6', 'LOAIPHONG12_1_1', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_2_1', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_2_2', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_2_3', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_2_4', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_2_5', 'LOAIPHONG12_1_2', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_3_1', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_3_2', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_3_3', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_3_4', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_3_5', 'LOAIPHONG12_1_3', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_4_1', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_4_2', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_4_3', 'LOAIPHONG12_1_4', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_5_1', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_5_2', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_5_3', 'LOAIPHONG12_1_5', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_6_1', 'LOAIPHONG12_1_6', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG12_1_6_2', 'LOAIPHONG12_1_6', 'MAKHACHSAN12_1', 1, '2020-04-15 14:54:09', '2020-04-15 14:54:09'),
+('MAPHONG2_1_1_1', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_1_2', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_1_3', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_1_4', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_1_5', 'LOAIPHONG2_1_1', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_2_1', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_2_2', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_2_3', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_2_4', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_2_5', 'LOAIPHONG2_1_2', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_3_1', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_3_2', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_3_3', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_3_4', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_3_5', 'LOAIPHONG2_1_3', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_4_1', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_4_2', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_4_3', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_4_4', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_4_5', 'LOAIPHONG2_1_4', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_5_1', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_5_2', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_5_3', 'LOAIPHONG2_1_5', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_6_1', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_6_2', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG2_1_6_3', 'LOAIPHONG2_1_6', 'MAKHACHSAN2_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_1', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_10', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_2', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_3', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_4', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_5', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_6', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_7', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_8', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG3_1_1_9', 'LOAIPHONG3_1_1', 'MAKHACHSAN3_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_1', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_10', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_11', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_12', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_13', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_14', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_15', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_16', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_17', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_18', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_19', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_2', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_20', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_21', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_22', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_23', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_24', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_25', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_26', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_27', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_28', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_29', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_3', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_30', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_31', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_32', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_33', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_34', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_35', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_36', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_37', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_38', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_39', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_4', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_40', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_41', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_42', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_43', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_44', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_45', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_46', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_47', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_48', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_49', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_5', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_50', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_51', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_52', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_53', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_54', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_55', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_56', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_57', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_58', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_59', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_6', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_60', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_7', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_8', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_1_9', 'LOAIPHONG4_1_1', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_1', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_10', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_11', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_12', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_13', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_14', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_15', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_16', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_17', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_18', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_19', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_2', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_20', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_21', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_22', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_23', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_24', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_25', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_26', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_27', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_28', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_29', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_3', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_30', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_31', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_32', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_33', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_34', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_35', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_36', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_37', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_38', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_39', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_4', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_40', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_41', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_42', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_43', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_44', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_45', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_46', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_47', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_48', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_49', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_5', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_50', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_51', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_52', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_53', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_54', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_55', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_56', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_57', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_58', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_59', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_6', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_60', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_2_7', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_8', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_2_9', 'LOAIPHONG4_1_2', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:06', '2020-04-15 14:54:06'),
+('MAPHONG4_1_3_1', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_10', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_11', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_12', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_13', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_14', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_15', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_16', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_17', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_18', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_19', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_2', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_20', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_21', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_22', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_23', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_24', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_25', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_26', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_27', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_28', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_29', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_3', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_30', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_31', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_32', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_33', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_34', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_35', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_36', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_37', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_38', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_39', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_4', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_40', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_41', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_42', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_43', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_44', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_45', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_46', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_47', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_5', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_6', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_7', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_8', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_3_9', 'LOAIPHONG4_1_3', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_1', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_10', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_11', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_12', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_13', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_14', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_15', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_16', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_17', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_18', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_19', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_2', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_20', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_21', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_22', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_23', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_24', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_25', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_26', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_27', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_28', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_29', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_3', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_30', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_31', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_32', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_33', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_34', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_35', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_36', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_37', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_38', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_39', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_4', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_40', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_41', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_42', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_43', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_44', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_45', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_46', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_47', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_5', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_6', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_7', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_8', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_4_9', 'LOAIPHONG4_1_4', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_1', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_10', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_11', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_12', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_13', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_14', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_15', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_16', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_17', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_18', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_19', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_2', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_20', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_21', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_22', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_23', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_24', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_3', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_4', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_5', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_6', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_7', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_8', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_5_9', 'LOAIPHONG4_1_5', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_1', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_10', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_11', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_12', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_13', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_14', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_15', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_16', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_17', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_18', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_19', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_2', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_20', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_21', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_22', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_23', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_24', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_3', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_4', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_5', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_6', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_7', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_8', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_6_9', 'LOAIPHONG4_1_6', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_1', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_10', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_11', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_12', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_13', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_14', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_15', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_16', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_17', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_18', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07');
+INSERT INTO `phong` (`maPhong`, `maLoaiPhong`, `maKhachSan`, `conTrong`, `thoiGianDau`, `thoiGianCuoi`) VALUES
+('MAPHONG4_1_7_19', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_2', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_20', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_21', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_22', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_23', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_24', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_3', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_4', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_5', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_6', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_7', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_8', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_7_9', 'LOAIPHONG4_1_7', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_1', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_10', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_11', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_12', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_13', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_14', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_15', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_16', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_17', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_18', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_19', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_2', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_20', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_21', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_22', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_23', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_24', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_3', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_4', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_5', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_6', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_7', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_8', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG4_1_8_9', 'LOAIPHONG4_1_8', 'MAKHACHSAN4_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_1', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_10', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_11', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_12', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_13', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_14', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_15', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_16', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_17', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_18', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_19', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_2', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_20', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_21', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_22', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_23', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_24', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_25', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_26', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_27', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_28', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_29', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_3', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_30', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_31', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_32', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_33', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_34', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_35', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_36', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_37', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_4', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_5', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_6', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_7', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_8', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_1_9', 'LOAIPHONG5_1_1', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_1', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_10', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_11', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_12', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_13', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_14', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_15', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_16', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_17', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_18', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_19', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_2', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_20', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_21', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_22', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_23', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_24', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_25', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_26', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_27', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_28', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_3', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_4', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_5', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_6', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_7', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_8', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_2_9', 'LOAIPHONG5_1_2', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_3_1', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_3_2', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_3_3', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_3_4', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_3_5', 'LOAIPHONG5_1_3', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_1', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_10', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_11', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_12', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_13', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_14', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_15', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_16', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_17', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_18', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_19', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_2', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_20', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_3', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_4', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_5', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_6', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_7', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_8', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_4_9', 'LOAIPHONG5_1_4', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_1', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_10', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG5_1_5_11', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG5_1_5_12', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG5_1_5_13', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG5_1_5_2', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_3', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_4', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_5', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_6', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_7', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_8', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:07', '2020-04-15 14:54:07'),
+('MAPHONG5_1_5_9', 'LOAIPHONG5_1_5', 'MAKHACHSAN5_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_1', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_10', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_11', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_12', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_13', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_14', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_15', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_16', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_17', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_18', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_19', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_2', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_20', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_21', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_22', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_23', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_24', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_25', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_26', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_27', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_28', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_29', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_3', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_30', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_31', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_32', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_33', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_34', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_4', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_5', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_6', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_7', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_8', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_1_9', 'LOAIPHONG6_1_1', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_1', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_10', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_11', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_12', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_13', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_14', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_15', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_16', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_17', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_18', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_19', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_2', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_20', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_21', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_22', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_23', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_24', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_25', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_26', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_27', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_28', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_29', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_3', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_30', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_31', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_32', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_33', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_34', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_35', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_36', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_37', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_38', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_39', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_4', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_40', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_41', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_42', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_43', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_44', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_45', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_5', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_6', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_7', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_8', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_2_9', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_1', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_2', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_3', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_4', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_5', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_6', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_7', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG6_1_3_8', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_1', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_10', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_2', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_3', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_4', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_5', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_6', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_7', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_8', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_1_9', 'LOAIPHONG7_1_1', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_2_1', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_2_2', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_2_3', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_2_4', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_2_5', 'LOAIPHONG7_1_2', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_3_1', 'LOAIPHONG7_1_3', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG7_1_4_1', 'LOAIPHONG7_1_4', 'MAKHACHSAN7_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_1', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_2', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_3', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_4', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_5', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_6', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_1_7', 'LOAIPHONG8_1_1', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_1', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_10', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_11', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_12', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_13', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_14', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_15', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_2', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_3', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_4', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_5', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_6', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_7', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_8', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_2_9', 'LOAIPHONG8_1_2', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_1', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_10', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_2', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_3', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_4', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_5', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_6', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_7', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_8', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_3_9', 'LOAIPHONG8_1_3', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG8_1_4_1', 'LOAIPHONG8_1_4', 'MAKHACHSAN8_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_1', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_10', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_11', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_12', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_13', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_14', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_2', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_3', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_4', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_5', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_6', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_7', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_8', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_1_9', 'LOAIPHONG9_1_1', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_1', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_10', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_11', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_12', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_13', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_14', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_15', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_16', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_17', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_18', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_19', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_2', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_20', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_3', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_4', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_5', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_6', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_7', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_8', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_2_9', 'LOAIPHONG9_1_2', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_1', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_10', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_11', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_12', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_13', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_14', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_15', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_16', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_17', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_18', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_19', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_2', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_20', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_21', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_22', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_23', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_24', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_25', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_26', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_27', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_28', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_29', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_3', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_30', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_31', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_32', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_33', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_34', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_35', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_36', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_37', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_38', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_4', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_5', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_6', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_7', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_8', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_3_9', 'LOAIPHONG9_1_3', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_1', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_2', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_3', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_4', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_5', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_4_6', 'LOAIPHONG9_1_4', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_1', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_10', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_11', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_12', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_13', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_2', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_3', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_4', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_5', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_6', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_7', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_8', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08'),
+('MAPHONG9_1_5_9', 'LOAIPHONG9_1_5', 'MAKHACHSAN9_1', 1, '2020-04-15 14:54:08', '2020-04-15 14:54:08');
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `dangnhap`
+--
+ALTER TABLE `dangnhap`
+  ADD UNIQUE KEY `maTruyCap` (`maTruyCap`);
+
+--
+-- Chỉ mục cho bảng `khachdatphong`
+--
+ALTER TABLE `khachdatphong`
+  ADD PRIMARY KEY (`maTruyCap`,`maPhong`),
+  ADD KEY `FK_khachDatPhong_phong` (`maPhong`);
+
+--
+-- Chỉ mục cho bảng `khachsan`
+--
+ALTER TABLE `khachsan`
+  ADD PRIMARY KEY (`maKhachSan`),
+  ADD KEY `FK_KHACHSAN_FK_KHACHS_KHUVUC` (`maKhuVuc`);
+
+--
+-- Chỉ mục cho bảng `khachtruycap`
+--
+ALTER TABLE `khachtruycap`
+  ADD PRIMARY KEY (`maTruyCap`);
+
+--
+-- Chỉ mục cho bảng `khuvuc`
+--
+ALTER TABLE `khuvuc`
+  ADD PRIMARY KEY (`maKhuVuc`);
+
+--
+-- Chỉ mục cho bảng `loaiphong`
+--
+ALTER TABLE `loaiphong`
+  ADD PRIMARY KEY (`maLoaiPhong`);
+
+--
+-- Chỉ mục cho bảng `nddatphong`
+--
+ALTER TABLE `nddatphong`
+  ADD PRIMARY KEY (`maSo_ND`,`maPhong`,`ngayDat`) USING BTREE,
+  ADD KEY `FK_NDDATPHO_NDDATPHON_PHONG` (`maPhong`);
+
+--
+-- Chỉ mục cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  ADD PRIMARY KEY (`maSo_ND`),
+  ADD UNIQUE KEY `email_ND` (`email_ND`);
+
+--
+-- Chỉ mục cho bảng `phong`
+--
+ALTER TABLE `phong`
+  ADD PRIMARY KEY (`maPhong`),
+  ADD KEY `FK_PHONG_FK_PHONG__KHACHSAN` (`maKhachSan`),
+  ADD KEY `FK_PHONG_FK_PHONG__LOAIPHON` (`maLoaiPhong`);
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -3208,64 +3246,6 @@ ALTER TABLE `nddatphong`
 ALTER TABLE `phong`
   ADD CONSTRAINT `FK_PHONG_FK_PHONG__KHACHSAN` FOREIGN KEY (`maKhachSan`) REFERENCES `khachsan` (`maKhachSan`),
   ADD CONSTRAINT `FK_PHONG_FK_PHONG__LOAIPHON` FOREIGN KEY (`maLoaiPhong`) REFERENCES `loaiphong` (`maLoaiPhong`);
-
-
---
--- Siêu dữ liệu
---
-USE `phpmyadmin`;
-
---
--- Siêu dữ liệu cho bảng contents
---
-
---
--- Siêu dữ liệu cho bảng dangnhap
---
-
---
--- Siêu dữ liệu cho bảng items
---
-
---
--- Siêu dữ liệu cho bảng khachdatphong
---
-
---
--- Siêu dữ liệu cho bảng khachhang
---
-
---
--- Siêu dữ liệu cho bảng khachsan
---
-
---
--- Siêu dữ liệu cho bảng khachtruycap
---
-
---
--- Siêu dữ liệu cho bảng khuvuc
---
-
---
--- Siêu dữ liệu cho bảng loaiphong
---
-
---
--- Siêu dữ liệu cho bảng nddatphong
---
-
---
--- Siêu dữ liệu cho bảng nguoidung
---
-
---
--- Siêu dữ liệu cho bảng phong
---
-
---
--- Siêu dữ liệu cho cơ sở dữ liệu khachsan
---
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

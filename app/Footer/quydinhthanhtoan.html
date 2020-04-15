@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="animate.css">
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script src="./index.js"></script>
     <title>Chính sách và quy định chung</title>
 </head>
 
@@ -101,11 +103,11 @@
                                         </label>
                                         <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
                                         <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
-                                        <input type="text" class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                        <input type="text" class="input-1" id="email_sdt_lienhe" placeholder="Email/Số điện thoại của bạn">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
-                                        <button type="button" class="btn btn-primary">Gửi</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
                                     </div>
                                 </div>
                             </div>
