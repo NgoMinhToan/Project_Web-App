@@ -219,23 +219,26 @@ function danhGia(){
 
 
 
-var maKhachSan = 'MAKHACHSAN1_1';//------------------------------
+var maKhachSan = 'MAKHACHSAN2_1';//------------------------------
 
 function getKS_Info(){
-    $.ajax({
+    var val;
+    $.ajax({    
         type: 'POST',
         url: '../../php/hotel.php',
-        async: true,
+        async: false,
         data: {action: 'ks_info', maKhachSan: maKhachSan},
         dataType: 'json',
         success: (response)=>{
-            console.log(response);
-            return response;
+            // console.log(response);
+            val = response;
         }
     });
-}
+    return val;
+}    
 
 function loaiPhong(){
+    var val;
     $.ajax({
         type: 'POST',
         url: '../../php/hotel.php',
@@ -243,14 +246,88 @@ function loaiPhong(){
         data: {action: 'getLoaiPhong', maKhachSan: maKhachSan},
         dataType: 'json',
         success: (response)=>{
-            console.log(response);
-            return response;
+            // console.log(response);
+            val = response;
         }
     });
+    return val;
 }
 $(()=>{
     let ks_info = getKS_Info();
     let loaiphong_info = loaiPhong();
-    $('#id-body').text(ks_info['tenKhachSan']);
+    console.log(ks_info);
+    let body = $('#id-body');
+    body.find('.title-info h4').text(ks_info['tenKhachSan']);
+    body.find('.address-info > p').text(ks_info.diaChi_KS);
+
+    let imgReview = $($(body).find('div.images-hotel'));
+    imgReview.empty();
+    for(let i=0;i<ks_info.anhReview.length && i<10;i++){
+        imgReview.append('<a><img></a>');
+        $(imgReview.find('a')[i]).attr({'data-fancybox':"gallery", 'href':ks_info.anhReview[i]});
+        $(imgReview.find('a > img')[i]).attr('src',ks_info.anhReview[i]);
+    }
+    $(imgReview.find('a')[9]).attr('class','img10');
+
+    $(body).find('.list-box tbody').empty();
+    for(let i=0;i<ks_info.diemDen.length;i++){
+        let cell = $($(body).find('.list-box tbody'));
+        cell.append('<tr></tr>');
+        console.log(ks_info.diemDen[i]);
+        ks_info.diemDen[i].forEach((item, index)=>{
+            $(cell.find('tr')[i]).append('<td></td>');
+            $($(cell.find('tr')[i]).find('td')[index]).text(item);
+        })
+        $($(cell.find('tr')[i]).find('td')[1]).attr('class', 'km');
+    }
+
+    console.log(loaiphong_info);
+
+    let tabel_hotel = $('div#table-hotel, div.table-hotel');
+    tabel_hotel.empty().append('<table class="title-table"><tbody><tr class="tr_1"><td class="text">Chọn Phòng Khách Sạn Dana Marina</td><td class="td_1"><i class="fa fa-check-circle"> Đảm bảo giá tốt nhất</i><br><small>Giá ưu đãi chỉ dành cho khách nội địa</small></td></tr></tbody></table><table border="1" class="title-room"> <tbody> <tr class="type"> <td>LOẠI PHÒNG</td> <td>TỐI ĐA</td> <td>TÙY CHỌN</td> <td> <strong>GIÁ 1 ĐÊM</strong><br> <small>Chưa bao gồm thuế, phí</small> </td> <td>SỐ LƯỢNG</td> <td>ĐẶT PHÒNG</td> </tr> </tbody> </table>');
+    loaiphong_info.forEach((item, index)=>{
+        console.log(item);
+        tabel_hotel.append('<table border="1" class="name-room"> <tbody><tr class="name"> <td>'+item.moTa.ten+'</td> </tr> </tbody></table>');
+        tabel_hotel.append('<table border="1" class="info-room"><tbody><tr class="info-type"><td class="info-type-1"></td><td class="info-type-2"></td><td class="info-type-3"></td><td class="info-type-4"></td><td class="info-type-5"></td><td class="info-type-6"></td></tr></tbody></table>');
+        let table = $(tabel_hotel.find('table.info-room')[index]);
+        let info = table.find('.info-type-1');
+        info.append('<div class="images-room"></div>');
+        for(let i=0;i<item.moTa.srcHinh.length && i<4;i++)
+            info.find('.images-room').append('<a data-fancybox="gallery" href="'+item.moTa.srcHinh[i]+'"><img src="'+item.moTa.srcHinh[i]+'"></a>');
+        info.append('<div class="m"> <i class="fa fa-expand"></i> <small>'+item.dienTich+' m</small> <sup>2</sup> </div>');
+        if(item.moTa.productContent!=undefined)
+            info.append('<div class="bedbed"> <i class="fa fa-eye"></i> <small>'+item.moTa.productContent[0]+'</small><br> <i class="fa fa-bed"></i> <small>'+item.moTa.productContent[1]+'</small> </div>');
+        info.append('<small class="text_1">Còn '+item.phongConLai+' phòng !</small>');
+
+        info = table.find('.info-type-2');
+        info.append('<i class="fa fa-user"></i><small>'+item.moTa.toiDaSoNguoi+'</small>');
+        info = table.find('.info-type-3');
+        if(item.moTa.tuyChon[0]!=undefined)
+            info.append('<i class="fa fa-coffee"> '+item.moTa.tuyChon[0]+'</i>');
+        if(item.moTa.tuyChon[1]!=undefined)
+            info.append('<br><i class="fa fa-times"> '+item.moTa.tuyChon[1]+'</i>');
+
+        info = table.find('.info-type-4');
+        if(item.moTa.uuDai>0){
+            info.append('<p class="sale_sale"> Khuyến mãi đặt biệt - '+item.moTa.uuDai+' % </p>');
+            info.append('<small><strike>'+item.moTa.giaGoc+' đ</strike></small>');
+        }
+        else{
+            info.append('<p class="sale_sale" style="background: none; border: none"></p>');
+            info.append('<br><small class="money">'+item.moTa.giaGiam+' đ</small>');
+
+        }
+        info = table.find('.info-type-5');
+        info.append('<select name="" id=""> </select>');
+        
+        for(let i=1;i<=item.phongConLai;i++)
+            info.find('select').append('<option value="'+i+'">'+i+' phòng</option>');
+        
+        info = table.find('.info-type-6');
+        info.append('<a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>');
+    })
+
+    //convenience
+    $('.convenience .info-comfort')
 
 })

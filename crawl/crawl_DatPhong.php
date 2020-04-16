@@ -6,6 +6,38 @@
     $page = './crawl/html/0.html';
     $html = file_get_html($page);
 
+    function vn_str_filter ($str){
+        $unicode = array(
+            'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+            'd'=>'đ',
+            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+            'i'=>'í|ì|ỉ|ĩ|ị',
+            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+            'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+			'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+            'D'=>'Đ',
+            'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+            'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+            'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+            'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+            'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+        );
+        
+       foreach($unicode as $nonUnicode=>$uni){
+            $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+       }
+		return seo_friendly_url($str);
+    }
+    function seo_friendly_url($string){
+        $string = str_replace(array('[\', \']'), '', $string);
+        $string = preg_replace('/\[.*\]/U', '', $string);
+        $string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+        $string = htmlentities($string, ENT_COMPAT, 'utf-8');
+        $string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+        $string = preg_replace(array('/[^a-z0-9]/i', '/[-]+/') , '-', $string);
+        return strtolower(trim($string, '-'));
+    }
 
     // ===============================================
     // Crawl Khu Vực
@@ -71,8 +103,10 @@
             $getImg = file_get_html('./crawl/html/'.$kv.'_'.$ks.'_a.html');
             $anhReview = $getImg->find('div.thumb-wrapper > img');
             for($e=0;$e<count($anhReview);$e++){
-                getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './image/reviewKS', $kv.'-'.$ks.'-'.$e.'.png');
-                $anhReview[$e] = './images/reviewKS/'. $kv.'-'.$ks.'-'.$e.'.png';
+                getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './images/Hotel/'.vn_str_filter($khachSan[$kv-1][2]), ($e+1).'.png');
+                $anhReview[$e] = './images/Hotel/'.vn_str_filter($khachSan[$kv-1][2]).'/'.($e+1).'.png';
+
+                // str_replace(' ', '', vn_str_filter($khachSan[$kv-1][2]))
             }
             $khachSan[$kv-1][] = $anhReview;
             // ------------------------------------------------------------ PHONG - LOAIPHONG
@@ -84,9 +118,23 @@
                 $title = trim($html->find('.title-room',$i)->plaintext);
                 $html_New = $html->find('.book-choose', $i);
 
+
+            
+                $getImg = file_get_html('./crawl/html/'.$kv.'_'.$ks.'_b.html');
+                $srcHinh = $getImg->find('.detailslider-thumbnails-list', $i);
+                $srcHinh = $srcHinh->find('div.thumb-wrapper > img');
+                for($e=0;$e<count($srcHinh);$e++){
+                    getImage(str_replace("480x360", "1000x600", $srcHinh[$e]->src), './images/reviewPhong/'.vn_str_filter($khachSan[$kv-1][2]).'/'.vn_str_filter($title), ($e+1).'.png');
+                    $srcHinh[$e] = './images/reviewPhong/'.vn_str_filter($khachSan[$kv-1][2]).'/'.vn_str_filter($title).'/'.($e+1).'.png';
+
+                    echo vn_str_filter($khachSan[$kv-1][2]).'/'.vn_str_filter($title).'/'.($e+1).'.png';
+                }
                 // tai anh ve
-                getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
-                $srcHinh = './images/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
+                // getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
+                // $srcHinh = './images/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
+
+
+
 
                 $productContent = $html_New->find('.product-content > p');
                 array_shift($productContent);

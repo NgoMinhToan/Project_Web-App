@@ -413,7 +413,7 @@
                 $stmt->execute();
                 $stmt->bind_result($maKhachSan, $maKhuVuc, $tenKhachSan, $diaChi_KS, $Review, $diemDen, $tienNghi, $anhReview);
                 while ($stmt->fetch()){
-                    $rs[] = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>$tenKhachSan, 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
+                    $rs = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>$tenKhachSan, 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
                 }
                 $stmt->close();
             }

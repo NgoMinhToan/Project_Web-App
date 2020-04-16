@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     require_once 'db.php';
     $action = '';
     if(isset($_REQUEST['action']))
@@ -27,7 +27,8 @@
         
         $maTruyCap = Db::taoTruyCap()['maTruyCap'];
         
-        setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
+        // setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
+        $_SESSION['maTruyCap'] =  $maTruyCap;
         $result = Db::dangNhap($email, $pwd, Db::getTruyCap($maTruyCap));
         echo json_encode($result);
         if($result['success'])
@@ -40,8 +41,9 @@
 
     // Auto Login
     if($action == 'Auto-Login'){
-        if(isset($_COOKIE['maTruyCap'])){
-            $maTruyCap = $_COOKIE['maTruyCap'];
+        // if(isset($_COOKIE['maTruyCap'])){
+        if(isset($_SESSION['maTruyCap'])){
+            $maTruyCap = $_SESSION['maTruyCap'];
             Db::capNhat_IP($maTruyCap);
 
             $loginInfo = Db::getUser($maTruyCap);
@@ -51,6 +53,15 @@
         else
             $maTruyCap = Db::taoTruyCap();
         
-        setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
+        // setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
+        $_SESSION['maTruyCap'] = $maTruyCap;
     }
+
+
+
+
+
+
+
+
 ?>

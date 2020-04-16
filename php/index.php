@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     require_once 'db.php';
     $action = '';
     if(isset($_REQUEST['action']))
@@ -14,9 +14,10 @@
     // Log Out
     if($action == 'LogOut'){
         // echo $_COOKIE['maTruyCap'];
-        if($_COOKIE['maTruyCap']){
-            echo json_encode(Db::dangXuat($_COOKIE['maTruyCap']));
-            setcookie('maTruyCap', '', time() - (86400 * 30), "/"); // 86400 = 1 day
+        if($_SESSION['maTruyCap']){
+            echo json_encode(Db::dangXuat($_SESSION['maTruyCap']));
+            // setcookie('maTruyCap', '', time() - (86400 * 30), "/"); // 86400 = 1 day
+            unset($_SESSION['maTruyCap']);
             
         }
     }

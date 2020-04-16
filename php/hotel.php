@@ -15,11 +15,9 @@
 
     if($action == 'ks_info'){
         $result = Db::getKs_Info($_POST['maKhachSan']);
-        for($i=0;$i<count($result);$i++){
-            $result[$i]['anhReview'] = json_decode($result[$i]['anhReview']);
-            $result[$i]['diemDen'] = json_decode($result[$i]['diemDen']);
-            $result[$i]['tienNghi'] = json_decode($result[$i]['tienNghi']);
-        }
+        $result['anhReview'] = json_decode($result['anhReview']);
+        $result['diemDen'] = json_decode($result['diemDen']);
+        $result['tienNghi'] = json_decode($result['tienNghi']);
         echo json_encode($result);
     }
 ?>
