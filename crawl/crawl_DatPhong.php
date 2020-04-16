@@ -2,7 +2,7 @@
     require_once 'simple_html_dom.php';
     require_once 'getImage.php';
     chdir('../');
-    include 'object.php';
+    // include 'object.php';
     $page = './crawl/html/0.html';
     $html = file_get_html($page);
 
@@ -71,8 +71,8 @@
             $getImg = file_get_html('./crawl/html/'.$kv.'_'.$ks.'_a.html');
             $anhReview = $getImg->find('div.thumb-wrapper > img');
             for($e=0;$e<count($anhReview);$e++){
-                // getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './image/reviewKS', $kv.'-'.$ks.'-'.$e.'.png');
-                $anhReview[$e] = './image/reviewKS/'. $kv.'-'.$ks.'-'.$e.'.png';
+                getImage(str_replace("480x360", "1000x600", $anhReview[$e]->src), './image/reviewKS', $kv.'-'.$ks.'-'.$e.'.png');
+                $anhReview[$e] = './images/reviewKS/'. $kv.'-'.$ks.'-'.$e.'.png';
             }
             $khachSan[$kv-1][] = $anhReview;
             // ------------------------------------------------------------ PHONG - LOAIPHONG
@@ -85,8 +85,8 @@
                 $html_New = $html->find('.book-choose', $i);
 
                 // tai anh ve
-                // getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
-                $srcHinh = './image/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
+                getImage($html_New->find('.product-image > img', 0)->src, './image/reviewP', $kv.'-'.$ks.'-'.($i+1).'.png');
+                $srcHinh = './images/reviewP/'. $kv.'-'.$ks.'-'.($i+1).'.png';
 
                 $productContent = $html_New->find('.product-content > p');
                 array_shift($productContent);

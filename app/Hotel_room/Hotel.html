@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="Hotel.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="fancybox-master/src/css/core.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/fullscreen.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/share.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/slideshow.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/thumbs.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <title>Khách Sạn Dana Marina</title>
+</head>
+
+<body>
+
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="#">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="#"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="#"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website HotelTourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho HotelTourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Mytour có thể liên hệ với bạn qua:</p>
+                                        <input type="text" id="email_sdt_lienhe" class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <a href="#">
+                                            <li class="list-group-item"><a href="#">Đăng nhập và Đăng ký</a></li>
+                                        </a>
+                                        <li class="list-group-item"><a href="#">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="under-header">
+        <div class="container">
+            <div class="row">
+                <div class="search-box wow slideInDown col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="bed fa fa-suitcase"><input id="search" type="text" name="text" value="" placeholder="Nhập tên khách sạn, địa danh...">
+                                <nav class="list danhsach" id="list_2">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="#">Sapa</a></li>
+                                        <li class="list-group-item"><a href="#">Hà Nội</a></li>
+                                        <li class="list-group-item"><a href="#">Hội An</a></li>
+                                        <li class="list-group-item"><a href="#">Hạ Long</a></li>
+                                        <li class="list-group-item"><a href="#">Đà Nẵng</a></li>
+                                        <li class="list-group-item"><a href="#">Huế</a></li>
+                                    </ul>
+                                    <ul class="list-group" id="list_3">
+                                        <li class="list-group-item"><a href="#">Phú Quốc</a></li>
+                                        <li class="list-group-item"><a href="#">Nha Trang</a></li>
+                                        <li class="list-group-item"><a href="#">Đà Lạt </a></li>
+                                        <li class="list-group-item"><a href="#">Phan Thiết</a></li>
+                                        <li class="list-group-item"><a href="#">Vũng Tàu</a></li>
+                                        <li class="list-group-item"><a href="#">Hồ Chí Mnh</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-5 col-sm-5 col-12">
+                            <div class="calendar">
+                                <span class="fa fa-calendar icon-calendar-1"></span><input type="text" class="calendar-all calendar-first fa fa-calendar" id="calendar" placeholder="05 Thg 05" style="font-size: 15px;">
+                                <span class="arrow fa fa-arrow-right"></span>
+                                <span class="fa fa-calendar icon-calendar icon-calendar-2"></span><input type="text" class="calendar-all calendar-second fa fa-calendar" id="calendar-2" placeholder="06 Thg 05" style="font-size: 15px;">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-5 col-sm-5 col-12">
+                            <div class="guest">
+                                <a href="#">
+                                    <span class="guest-all guest-first fa fa-key" id="room"><span class="room"> 1 phòng</span></span>
+                                </a>
+                                <a href="#">
+                                    <span class="guest-all guest-second fa fa-users" id="room-1"> <span class="people"> 2 khách</span></span>
+                                </a>
+                                <br>
+                                <br>
+                                <div class="add" id="add">
+                                    <input id="demo0" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
+                                        data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                        data-bts-button-up-class="btn btn-default">
+                                    <input id="demo01" type="text" value="55" name="demo0" data-bts-min="0" data-bts-max="100" data-bts-init-val="" data-bts-step="1" data-bts-decimal="0" data-bts-step-interval="100" data-bts-force-step-divisibility="round" data-bts-step-interval-delay="500"
+                                        data-bts-prefix="" data-bts-postfix="" data-bts-prefix-extra-class="" data-bts-postfix-extra-class="" data-bts-booster="true" data-bts-boostat="10" data-bts-max-boosted-step="false" data-bts-mousewheel="true" data-bts-button-down-class="btn btn-default"
+                                        data-bts-button-up-class="btn btn-default">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-12">
+                            <button class="nut btn btn-danger">Tìm khách sạn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="under-header-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 url">
+                    <ul>
+                        <li>
+                            <a href="">Khách sạn</a>
+                        </li>
+                        <li class="sign">></li>
+                        <li>
+                            <a href="">Đà Nẵng</a>
+                        </li>
+                        <li class="sign">></li>
+                        <li>Khách sạn Dana Marina</li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+    <section class="body" id="id-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="left col-lg-9 col-md-9 col-sm-9">
+                            <div class="title-info">
+                                <h4>Khách Sạn Dana Marina</h4>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span><br>
+                                <small>(Cung cấp bởi khách sạn)</small>
+                            </div>
+                            <div class="address-info">
+                                <i style="display:inline-block; color: #0da9e7" class="fa fa-map-marker"></i>
+                                <p style="display:inline-block"> 47-49 Đường Võ Văn Kiệt, Phường Phước Mỹ, Sơn Trà, Đà nẵng</p>
+                            </div>
+                            <div class="images-hotel">
+                                <a data-fancybox="gallery" href="./images/DanaMarina/1.jpg"><img src="./images/DanaMarina/1.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/2.jpg"><img src="./images/DanaMarina/2.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/3.jpg"><img src="./images/DanaMarina/3.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/4.jpg"><img src="./images/DanaMarina/4.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/5.jpg"><img src="./images/DanaMarina/5.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/6.jpg"><img src="./images/DanaMarina/6.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/7.jpg"><img src="./images/DanaMarina/7.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/8.jpg"><img src="./images/DanaMarina/8.jpg"></a>
+                                <a data-fancybox="gallery" href="./images/DanaMarina/9.jpg"><img src="./images/DanaMarina/9.jpg"></a>
+                                <a class="img10" data-fancybox="gallery" href="images/DanaMarina/10.jpg"><img src="images/DanaMarina/10.jpg"></a>
+                            </div>
+                        </div>
+                        <div class="right col-lg-3 col-md-3 col-sm-3">
+                            <img src="./images/DanaMarina/ico_dam_bao_hoan_tien.jpg" alt="">
+                            <div class="heart">
+                                <input type="checkbox" id="radio1" style="display:none">
+                                <label for="radio1" class="checkmark">
+                                    <i class="fa fa-heart" id="heart"></i>
+                                </label>
+                                <button id="animate" type="button" class="btn btn-warning">ĐẶT PHÒNG NGAY GIỮ GIÁ TỐT</button>
+                            </div>
+                            <div class="list-box">
+                                <h4>Địa điểm gần khách sạn</h4>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Bãi Biển Mỹ Khê</td>
+                                            <td class="km">0.51km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Công viên Biển Đông</td>
+                                            <td class="km">0.88km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Biển Mỹ Khê</td>
+                                            <td class="km">0.90km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bãi tắm T20</td>
+                                            <td class="km">1.18km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cầu Rồng</td>
+                                            <td class="km">1.75km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cầu Trần Thị Lý</td>
+                                            <td class="km">1.75km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ngũ Hành Sơn</td>
+                                            <td class="km">1.79km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lễ hội Quan Thế Âm</td>
+                                            <td class="km">1.99km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cầu Sông Hàn</td>
+                                            <td class="km">2.01km</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="under-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="table-hotel">
+                        <table class="title-table">
+                            <tbody>
+                                <tr class="tr_1">
+                                    <td class="text">Chọn Phòng Khách Sạn Dana Marina</td>
+                                    <td class="td_1">
+                                        <i class="fa fa-check-circle"> Đảm bảo giá tốt nhất</i><br>
+                                        <small>Giá ưu đãi chỉ dành cho khách nội địa</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table border="1" class="title-room">
+                            <tbody>
+                                <tr class="type">
+                                    <td>LOẠI PHÒNG</td>
+                                    <td>TỐI ĐA</td>
+                                    <td>TÙY CHỌN</td>
+                                    <td>
+                                        <strong>GIÁ 1 ĐÊM</strong><br>
+                                        <small>Chưa bao gồm thuế, phí</small>
+                                    </td>
+                                    <td>SỐ LƯỢNG</td>
+                                    <td>ĐẶT PHÒNG</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Superior King</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/11.jpg"><img src="./images/DanaMarina/11.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/12.jpg"><img src="./images/DanaMarina/12.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/13.jpg"><img src="./images/DanaMarina/13.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/14.jpg"><img src="./images/DanaMarina/14.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>26 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng phố</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>1 giường đôi</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 2 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 2 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>1,090,000 đ</strike></small><br>
+                                    <small class="money">488,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Superior Twin</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/15.jpg"><img src="./images/DanaMarina/15.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/16.jpg"><img src="./images/DanaMarina/16.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/17.jpg"><img src="./images/DanaMarina/17.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/18.jpg"><img src="./images/DanaMarina/18.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>26 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng phố</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>2 giường đơn</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 3 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 2 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>1,090,000 đ</strike></small><br>
+                                    <small class="money">488,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Deluxe King</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/19.jpg"><img src="./images/DanaMarina/19.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/20.jpg"><img src="./images/DanaMarina/20.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/21.jpg"><img src="./images/DanaMarina/21.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/22.jpg"><img src="./images/DanaMarina/22.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>32 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng biển</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>1 giường đôi lớn</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 3 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 2 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>1,274,000 đ</strike></small><br>
+                                    <small class="money">825,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Superior Triple</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/23.jpg"><img src="./images/DanaMarina/23.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/24.jpg"><img src="./images/DanaMarina/24.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/25.jpg"><img src="./images/DanaMarina/25.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/26.jpg"><img src="./images/DanaMarina/26.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>28 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng phố</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>1 giường đơn, 1 giường đôi</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 1 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 3 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>1,300,000 đ</strike></small><br>
+                                    <small class="money">900,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Deluxe Queen</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/27.jpg"><img src="./images/DanaMarina/27.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/28.jpg"><img src="./images/DanaMarina/28.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/29.jpg"><img src="./images/DanaMarina/29.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/30.jpg"><img src="./images/DanaMarina/30.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>30 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng biển</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>1 giường đôi lớn</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 2 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 2 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>1,274,000 đ</strike></small><br>
+                                    <small class="money">850,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="name-room">
+                            <tr class="name">
+                                <td>Deluxe Triple</td>
+                            </tr>
+                        </table>
+
+                        <table border="1" class="info-room">
+                            <tr class="info-type">
+                                <td class="info-type-1">
+                                    <div class=" images-room">
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/31.jpg"><img src="./images/DanaMarina/31.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/32.jpg"><img src="./images/DanaMarina/32.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/33.jpg"><img src="./images/DanaMarina/33.jpg"></a>
+                                        <a data-fancybox="gallery" href="./images/DanaMarina/34.jpg"><img src="./images/DanaMarina/34.jpg"></a>
+                                    </div>
+                                    <div class="m">
+                                        <i class="fa fa-expand"></i>
+                                        <small>28 m</small>
+                                        <sup>2</sup>
+                                    </div>
+                                    <div class="bedbed">
+                                        <i class="fa fa-eye"></i>
+                                        <small>Hướng phố</small><br>
+                                        <i class="fa fa-bed"></i>
+                                        <small>1 giường đơn,1 giường đôi</small>
+                                    </div>
+                                    <small class="text_1">Đảm bảo còn 1 phòng !</small>
+                                </td>
+
+                                <td class="info-type-2">
+                                    <i class="fa fa-user"></i>
+                                    <small>x 3 người</small>
+                                </td>
+
+                                <td class="info-type-3">
+                                    <i class="fa fa-coffee"> Bao gồm Bữa sáng</i><br>
+                                    <i class="fa fa-times"> Không hoàn hủy</i>
+                                </td>
+
+                                <td class="info-type-4">
+                                    <p class="sale_sale">
+                                        Khuyến mãi đặt biệt - 52 %
+                                    </p>
+                                    <small><strike>2,274,000 đ</strike></small><br>
+                                    <small class="money">1,075,000 đ</small>
+
+                                </td>
+                                <td class="info-type-5">
+                                    <select name="" id="">
+                                        <option value="0">0 phòng</option>
+                                        <option value="1">1 phòng</option>
+                                        <option value="2">2 phòng</option>
+                                        <option value="3">3 phòng</option>
+                                        <option value="4">4 phòng</option>
+                                        <option value="5">5 phòng</option>
+                                        <option value="6">6 phòng</option>
+                                        <option value="7">7 phòng</option>
+                                        <option value="8">8 phòng</option>
+                                        <option value="9">9 phòng</option>
+                                        <option value="10">10 phòng</option>
+                                    </select>
+                                </td>
+                                <td class="info-type-6">
+                                    <a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="convenience">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="title-comfort">
+                        <p>Tiện Nghi Khách Sạn Dana Marina</p>
+                    </div>
+                    <div class="info-comfort">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_1">
+                                <i class="fa fa-shower"></i>
+                                <span>Hồ bơi ngoài trời</span><br>
+                                <i class="fa fa-glass"></i>
+                                <span>Quán bar</span><br>
+                                <i class="fa fa-wifi"></i>
+                                <span>Wifi miễn phí</span><br>
+                                <i class="fa fa-university"></i>
+                                <span>Nhà hàng</span><br>
+                                <i class="fa fa-internet-explorer"></i>
+                                <span>Internet</span><br>
+                                <i class="fa fa-building"></i>
+                                <span>Phòng gym</span>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_2">
+                                <i class="fa fa-car"></i>
+                                <span>Bãi đỗ xe</span><br>
+                                <i class="fa fa-list-alt"></i>
+                                <span>Thang máy</span><br>
+                                <i class="fa fa-database"></i>
+                                <span>Giặt là</span><br>
+                                <i class="fa fa-coffee"></i>
+                                <span>Quán cafe</span><br>
+                                <i class="fa fa-bus"></i>
+                                <span>Đưa đón sân bay</span><br>
+                                <i class="fa fa-money"></i>
+                                <span>Thu hỏi ngoại tệ</span>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_3">
+                                <i class="fa fa-home"></i>
+                                <span>Phòng họp</span><br>
+                                <i class="fa fa-tv"></i>
+                                <span>Truyền hình cáp vệ tinh</span><br>
+                                <i class="fa fa-users"></i>
+                                <span>Hỗ trợ đặt tour</span><br>
+                                <i class="fa fa-male"></i>
+                                <span>Lễ tân 24/24</span><br>
+                                <i class="fa fa-taxi"></i>
+                                <span>Taxi/Cho thuê xe hơi</span><br>
+                                <i class="fa fa-ticket"></i>
+                                <span>Đặt vé xe/máy bay</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="container">
+            <h2>Hotel Tourist</h2>
+            <div class="row">
+                <div class="end line-1 col-sm-4">
+                    <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                    <p>Hà Nội: 024 7109 9999</p>
+                    <p>Hồ Chí Minh: 028 7109 9998</p>
+                    <p>Email: admin@mytour.vn</p>
+                    <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                    <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                    <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                    <p>Địa chỉ tên miền: Mytour.vn</p>
+                </div>
+                <div class="end line-2 col-sm-4">
+                    <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                    <a href="#">
+                        <p>Chính sách và quy định chung</p>
+                    </a>
+                    <a href="#">
+                        <p>Quy định về thanh toán</p>
+                    </a>
+                    <a href="#">
+                        <p>Quy định về xác nhận thông tin đặt phòng</p>
+                    </a>
+                    <a href="#"><img src="./images/bocongthuong.jpg" alt=""></a>
+                    <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+
+                    <p>Chính sách bảo mật</p>
+
+
+                    <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                    <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt=""></a>
+                </div>
+                <div class="end line-3 col-sm-4">
+                    <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+
+                    <p>Tích lũy Vpoint</p>
+
+                    <h5>TẢI MOBILE APP: MYTOUR.VN</h5>
+                    <img src="./images/app.jpg" alt="">
+                    <img src="./images/gg.jpg" alt=""><br>
+                    <br>
+                    <h5>KẾT NỐI VỚI MYTOUR.VN</h5>
+                    <div class="icon-fa">
+                        <a href="#">
+                            <div class="fa fa-facebook-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-google-plus-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-instagram"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="jquery-3.4.1.min.js "></script>
+    <script src="http://hocwebgiare.com/thiet_ke_web_chuan_demo/Bootstrap_TouchSpin/js/jquery.bootstrap-touchspin.js"></script>
+    <script src="bootstrap/js/bootstrap.js "></script>
+    <script src="Hotel.js "></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+
+    <script src="fancybox-master/src/js/core.js"></script>
+    <script src="fancybox-master/src/js/fullscreen.js"></script>
+    <script src="fancybox-master/src/js/guestures.js"></script>
+    <script src="fancybox-master/src/js/hash.js"></script>
+    <script src="fancybox-master/src/js/media.js"></script>
+    <script src="fancybox-master/src/js/share.js"></script>
+    <script src="fancybox-master/src/js/slideshow.js"></script>
+    <script src="fancybox-master/src/js/thumbs.js"></script>
+    <script src="fancybox-master/src/js/wheel.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+
+</body>
+
+</html>

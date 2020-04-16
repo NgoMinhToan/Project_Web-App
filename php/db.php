@@ -26,6 +26,7 @@
     require_once 'contents.php';
     require_once 'items.php';
     require_once 'service.php';
+    require_once 'object.php';
     date_default_timezone_set("Asia/Ho_Chi_Minh");
     Db::$mysql = new mysqli('localhost', 'root', '', 'khachsan');
     if(mysqli_connect_errno()){
@@ -371,7 +372,7 @@
 
 
 
-        function phongConTrong($maLoaiPhong){
+        static function getPhong($maLoaiPhong){
             $rs = [];
             if($stmt = self::$mysql->prepare("SELECT maPhong, maLoaiPhong, maKhachSan FROM phong WHERE conTrong>0 AND maLoaiPhong=?")){
                 $stmt->bind_param('s', $maLoaiPhong);
@@ -382,7 +383,40 @@
                 }
                 $stmt->close();
             }
-            $mysql->close();
+            return $rs;
+        }
+
+
+
+
+        static function getLoaiPhong($maKhachSan){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT loaiPhong.maLoaiPhong, moTa, dienTich, phongConLai FROM loaiPhong INNER JOIN (SELECT DISTINCT maLoaiPhong FROM phong WHERE maKhachSan=?) S1 ON loaiPhong.maLoaiPhong = S1.maLoaiPhong")){
+                $stmt->bind_param('s', $maKhachSan);
+                $stmt->execute();
+                $stmt->bind_result($maLoaiPhong, $moTa, $dienTich, $phongConLai);
+                while ($stmt->fetch()){
+                    $rs[] = ['maLoaiPhong'=>$maLoaiPhong, 'moTa'=>$moTa, 'dienTich'=>$dienTich, 'phongConLai'=>$phongConLai];
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+
+
+        static function getKs_Info($maKhachSan){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM khachSan WHERE maKhachSan= ?")){
+                $stmt->bind_param('s', $maKhachSan);
+                $stmt->execute();
+                $stmt->bind_result($maKhachSan, $maKhuVuc, $tenKhachSan, $diaChi_KS, $Review, $diemDen, $tienNghi, $anhReview);
+                while ($stmt->fetch()){
+                    $rs[] = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>$tenKhachSan, 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
+                }
+                $stmt->close();
+            }
             return $rs;
         }
 

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="Thanhtoan.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <title>Thanh Toán</title>
+
+</head>
+
+<body>
+
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-9 col-md-8 col-sm-6 col-4">
+                    <h2><a href="#">Hotel Tourist</a></h2>
+                </div>
+                <div class="login col-lg-3 col-md-4 col-sm-6 col-8">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong> "012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong> "012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="body">
+        <div class="container">
+            <div class="row">
+
+                <div class="left col-lg-7 col-md-6 col-12">
+                    <div class="box box-blue">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-lg-10 col-md-12 col-sm-12">
+                                    <div class="title-info">
+                                        <h4>Khách Sạn Dana Marina</h4>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <div class="address-info">
+                                        <i style="display:inline-block; color: #0da9e7" class="fa fa-map-marker"></i>
+                                        <p style="display:inline-block"> 47-49 Đường Võ Văn Kiệt, Phường Phước Mỹ, Sơn Trà, Đà nẵng</p>
+                                    </div>
+                                    <div class="time-info">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 col-4 time-info-1">
+                                                <p>Nhận phòng:</p>
+                                                <p>Trả phòng:</p>
+                                                <p>Số đêm:</p>
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-8 time-info-2">
+                                                <p>14:00, Thứ năm, ngày 07/05/2020</p>
+                                                <p>12:00, Chủ Nhật, ngày 07/05/2020</p>
+                                                <p>3 Đêm</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-align-center">
+                            <div class="row">
+                                <div class="col-md-1 col-sm-2 col-2">
+                                    <div class="calendar"><i class="fa fa-calendar"></i></div>
+                                </div>
+                                <div class="col-md-11 col-sm-10 col-10">
+                                    <p class="text-7">Phòng trống <b>có hạn</b> trong ngày bạn chọn.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-align-center-1">
+                            <div class="row">
+                                <div class="col-sm-12 col-12">
+                                    <div class="alert alert-info alert-none-radius text-center">Giá tốt nhất dành cho bạn</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-info">
+                            <form action="" method="" class="col-sm-12 col-12" onsubmit="return CheckForm()">
+                                <div class="titleform">
+                                    <strong>Thông Tin Liên Hệ</strong>
+                                    <a href="">Đăng Nhập</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 client-info">
+                                        <label for="email"><b>Email</b></label>
+                                        <sup>*</sup><br>
+                                        <small><i class="fa fa-info-circle"></i> Xác nhận đơn phòng sẽ được gửi qua email này.</small>
+                                        <input type="email" onclick="error_disappeared()" id="email" value="">
+                                        <small id="error-email" style="color:red"></small>
+                                    </div>
+                                    <div class="col-lg-6 client-info">
+                                        <label for="phone"><b>Số Điện Thoại</b></label>
+                                        <sup>*</sup><br>
+                                        <small><i class="fa fa-info-circle"></i> Xác nhận đơn phòng sẽ được gửi SMS.</small>
+                                        <input type="text" onclick="error_disappeared()" id="phone" value="">
+                                        <small id="error-phone" style="color:red"></small>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 client-info">
+                                        <label for="name"><b>Họ và Tên</b></label>
+                                        <sup>*</sup><br>
+                                        <input type="text" onclick="error_disappeared()" id="name">
+                                        <small id="error-name" style="color:red" onclick="error_disappeared()"></small>
+                                    </div>
+                                    <div class="col-lg-6 province-info">
+                                        <label for="province"><b>Tỉnh/Thành Phố</b></label>
+                                        <sup>*</sup><br>
+                                        <select name="" id="province" onclick="selectValid(this)">
+                                            <option value="1">- Tỉnh/Thành Phố</option>
+                                            <option value="2">Hà Nội</option>
+                                            <option value="3">Hồ Chí Minh</option>
+                                            <option value="4">An Giang</option>
+                                            <option value="5">Bà Rịa - Vũng Tàu</option>
+                                            <option value="6">Bình Dương</option>
+                                            <option value="7">Bình Phước</option>
+                                            <option value="8">Bình Thuận</option>
+                                            <option value="9">Bình Định</option>
+                                            <option value="10">Bạc Liêu</option>
+                                            <option value="11">Bắc Giang</option>
+                                            <option value="12">Bắc Kạn</option>
+                                            <option value="13">Bắc Ninh</option>
+                                            <option value="14">Bến Tre</option>
+                                            <option value="15">Cao Bằng</option>
+                                            <option value="16">Cà Mau</option>
+                                            <option value="17">Cần Thơ</option>
+                                            <option value="18">Điện Biên</option>
+                                            <option value="19">Đà Nẵng</option>
+                                            <option value="20">Đắk Lắk</option>
+                                            <option value="21">Đắk Nông</option>
+                                            <option value="22">Đồng Nai</option>
+                                            <option value="23">Gia Lai</option>
+                                            <option value="24">Hòa Bình</option>
+                                            <option value="25">Hà Giang</option>
+                                            <option value="26">Hà Nam</option>
+                                            <option value="27">Hà Tĩnh</option>
+                                            <option value="28">Hưng Yên</option>
+                                            <option value="29">Hải Dương</option>
+                                            <option value="30">Hải Phòng</option>
+                                            <option value="31">Hậu Giang</option>
+                                            <option value="32">Khánh Hòa</option>
+                                            <option value="33">Kiên Giang</option>
+                                            <option value="34">Kon Tum</option>
+                                            <option value="35">Lai Châu</option>
+                                            <option value="36">Long An</option>
+                                            <option value="37">Lào Cai</option>
+                                            <option value="38">Lâm Đồng</option>
+                                            <option value="39">Lạng Sơn</option>
+                                            <option value="40">Nam Định</option>
+                                            <option value="41">Nghệ An</option>
+                                            <option value="42">Ninh Bình</option>
+                                            <option value="43">Ninh Thuận</option>
+                                            <option value="44">Phú Thọ</option>
+                                            <option value="45">Phú Yên</option>
+                                            <option value="46">Quảng Bình</option>
+                                            <option value="47">Quảng Nam</option>
+                                            <option value="48">Quảng Ngãi</option>
+                                            <option value="49">Quảng Ninh</option>
+                                            <option value="50">Quảng Trị</option>
+                                            <option value="51">Sóc Trăng</option>
+                                            <option value="52">Sơn La</option>
+                                            <option value="53">Thanh Hóa</option>
+                                            <option value="54">Thái Bình</option>
+                                            <option value="55">Thái Nguyên</option>
+                                            <option value="56">Thừa Thiên Huế</option>
+                                            <option value="57">Tiền Giang</option>
+                                            <option value="58">Trà Vinh</option>
+                                            <option value="59">Tuyên Quang</option>
+                                            <option value="60">Tây Ninh</option>
+                                            <option value="61">Vĩnh Long</option>
+                                            <option value="62">Vĩnh Phúc</option>
+                                            <option value="63">Yên Bái</option>
+                                        </select>
+                                        <small id="error-address" style="color:red"></small>
+                                    </div>
+                                </div>
+                                <div class="export">
+                                    <div class="nav-dl-list">
+                                        <div class="bill">
+                                            <strong class="toggle-display-1"><i class="fa fa-arrow-circle-down"></i> Xuất hóa đơn</strong>
+                                        </div>
+                                        <div class="billinfo">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="asking">
+                                                        <input type="checkbox" id="billbill" onclick="CheckBill()" onclick="error_disappeared()">
+                                                        <label for="billbill"><strong>Yêu cầu xuất hóa đơn</strong></label><br>
+
+                                                        <label for="company"><strong>Tên công ty</strong></label>
+                                                        <sup>*</sup>
+                                                        <input type="text" id="company"><br>
+                                                        <small id="error-company" style="color:red"></small><br>
+
+                                                        <label for="code"><strong>Mã số thuế</strong></label>
+                                                        <sup>*</sup>
+                                                        <input type="text" id="code"><br>
+                                                        <small id="error-code" style="color:red"></small><br>
+
+                                                        <label for="address-company"><strong>Địa chỉ công ty</strong></label>
+                                                        <sup>*</sup>
+                                                        <input type="text" id="address-company"><br>
+                                                        <small id="error-address-company" style="color:red"></small><br>
+
+                                                        <label for="address-bill"><strong>Địa chỉ nhận hóa đơn</strong></label>
+                                                        <sup>*</sup>
+                                                        <input type="text" id="address-bill"><br>
+                                                        <small id="error-address-bill" style="color:red"></small><br>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="text-8">
+                                                        <strong>Điều kiện xuất hóa đơn:</strong>
+                                                        <ul>
+                                                            <li>Quý khách hàng cần cung cấp thông tin và địa chỉ xuất hóa đơn trước hoặc ngay sau khi thanh toán đơn phòng.</li>
+                                                            <li>HotelTourist sẽ xuất hóa đơn bằng với số tiền thực tế khách hàng đã thanh toán cho HotelTourist.</li>
+                                                            <li>HotelTourist sẽ không thể xuất hóa đơn nếu Quý khách gửi thông tin chậm hơn thời gian trên.</li>
+                                                            <li>HotelTourist sẽ gửi hóa đơn đến Quý khách trong vòng một tuần sau ngày trả phòng.</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-align-center-2">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-12">
+                                            <div class="alert alert-success alert-none-radius text-center">Thanh toán ngay để giữ phòng trống và giá tốt nhất!</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="methodpay">
+                                    <h5>Chọn Phương Thức Thanh Toán</h5>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodcard">
+                                            <a href="javascript:void(0)" onclick="openMenu(event, 'creditcard');" id="myLink">
+                                                <div class="tablink">
+                                                    <input type="radio" checked="checked" name="gender" id="radio">
+                                                    <label for="radio" class="checkmark"></label>
+                                                    <label for="radio" class="cards"><small>Thẻ Tín Dụng</small></label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodATM">
+                                            <a href="javascript:void(0)" onclick="openMenu(event, 'ATM');">
+                                                <div class="tablink">
+                                                    <input type="radio" name="gender" id="radio1">
+                                                    <label for="radio1" class="checkmark"></label>
+                                                    <label for="radio1" class="cards"><small>Thẻ ATM Nội Địa</small></label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodtrasnfer">
+                                            <a href="javascript:void(0)" onclick="openMenu(event, 'transfer');">
+                                                <div class="tablink">
+                                                    <input type="radio" name="gender" id="radio2">
+                                                    <label for="radio2" class="checkmark"></label>
+                                                    <label for="radio2" class="cards"><small>Chuyển Khoản</small></label>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div id="creditcard" class="col-lg-12 col-md-12 col-sm-12 col-12 menu">
+                                            <div class="methodinfo">
+                                                <strong>Loại thẻ:</strong>
+                                                <img src="./images/thanhtoan/visa.png" alt="">
+                                                <img src="./images/thanhtoan/mc.png" alt="">
+                                                <img src="./images/thanhtoan/jcb.png" alt="">
+                                                <img src="./images/thanhtoan/cup.png" alt=""><br>
+                                                <i class="fa fa-check-circle"> Thanh toán an toàn qua cổng Onepay, <b>miễn phí giao dịch</b></i>
+                                                <i class="fa fa-check-circle"> Nhận <b>xác nhận ngay</b> qua Email và SMS</i>
+                                            </div>
+                                        </div>
+
+                                        <div id="ATM" class="col-lg-12 col-md-12 col-sm-12 col-12 menu">
+                                            <div class="methodinfo1">
+                                                <img src="./images/thanhtoan/vietcombank.png" alt="">
+                                                <img src="./images/thanhtoan/agribank.png" alt="">
+                                                <img src="./images/thanhtoan/BIDV.png" alt="">
+                                                <img src="./images/thanhtoan/viettinbank.jpg" alt="">
+                                                <img src="./images/thanhtoan/acbbank.png" alt="">
+                                                <img src="./images/thanhtoan/dongabank.jpg" alt="">
+                                                <img src="./images/thanhtoan/eximbank.jpg" alt="">
+                                                <img src="./images/thanhtoan/hdbank.png" alt="">
+                                                <img src="./images/thanhtoan/mbbank.png" alt="">
+                                                <img src="./images/thanhtoan/namabank.png" alt="">
+                                                <img src="./images/thanhtoan/sacombank.png" alt="">
+                                                <img src="./images/thanhtoan/scbbank.png" alt="">
+                                                <img src="./images/thanhtoan/shbbank.png" alt="">
+                                                <img src="./images/thanhtoan/techcombank.png" alt="">
+                                                <img src="./images/thanhtoan/vibbank.png" alt="">
+                                                <img src="./images/thanhtoan/vietabank.png" alt="">
+                                                <img src="./images/thanhtoan/vpbank.jpg" alt=""><br>
+                                                <i class="fa fa-check-circle"> Thanh toán an toàn qua cổng Onepay, <b>miễn phí giao dịch</b></i>
+                                                <i class="fa fa-check-circle"> Nhận <b>xác nhận ngay</b> qua Email và SMS</i>
+                                            </div>
+                                        </div>
+
+                                        <div id="transfer" class="col-lg-12 col-md-12 col-sm-12 col-12 menu">
+                                            <div class="methodinfo2">
+                                                <div class="STK">
+                                                    <i class="fa fa-bell"> Hướng dẫn thanh toán sẽ gửi tới Email đặt phòng.</i>
+                                                    <i class="fa fa-hourglass-half"> Vui lòng thanh toán trước 12 tiếng sau khi đã đặt phòng.</i>
+                                                    <i class="fa fa-hourglass-half"> Quá thời hạn thanh toán trên, đơn phòng sẽ tự động bị hủy.</i>
+                                                    <i class="fa fa-paper-plane"> STK: 0291000256846 Vietcombank</i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="payment">
+                                    <input type="submit" value="THANH TOÁN" name=""><br>
+                                    <small>Bằng cách nhấp nút Thanh toán, bạn đồng ý với <a href="#">Chính sách và quy định chung</a> của chúng tôi.</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right col-lg-5 col-md-6 col-12">
+                    <div class="booking-bill">
+                        <h3 class="title-sm title-sm-green">
+                            <p class="note-1">Đặt Ngay! Giá Phòng Có Thể Thay Đổi Trong Giây Lát!</p>
+                        </h3>
+                        <table class="table table-none-border">
+                            <tbody>
+                                <tr>
+                                    <td style="border-top: 0px">
+                                        <table class="table table-none-border room-list">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text">SUPERIOR DOUBLE/ TWIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-1">
+                                                        1 phòng <br>
+                                                        <ul>
+                                                            <li>Bao gồm bữa sáng</li>
+                                                            <li>Hủy miễn phí đến 22/4/2020</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-2">
+                                                        <p class="price ">2,058,00đ/ 3 đêm</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-1">
+                            <table class="table table-none-border table-2">
+                                <tbody>
+                                    <tr>
+                                        <td style="border-top: 0px">10% thuế VAT</td>
+                                        <td class=" price " style="border-top: 0px">205,000đ</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top: 0px">Phí giao dịch tại Hotel Tourist</td>
+                                        <td class="text-3" style="border-top: 0px">Miễn phí</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-3">
+                            <table class="table table-none-border table-4">
+                                <tbody>
+                                    <tr>
+                                        <td style="border-top: 0px;"><strong>Tổng tiền</strong></td>
+                                        <td class="price" style="border-top: 0px">2,263,000đ</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top: 0px"><strong>Thanh Toán</strong> <br> (3 đêm) <br> Đã bao gồm VAT</td>
+                                        <td class="price" style="border-top: 0px">2,263,000đ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-5">
+                            <div class="nav-dl-list">
+                                <div class="question">
+                                    <strong class="toggle-display"><i class="fa fa-arrow-circle-down"></i></strong>
+                                    <strong class="text-6"> Bạn có mã giảm giá?</strong>
+                                </div>
+                                <div class="answer">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-8 col-8">
+                                            <input id="input" placeholder=" Nhập mã giảm giá" type="text">
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-4">
+                                            <button id="button">Áp Dụng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <script src="jquery-3.4.1.min.js "></script>
+    <script src="bootstrap/js/bootstrap.js "></script>
+    <script src="Thanhtoan.js "></script>
+</body>
+
+</html>

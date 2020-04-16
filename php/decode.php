@@ -53,13 +53,10 @@
         $textFile = json_decode(file_get_contents($path));
         $rs = [];
         foreach($textFile as $elem){
-            $rs[] = [$elem[0], json_encode($elem[1]), $elem[2], $elem[3]];
+            print_r($elem[1]);
+            $rs[] = [$elem[0], new Mota(...$elem[1]), $elem[2], $elem[3]];
         }
         return $rs;
-    }
-    
-    function decode_moTa($elem){
-        return new MoTa(...json_decode($elem));
     }
     
     

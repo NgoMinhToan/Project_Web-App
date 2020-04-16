@@ -1,0 +1,678 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+    background-color: white;
+    box-shadow: 0px 6px 15px 0px rgb(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 100%;
+    padding-left: -15px;
+    padding-right: -15px;
+}
+
+.row .titlemenu {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row .titlemenu h2 {
+    font-weight: 650;
+    font-size: 35px;
+    padding: 10px 0;
+}
+
+.row .titlemenu h2 a {
+    text-decoration: none;
+    color: #00c4ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.row .titlemenu .menu {
+    margin-left: 70px;
+}
+
+.row .titlemenu .menu ul {
+    display: flex;
+}
+
+.row .titlemenu .menu ul li {
+    list-style: none;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+.row .titlemenu .menu ul li .icon-all {
+    font-size: 20px;
+}
+
+.row .titlemenu .menu ul li .fa-home {
+    color: #00c4ff;
+}
+
+.row .titlemenu .menu ul li .ks {
+    color: #00c4ff;
+}
+
+.row .titlemenu .menu ul li a {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: gray;
+}
+
+.row .login img {
+    float: left;
+    width: 40px;
+    height: 40px;
+}
+
+.row .login .phone {
+    margin-top: 3px;
+    font-size: 10px;
+    color: #404040;
+    margin-left: 45px;
+}
+
+.row .login .image-phone {
+    border: 0 solid black;
+    width: 170px;
+    height: 58%;
+    border-radius: 50px;
+    background-color: rgba(74, 144, 226, .1);
+    margin-top: 15px;
+    margin-left: 30px;
+}
+
+.row .login .three-icon {
+    float: right;
+    margin-top: -50px;
+}
+
+.row .login .three-icon div {
+    padding-left: 30px;
+    font-size: 20px;
+}
+
+#TPHCM {
+    margin-top: -10px;
+}
+
+.body {
+    margin-top: 50px;
+}
+
+
+/*RIGHT*/
+
+.booking-bill {
+    padding: 0;
+    width: 100%;
+    border: 1px solid #cbd3db;
+    border-radius: 5px;
+    background-color: #fafbfd;
+}
+
+.booking-bill .title-sm-green {
+    background-color: #8fc63d;
+}
+
+.booking-bill .title-sm {
+    padding: 10px 0 2px 10px;
+}
+
+.booking-bill .note-1 {
+    color: white;
+    font-size: 17px;
+    text-align: center;
+}
+
+.table>tbody>tr>td {
+    padding: 5px 10px 10px 10px;
+}
+
+.table .table {
+    padding-bottom: 0px;
+    background-color: #fff;
+}
+
+.table .table .text {
+    font-weight: bold;
+    font-size: 13.5px;
+    border-top: 0px
+}
+
+.table .table .text-1 {
+    font-size: 15px;
+    padding: 0px 10px 10px 20px;
+    border-top: 0px;
+}
+
+.table .table .text-2 {
+    font-size: 15px;
+    padding: 25px 5px 0px 0px;
+    border-top: 0px;
+}
+
+.price,
+.text-3 {
+    color: rgb(4, 131, 42);
+    text-align: right;
+}
+
+.table-1 {
+    padding: 0px 10px 0px 10px;
+    margin-top: -30px;
+}
+
+.table-2 {
+    padding-bottom: 0px;
+    background-color: #fff;
+}
+
+.table-3 {
+    padding: 0px 10px 0px 10px;
+    margin-top: -5px;
+}
+
+.table-4 {
+    padding-bottom: 0px;
+    background-color: #cff3f8;
+}
+
+.table-5 {
+    padding: 0px 10px 15px 10px;
+}
+
+.answer {
+    padding: 10px 10px 10px 15px;
+    border: 1px solid #cbd3db;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#input {
+    width: 100%;
+    height: 35px;
+    border: 1px solid #a0a2a3;
+    border-radius: 5px;
+}
+
+.text-6,
+.toggle-display {
+    font-size: 15px;
+    color: #0da9e7;
+    font-style: italic;
+}
+
+#button {
+    border: 1px solid #a0a2a3;
+    border-radius: 5px;
+    color: rgb(89, 163, 224);
+    width: 100%;
+    height: 35px;
+    background-color: white;
+}
+
+#button:hover {
+    background-color: #e0e2e2;
+}
+
+
+/*LEFT*/
+
+.box {
+    width: 100%;
+    border: 1px solid #a0a2a3;
+    border-radius: 5px;
+}
+
+.box .box-header {
+    padding: 13px 15px;
+    background-color: #fafbfd;
+    margin: 10px;
+}
+
+.title-info>h4 {
+    font-size: 20px;
+}
+
+.title-info>span {
+    font-size: 20px;
+    color: rgb(247, 247, 38);
+}
+
+.time-info .time-info-1 p {
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.time-info .time-info-2 p {
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.box .box-align-center {
+    background-color: #fafbfd;
+    margin: 10px;
+    box-shadow: 0px 6px 15px 0px rgb(0, 0, 0, 0.1);
+}
+
+.box-align-center .calendar {
+    position: relative;
+    width: 50px;
+    height: 48px;
+    background-color: #e91e63;
+}
+
+.box-align-center .calendar i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: white;
+    font-size: 20px;
+    margin: -10px 0 0 -10px;
+}
+
+.box-align-center .calendar:before {
+    content: " ";
+    position: absolute;
+    top: 25%;
+    left: 98%;
+    border-width: 13px 15px;
+    border-style: solid;
+    border-color: transparent transparent transparent #e91e63;
+}
+
+.box-align-center .text-7 {
+    position: relative;
+    top: 12px;
+    left: 25px;
+    font-size: 15px;
+}
+
+.box-align-center-1 .alert {
+    padding: 5px 10px 5px 10px;
+    margin: 5px 10px 5px 10px;
+}
+
+.form-info {
+    background-color: #fafbfd;
+    margin: 10px;
+    padding-bottom: 15px;
+}
+
+.titleform {
+    padding-top: 15px;
+}
+
+.titleform>a {
+    margin-left: 15px;
+    color: #00c4ff;
+}
+
+.titleform>a:hover {
+    text-decoration: none;
+    color: #0da9e7;
+}
+
+.client-info,
+.province-info {
+    margin-top: 10px;
+}
+
+.client-info>sup,
+.province-info>sup {
+    color: red;
+}
+
+.client-info>label {
+    font-size: 15px;
+}
+
+.client-info>input,
+.province-info>select {
+    border: 1px solid #a0a2a3;
+    border-radius: 5px;
+    width: 100%;
+    height: 30px;
+}
+
+.check {
+    width: 100%;
+}
+
+.client-info>small {
+    font-size: 12px;
+    color: rgb(134, 134, 134);
+}
+
+.export {
+    padding: 15px 0px 10px 0px;
+}
+
+.export .billinfo {
+    padding: 10px 10px 10px 15px;
+    border: 1px solid #cbd3db;
+    border-radius: 5px;
+    margin-top: 5px;
+    background-color: #fff;
+}
+
+.bill>strong {
+    font-size: 15px;
+    color: #0da9e7;
+    cursor: pointer;
+    font-style: italic;
+}
+
+.bill>strong:hover {
+    color: #087099;
+}
+
+.billinfo {
+    display: none;
+}
+
+.text-8 {
+    padding-left: 15px;
+}
+
+.text-8>strong,
+.text-8>ul>li,
+.asking>label {
+    font-size: 14px;
+    line-height: 2em;
+}
+
+.text-8>strong {
+    margin-left: -15px;
+}
+
+.asking>label {
+    font-size: 14px;
+    line-height: 2em;
+}
+
+.asking>sup {
+    color: red;
+}
+
+.asking #company,
+#code,
+#address-company,
+#address-bill {
+    width: 100%;
+    border: 1px solid #a0a2a3;
+    border-radius: 5px;
+    height: 2em;
+}
+
+#error-message {
+    color: red;
+    font-size: 13px;
+}
+
+.box-align-center-2 .alert {
+    padding: 5px 10px 5px 10px;
+    margin: 5px 10px 5px 10px;
+    background-color: #dff0d8;
+    font-size: 15px;
+}
+
+.methodpay {
+    padding: 15px 0px 10px 0px;
+}
+
+.tablink {
+    padding-left: 55px;
+    border: 1px solid #0da9e7;
+    border-radius: 5px;
+    line-height: 50px;
+    background-color: white;
+    font-size: 17px;
+}
+
+.tablink .cards {
+    margin: 0;
+    width: 100%;
+}
+
+.tablink:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+.tablink input {
+    display: none;
+}
+
+.modal-body .tablink input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.tablink input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+.tablink input:checked~.checkmark:after {
+    display: block;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    display: none;
+}
+
+.tablink .checkmark {
+    position: absolute;
+    top: 17px;
+    left: 40px;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+    margin: 0;
+}
+
+.methodcard>a:hover,
+.methodATM>a:hover,
+.methodtrasnfer>a:hover {
+    text-decoration: none;
+}
+
+.methodinfo {
+    border: 1px solid #0da9e7;
+    border-radius: 5px;
+    margin-top: 25px;
+    background-color: white;
+    padding: 15px 0px 15px 0px;
+    line-height: 2em
+}
+
+.methodinfo>img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.methodinfo>strong {
+    margin-left: 55px;
+    color: #31708f;
+}
+
+.methodinfo>i {
+    margin-left: 30px;
+    color: #31708f;
+}
+
+.methodinfo:before {
+    content: " ";
+    position: relative;
+    top: -55px;
+    left: 65px;
+    border-width: 13px 15px;
+    border-style: solid;
+    border-color: transparent transparent gray transparent;
+}
+
+.methodinfo1 {
+    border: 1px solid #0da9e7;
+    border-radius: 5px;
+    margin-top: 25px;
+    background-color: white;
+    padding: 15px 0px 15px 0px;
+    line-height: 2em
+}
+
+.methodinfo1>img {
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+}
+
+.methodinfo1>i {
+    color: #31708f;
+    margin-left: 30px;
+}
+
+.methodinfo1:before {
+    content: " ";
+    position: relative;
+    top: -57px;
+    left: 275px;
+    border-width: 13px 15px;
+    border-style: solid;
+    border-color: transparent transparent gray transparent;
+}
+
+.methodinfo2 {
+    border: 1px solid #0da9e7;
+    border-radius: 5px;
+    margin-top: 25px;
+    background-color: white;
+    padding: 0px 0px 15px 0px;
+    line-height: 2em
+}
+
+.methodinfo2 .STK>i {
+    color: #31708f;
+    margin-left: 30px;
+}
+
+.methodinfo2:before {
+    content: " ";
+    position: relative;
+    top: -40px;
+    left: 483px;
+    border-width: 13px 15px;
+    border-style: solid;
+    border-color: transparent transparent gray transparent;
+}
+
+.payment {
+    text-align: center;
+    margin-top: 20px;
+    line-height: 2em;
+}
+
+.payment>input {
+    width: 10em;
+    height: 3em;
+    border: 1px solid #cbd3db;
+    border-radius: 5px;
+    background-color: rgb(167, 233, 36);
+}
+
+.payment>input:hover {
+    background-color: rgb(189, 255, 57);
+}
+
+.payment>small>a {
+    color: #0da9e7;
+}
+
+.payment>small>a:hover {
+    color: #087099;
+    text-decoration: none;
+}
+
+@media only screen and (max-width:992px) {
+    .methodpay>h5 {
+        font-size: 15px;
+    }
+    .methodinfo:before,
+    .methodinfo1:before,
+    .methodinfo2:before {
+        display: none;
+    }
+    .methodcard,
+    .methodATM,
+    .methodtrasnfer {
+        margin-top: 5px;
+    }
+    .right {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:992px) {
+    .methodinfo>strong {
+        margin-left: 13px;
+    }
+    .methodinfo .STK>i,
+    .methodinfo1 .STK>i {
+        font-size: 15px;
+        margin-top: 5px;
+    }
+    .methodinfo2 .STK>i {
+        font-size: 15px;
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:1199px) {
+    .methodinfo:before,
+    .methodinfo1:before,
+    .methodinfo2:before {
+        display: none;
+    }
+    .tablink .cards>small {
+        font-size: 11px;
+    }
+    .tablink {
+        padding-left: 40px;
+        border: 1px solid #0da9e7;
+        border-radius: 5px;
+        line-height: 50px;
+        background-color: white;
+    }
+    .tablink .checkmark {
+        position: absolute;
+        top: 17px;
+        left: 30px;
+        height: 20px;
+        width: 20px;
+        background-color: #eee;
+        border-radius: 50%;
+        margin: 0;
+    }
+}
