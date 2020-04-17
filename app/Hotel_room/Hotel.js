@@ -219,7 +219,7 @@ function danhGia(){
 
 
 
-var maKhachSan = 'MAKHACHSAN2_1';//------------------------------
+var maKhachSan = 'MAKHACHSAN11_1';//------------------------------
 
 function getKS_Info(){
     var val;
@@ -257,6 +257,15 @@ $(()=>{
     let loaiphong_info = loaiPhong();
     console.log(ks_info);
     let body = $('#id-body');
+
+    //section header
+
+    //section under header
+
+    //section under header 1
+    $('.under-header-1').empty();
+    $('.under-header-1').append('<div class="container"> <div class="row"> <div class="col-lg-12 url"> <ul> <li> <a href="">Khách sạn</a> </li> <li class="sign">&gt;</li> <li> <a href="">'+ks_info.maKhuVuc+'</a> </li> <li class="sign">&gt;</li> <li>'+ks_info.tenKhachSan+'</li> </ul> <hr> </div> </div> </div>');
+    //section body
     body.find('.title-info h4').text(ks_info['tenKhachSan']);
     body.find('.address-info > p').text(ks_info.diaChi_KS);
 
@@ -281,10 +290,12 @@ $(()=>{
         $($(cell.find('tr')[i]).find('td')[1]).attr('class', 'km');
     }
 
-    console.log(loaiphong_info);
+    // console.log(loaiphong_info);
 
+    // section under body
+    $('.under-body').empty().append('<div class="container"> <div class="row"> <div class="col-lg-12 col-md-12 col-sm-12 col-12"> <div class="table-hotel" id="table-hotel"></div></div></div></div>');
     let tabel_hotel = $('div#table-hotel, div.table-hotel');
-    tabel_hotel.empty().append('<table class="title-table"><tbody><tr class="tr_1"><td class="text">Chọn Phòng Khách Sạn Dana Marina</td><td class="td_1"><i class="fa fa-check-circle"> Đảm bảo giá tốt nhất</i><br><small>Giá ưu đãi chỉ dành cho khách nội địa</small></td></tr></tbody></table><table border="1" class="title-room"> <tbody> <tr class="type"> <td>LOẠI PHÒNG</td> <td>TỐI ĐA</td> <td>TÙY CHỌN</td> <td> <strong>GIÁ 1 ĐÊM</strong><br> <small>Chưa bao gồm thuế, phí</small> </td> <td>SỐ LƯỢNG</td> <td>ĐẶT PHÒNG</td> </tr> </tbody> </table>');
+    tabel_hotel.append('<table class="title-table"><tbody><tr class="tr_1"><td class="text">Chọn Phòng '+ks_info.tenKhachSan+'</td><td class="td_1"><i class="fa fa-check-circle"> Đảm bảo giá tốt nhất</i><br><small>Giá ưu đãi chỉ dành cho khách nội địa</small></td></tr></tbody></table><table border="1" class="title-room"> <tbody> <tr class="type"> <td>LOẠI PHÒNG</td> <td>TỐI ĐA</td> <td>TÙY CHỌN</td> <td> <strong>GIÁ 1 ĐÊM</strong><br> <small>Chưa bao gồm thuế, phí</small> </td> <td>SỐ LƯỢNG</td> <td>ĐẶT PHÒNG</td> </tr> </tbody> </table>');
     loaiphong_info.forEach((item, index)=>{
         console.log(item);
         tabel_hotel.append('<table border="1" class="name-room"> <tbody><tr class="name"> <td>'+item.moTa.ten+'</td> </tr> </tbody></table>');
@@ -300,7 +311,7 @@ $(()=>{
         info.append('<small class="text_1">Còn '+item.phongConLai+' phòng !</small>');
 
         info = table.find('.info-type-2');
-        info.append('<i class="fa fa-user"></i><small>'+item.moTa.toiDaSoNguoi+'</small>');
+        info.append('<i class="fa fa-user"></i><small>  '+item.moTa.toiDaSoNguoi+'</small>');
         info = table.find('.info-type-3');
         if(item.moTa.tuyChon[0]!=undefined)
             info.append('<i class="fa fa-coffee"> '+item.moTa.tuyChon[0]+'</i>');
@@ -314,9 +325,9 @@ $(()=>{
         }
         else{
             info.append('<p class="sale_sale" style="background: none; border: none"></p>');
-            info.append('<br><small class="money">'+item.moTa.giaGiam+' đ</small>');
-
         }
+        info.append('<br><small class="money">'+item.moTa.giaGiam+' đ</small>');
+        
         info = table.find('.info-type-5');
         info.append('<select name="" id=""> </select>');
         
@@ -327,7 +338,63 @@ $(()=>{
         info.append('<a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>');
     })
 
-    //convenience
-    $('.convenience .info-comfort')
+    //section convenience
+    let dic_class = {
+        "Hồ bơi ngoài trời": '<i class="fa fa-shower"></i>',
+        "Bãi đỗ xe": '<i class="fa fa-car"></i>',
+        "Phòng họp": '<i class="fa fa-home"></i>',
+        "Quán bar": '<i class="fa fa-glass"></i>',
+        "Thang máy": '<i class="fa fa-list-alt"></i>',
+        "Truyền hình cáp/vệ tinh": '<i class="fa fa-tv"></i>',
+        "Wifi miễn phí": '<i class="fa fa-wifi"></i>',
+        "Giặt là": '<i class="fa fa-database"></i>',
+        "Hỗ trợ đặt tour": '<i class="fa fa-users"></i>',
+        "Nhà hàng": '<i class="fa fa-university"></i>',
+        "Quán cafe": '<i class="fa fa-coffee"></i>',
+        "Lễ tân 24/24": '<i class="fa fa-male"></i>',
+        "Internet có dây": '<i class="fa fa-internet-explorer"></i>',
+        "Đưa đón sân bay": '<i class="fa fa-bus"></i>',
+        "Taxi/Cho thuê xe hơi": '<i class="fa fa-taxi"></i>',
+        "Phòng gym": '<i class="fa fa-building"></i>',
+        "Thu đổi ngoại tệ": '<i class="fa fa-money"></i>',
+        "Đặt vé xe/máy bay": '<i class="fa fa-ticket"></i>',
+        "Bãi đỗ xe miễn phí": '<i class="fa fa-car"></i>',
+        "Tắm nước nóng": '<i class="fa fa-shower"></i>',
+        "Dọn phòng hàng ngày": '<i class="fa fa-paint-brush"></i>',
+        "Giữ hành lý miễn phí": '<i class="fa fa-briefcase"></i>',
+        "Phòng hội thảo": '<i class="fa fa-home"></i>',
+        "Massage": '<i class="fa fa-bath"></i>',
+        "Internet có dây miễn phí": '<i class="fa fa-internet-explorer"></i>',
+        "Đưa đón sân bay tính phí": '<i class="fa fa-bus"></i>',
+        "Phòng xông hơi ướt": '<i class="fa fa-bath"></i>',
+        "Phục vụ đồ ăn tại phòng": '<i class="fa fa-male"></i>',
+        "Giặt khô": '<i class="fa fa-tint"></i>',
+        "Két an toàn": '<i class="fa fa-shield"></i>',
+        "Phòng tập thể": '<i class="fa fa-home"></i>',
+        "Tổ chức sự kiện": '<i class="fa fa-glass"></i>',
+        "Hồ bơi dành cho trẻ em": 'i class="fa fa-shower"></i>',
+        "Cửa hàng lưu niệm": '<i class="fa fa-gift"></i>',
+        "Salon": '<i class="fa fa-home"></i>',
+        "Sòng bài": '<i class="fa fa-hand-spock-o"></i>',
+        "Spa": '<i class="fa fa-bath"></i>',
+        "Phòng gia đình": '<i class="fa fa-home"></i>',
+        "Khu vực hút thuốc": '<i class="fa fa-check"></i>',
+        "Dịch vụ trông trẻ": '<i class="fa fa-check"></i>',
+        "Tiện nghi cho người khuyết tật": '<i class="fa fa-wheelchair"></i>',
+        "Hồ bơi trong nhà": 'i class="fa fa-shower"></i>',
+        "Karaoke": '<i class="fas fa-music fa-sm"></i>',
+        "Bãi tắm riêng": '<i class="fa fa-shower"></i>',
+        "Giữ hành lý": '<i class="fa fa-briefcase"></i>'
+    }
+    let convenience = $('.convenience .info-comfort .row');
+    convenience.empty();
+    convenience.append('<div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_1"> </div>');
+    convenience.append('<div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_2"> </div>');
+    convenience.append('<div class="col-lg-4 col-md-4 col-sm-4 col-12 cot_3"> </div>');
+    let column = 0;
+    ks_info.tienNghi.forEach((item, index, arr)=>{
+        convenience.find('.cot_'+(((column++)%3)+1)).append(dic_class[item]+' <span>'+item+'</span><br>');
+    })
 
 })
+

@@ -423,42 +423,54 @@
 
 
 
-        static function khachDatPhong($maTruyCap, $maLoaiPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
-            $thoiGianBatDau = toDateTime($thoiGianBatDau);
-            $thoiGianKetThuc = toDateTime($thoiGianKetThuc);
-            $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
-            if($phongConLai = $result->fetch_assoc()){
-                if($phongConLai['phongConLai'] < 1)
-                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
-                $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
-                $maPhong = $result->fetch_assoc()['maPhong'];
-                
-                self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
-                                    VALUES('$maTruyCap', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', '$SDT_KTC', '$tinhThanhPho_KTC')");
-                if(self::$mysql->affected_rows==1)
-                    return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+        static function khachDatPhong($maTruyCap, $maLoaiPhong, $soluong,$thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC){
+            $ngayDat = date("Y-m-d h:i:s",time());
+            for($i=1;$i<=$soluong;$i++){
+                $thoiGianBatDau = toDateTime($thoiGianBatDau);
+                $thoiGianKetThuc = toDateTime($thoiGianKetThuc);
+                $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
+                if($phongConLai = $result->fetch_assoc()){
+                    if($phongConLai['phongConLai'] < 1)
+                        return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
+                    $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
+                    $maPhong = $result->fetch_assoc()['maPhong'];
+                    
+                    self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
+                                        VALUES('$maTruyCap', '$maPhong', '$ngayDat', '$thoiGianBatDau','$thoiGianKetThuc', $tongChiPhi, '$hinhThuc', '$hoTen_KTC', '$email_KTC', '$SDT_KTC', '$tinhThanhPho_KTC')");
+                    if(self::$mysql->affected_rows!=1)
+                        return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+                }
+                else
+                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
             }
-            return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+            return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
         }//db -1
 
 
 
 
 
-        static function ndDatPhong($maSo_ND, $maLoaiPhong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc){
-            $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
-            if($phongConLai = $result->fetch_assoc()){
-                if($phongConLai['phongConLai'] < 1)
-                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
-                $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
-                $maPhong = $result->fetch_assoc()['maPhong'];
+        static function ndDatPhong($maSo_ND, $maLoaiPhong, $soluong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc){
+            $ngayDat = date("Y-m-d h:i:s",time());
+            for($i=1;$i<=$soluong;$i++){
+                $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
+                if($phongConLai = $result->fetch_assoc()){
+                    if($phongConLai['phongConLai'] < 1)
+                        return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
+                    $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
+                    $maPhong = $result->fetch_assoc()['maPhong'];
 
-                self::$mysql->query("INSERT INTO ndDatPhong(maSo_ND, maPhong, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc)
-                                    VALUES('$maSo_ND', '$maPhong', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc')");
-                if(self::$mysql->affected_rows==1)
-                    return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+                    self::$mysql->query("INSERT INTO ndDatPhong(maSo_ND, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc)
+                                        VALUES('$maSo_ND', '$maPhong', '$ngayDat', '$thoiGianBatDau', '$thoiGianKetThuc', $tongChiPhi, '$hinhThuc')");
+                    if(self::$mysql->affected_rows!=1)
+                        return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+                }
+                else
+                    return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+                 
             }
-            return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
+            return ['success'=>true, 'msg'=>'Đặt phòng thành công!'];
+            
         }//db -1
 
 

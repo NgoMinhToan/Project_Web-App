@@ -20,4 +20,6 @@
         $result['tienNghi'] = json_decode($result['tienNghi']);
         echo json_encode($result);
     }
+
+    
 ?>
