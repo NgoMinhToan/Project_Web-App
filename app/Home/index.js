@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 }, false)
 $(function() {
-    $("#calendar").datepicker();
+    $("#calendar").datepicker({ dateFormat: "dd-mm-yy" }).val();
 });
 $(function() {
-    $("#calendar-2").datepicker();
+    $("#calendar-2").datepicker({ dateFormat: "dd-mm-yy" }).val();
 });
 //Chọn ngày
 $("input[name='demo0']").TouchSpin({
