@@ -389,7 +389,7 @@
 
 
 
-        static function getLoaiPhong($maKhachSan){
+        static function get_Phong_info_all($maKhachSan){
             $rs = [];
             if($stmt = self::$mysql->prepare("SELECT loaiPhong.maLoaiPhong, moTa, dienTich, phongConLai FROM loaiPhong INNER JOIN (SELECT DISTINCT maLoaiPhong FROM phong WHERE maKhachSan=?) S1 ON loaiPhong.maLoaiPhong = S1.maLoaiPhong")){
                 $stmt->bind_param('s', $maKhachSan);
@@ -406,7 +406,24 @@
 
 
 
-        static function getKs_Info($maKhachSan){
+        static function get_Phong_info($maLoaiPhong){
+            $rs = ['success'=>false,'maLoaiPhong'=>$maLoaiPhong, 'moTa'=>[], 'dienTich'=>'', 'phongConLai'=>''];
+            if($stmt = self::$mysql->prepare("SELECT loaiPhong.maLoaiPhong, moTa, dienTich, phongConLai FROM loaiPhong WHERE loaiPhong.maLoaiPhong = ?")){
+                $stmt->bind_param('s', $maLoaiPhong);
+                $stmt->execute();
+                $stmt->bind_result($maLoaiPhong, $moTa, $dienTich, $phongConLai);
+                if ($stmt->fetch()){
+                    $rs = ['success'=>true,'maLoaiPhong'=>$maLoaiPhong, 'moTa'=>$moTa, 'dienTich'=>$dienTich, 'phongConLai'=>$phongConLai];
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+
+
+        static function get_Ks_Info($maKhachSan){
             $rs = [];
             if($stmt = self::$mysql->prepare("SELECT * FROM khachSan WHERE maKhachSan= ?")){
                 $stmt->bind_param('s', $maKhachSan);

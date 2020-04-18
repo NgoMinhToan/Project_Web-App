@@ -144,7 +144,10 @@ function autoLogin(){
     });
     return userInfo;
 }
-autoLogin();
+$(()=>{
+    autoLogin();
+
+})
 $(()=>{
     if(userInfo.hasOwnProperty('success'))
         if(userInfo['success']){
@@ -204,4 +207,75 @@ function danhGia(){
         }
     });
     return cont;
+}
+// Accept Link
+function get_LoaiPhong_info(){
+    let result = '';
+    $.ajax({
+        type: 'POST',
+        url: '../../php/thanhToan.php',
+        async: false,
+        data: {action: 'getLoaiPhong'},
+        dataType: 'json',
+        success: (response)=>{
+            if(response.success){
+                result = response;
+                console.log(response);
+            }
+        }
+    });
+    return result;
+}
+function getKS_Info(){
+    var val;
+    $.ajax({    
+        type: 'POST',
+        url: '../../php/hotel.php',
+        async: false,
+        data: {action: 'ks_info', maKhachSan: maKhachSan},
+        dataType: 'json',
+        success: (response)=>{
+            // console.log(response);
+            val = response;
+        }
+    });
+    return val;
+}
+function datPhong_Info(){
+    var val;
+    $.ajax({    
+        type: 'POST',
+        url: '../../php/thanhToan.php',
+        async: false,
+        data: {action: 'datPhong'},
+        dataType: 'json',
+        success: (response)=>{
+            console.log(response);
+            val = response;
+        }
+    });
+    return val;
+}
+
+$(()=>{
+    datPhong_Info();
+    // let phong_info = get_LoaiPhong_info();
+    // loadPage(phong_info);
+    
+})
+var maLoaiPhong;
+var maKhachSan;
+function loadPage(phong_info){
+    maLoaiPhong = phong_info.maLoaiPhong;
+    maKhachSan = phong_info.maKhachSan;
+    let ks_info = getKS_Info(maKhachSan);
+    console.log(ks_info);
+    
+    let box_ks = $('#ks_box');
+    box_ks.find('.box-header .title-info h4').text(ks_info.tenKhachSan);
+    box_ks.find('.box-header .address-info p').text(ks_info.diaChi_KS);
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[0]).html('<input type="datetime-local" id="timestart" name="timestart">');
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[1]).html('<input type="datetime-local" id="timeend" name="timeend">');
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[2]).html('<input type="number" id="numnight" name="numnight">');
+
 }

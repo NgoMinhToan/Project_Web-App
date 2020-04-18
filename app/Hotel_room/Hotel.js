@@ -219,9 +219,9 @@ function danhGia(){
 
 
 
-var maKhachSan = 'MAKHACHSAN11_1';//------------------------------
 
-function getKS_Info(){
+
+function get_KS_Info(maKhachSan){
     var val;
     $.ajax({    
         type: 'POST',
@@ -237,7 +237,7 @@ function getKS_Info(){
     return val;
 }    
 
-function loaiPhong(){
+function get_LoaiPhong_info(maKhachSan){
     var val;
     $.ajax({
         type: 'POST',
@@ -252,10 +252,29 @@ function loaiPhong(){
     });
     return val;
 }
-$(()=>{
-    let ks_info = getKS_Info();
-    let loaiphong_info = loaiPhong();
-    console.log(ks_info);
+//Chuyển hướng
+function room_Choose(maLoaiPhong){
+    var select_room = $('#room_in_'+maLoaiPhong).val();
+    var cont = false;
+    $.ajax({
+        type: 'POST',
+        url: '../../php/hotel.php',
+        async: false,
+        data: {action: 'direction', maKhachSan: maKhachSan, maLoaiPhong: maLoaiPhong, select_room: select_room, timestart: timestart, timeend: timeend},
+        dataType: 'json',
+        success:(response)=>{
+            if(response.success)
+                cont=true;
+            console.log(cont);
+        }
+    });
+    return cont;
+}
+
+function loadPage(ks_info, loaiphong_info){
+    // let ks_info = get_KS_Info(maKhachSan);
+    // let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+    // console.log(ks_info);
     let body = $('#id-body');
 
     //section header
@@ -282,7 +301,7 @@ $(()=>{
     for(let i=0;i<ks_info.diemDen.length;i++){
         let cell = $($(body).find('.list-box tbody'));
         cell.append('<tr></tr>');
-        console.log(ks_info.diemDen[i]);
+        // console.log(ks_info.diemDen[i]);
         ks_info.diemDen[i].forEach((item, index)=>{
             $(cell.find('tr')[i]).append('<td></td>');
             $($(cell.find('tr')[i]).find('td')[index]).text(item);
@@ -297,7 +316,7 @@ $(()=>{
     let tabel_hotel = $('div#table-hotel, div.table-hotel');
     tabel_hotel.append('<table class="title-table"><tbody><tr class="tr_1"><td class="text">Chọn Phòng '+ks_info.tenKhachSan+'</td><td class="td_1"><i class="fa fa-check-circle"> Đảm bảo giá tốt nhất</i><br><small>Giá ưu đãi chỉ dành cho khách nội địa</small></td></tr></tbody></table><table border="1" class="title-room"> <tbody> <tr class="type"> <td>LOẠI PHÒNG</td> <td>TỐI ĐA</td> <td>TÙY CHỌN</td> <td> <strong>GIÁ 1 ĐÊM</strong><br> <small>Chưa bao gồm thuế, phí</small> </td> <td>SỐ LƯỢNG</td> <td>ĐẶT PHÒNG</td> </tr> </tbody> </table>');
     loaiphong_info.forEach((item, index)=>{
-        console.log(item);
+        // console.log(item);
         tabel_hotel.append('<table border="1" class="name-room"> <tbody><tr class="name"> <td>'+item.moTa.ten+'</td> </tr> </tbody></table>');
         tabel_hotel.append('<table border="1" class="info-room"><tbody><tr class="info-type"><td class="info-type-1"></td><td class="info-type-2"></td><td class="info-type-3"></td><td class="info-type-4"></td><td class="info-type-5"></td><td class="info-type-6"></td></tr></tbody></table>');
         let table = $(tabel_hotel.find('table.info-room')[index]);
@@ -329,13 +348,17 @@ $(()=>{
         info.append('<br><small class="money">'+item.moTa.giaGiam+' đ</small>');
         
         info = table.find('.info-type-5');
-        info.append('<select name="" id=""> </select>');
+        info.append('<select name="" id="room_in_'+item.maLoaiPhong+'"> </select>');
         
-        for(let i=1;i<=item.phongConLai;i++)
+        var i =1;
+        for(;i<=item.phongConLai;i++)
             info.find('select').append('<option value="'+i+'">'+i+' phòng</option>');
         
+        for(;i<=item.moTa.soPhong;i++)
+            info.find('select').append('<option disabled>'+i+' phòng</option>');
+        
         info = table.find('.info-type-6');
-        info.append('<a href="#"><button type="button" class="btn btn-warning">ĐẶT NGAY</button></a>');
+        info.append('<a href="./ThanhToan.html" id="change_url_'+item.maLoaiPhong+'"><button type="button" class="btn btn-warning" onclick="return room_Choose(\''+item.maLoaiPhong+'\')">ĐẶT NGAY</button></a>');
     })
 
     //section convenience
@@ -372,7 +395,7 @@ $(()=>{
         "Két an toàn": '<i class="fa fa-shield"></i>',
         "Phòng tập thể": '<i class="fa fa-home"></i>',
         "Tổ chức sự kiện": '<i class="fa fa-glass"></i>',
-        "Hồ bơi dành cho trẻ em": 'i class="fa fa-shower"></i>',
+        "Hồ bơi dành cho trẻ em": '<i class="fa fa-shower"></i>',
         "Cửa hàng lưu niệm": '<i class="fa fa-gift"></i>',
         "Salon": '<i class="fa fa-home"></i>',
         "Sòng bài": '<i class="fa fa-hand-spock-o"></i>',
@@ -396,5 +419,53 @@ $(()=>{
         convenience.find('.cot_'+(((column++)%3)+1)).append(dic_class[item]+' <span>'+item+'</span><br>');
     })
 
+}
+
+$('.nut.btn.btn-danger').click(()=>{
+    let ks_info = get_KS_Info(maKhachSan);
+    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+    loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai > numPhong));
+})
+
+// main
+var maKhachSan = 'MAKHACHSAN11_1';//------------------------------
+$(()=>{
+    let ks_info = get_KS_Info(maKhachSan);
+    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+    loadPage(ks_info, loaiphong_info);
+})
+
+// time picker
+var timestart = '1-1-2000';
+var timeend = '1-1-2000';
+$('#calendar').on('change', ()=>{
+    timestart = $('#calendar').val();
+    console.log(timestart);
+})
+$('#calendar-2').on('change', ()=>{
+    timeend =$('#calendar-2').val();
+    console.log(timeend);
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '../../php/hotel.php',
+    //     async: false,
+    //     data: {action: 'pulltimeend', timeend: timeend},
+    //     dataType: 'json',
+    //     success:(response)=>{
+    //         if(response.success)
+    //             cont=true;
+    //         console.log(cont);
+    //     }
+    // });
+})
+var numPhong = 0;
+var numNguoi = 0;
+$('#demo0').on('change', ()=>{
+    numPhong = $('#demo0').val();
+    console.log(numPhong);
+})
+$('#demo01').on('change', ()=>{
+    numNguoi =$('#demo01').val();
+    console.log(numNguoi);
 })
 
