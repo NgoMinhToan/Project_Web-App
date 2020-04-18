@@ -45,6 +45,6 @@
             $timeend = strtotime('+1 day');
             $night = 1;
         }
-        echo json_encode(['success'=>true, 'timestart'=>date('Y-m-d h:i:s', $timestart), 'timeend'=>date('Y-m-d h:i:s', $timeend), 'night'=>$night]);
+        echo json_encode(['success'=>true, 'timestart'=>str_replace(' ', 'T', date('Y-m-d h:i:s', $timestart)), 'timeend'=>str_replace(' ', 'T', date('Y-m-d h:i:s', $timeend)), 'night'=>$night]);
     }
 ?>      

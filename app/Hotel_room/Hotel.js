@@ -271,6 +271,10 @@ function room_Choose(maLoaiPhong){
     return cont;
 }
 
+function inttomoney(int){
+    return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
+}
+
 function loadPage(ks_info, loaiphong_info){
     // let ks_info = get_KS_Info(maKhachSan);
     // let loaiphong_info = get_LoaiPhong_info(maKhachSan);
@@ -340,12 +344,12 @@ function loadPage(ks_info, loaiphong_info){
         info = table.find('.info-type-4');
         if(item.moTa.uuDai>0){
             info.append('<p class="sale_sale"> Khuyến mãi đặt biệt - '+item.moTa.uuDai+' % </p>');
-            info.append('<small><strike>'+item.moTa.giaGoc+' đ</strike></small>');
+            info.append('<small><strike>'+inttomoney(item.moTa.giaGoc)+' đ</strike></small>');
         }
         else{
             info.append('<p class="sale_sale" style="background: none; border: none"></p>');
         }
-        info.append('<br><small class="money">'+item.moTa.giaGiam+' đ</small>');
+        info.append('<br><small class="money">'+inttomoney(item.moTa.giaGiam)+' đ</small>');
         
         info = table.find('.info-type-5');
         info.append('<select name="" id="room_in_'+item.maLoaiPhong+'"> </select>');
