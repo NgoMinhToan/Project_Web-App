@@ -126,7 +126,7 @@ document.getElementById("myLink").click();
 
 
 // Auto Login
-var userInfo = {};
+var userInfo = {success: false};
 function autoLogin(){
     // var isSuccess = false;
     $.ajax({
@@ -216,7 +216,7 @@ function danhGia(){
         type: 'POST',
         url: '../../php/index.php',
         async: false,
-        data: {action: 'danhGia', doHaiLong: doHaiLong, gopY: gopY, cauHoi: cauHoi, email_sdt_lienhe: email_sdt_lienhe},
+        data: {action: 'danhGia', doHaiLong, gopY, cauHoi, email_sdt_lienhe},
         dataType: 'json',
         success: (response)=>{
             if(response['success'])
@@ -249,7 +249,7 @@ function getKS_Info(){
         type: 'POST',
         url: '../../php/hotel.php',
         async: false,
-        data: {action: 'ks_info', maKhachSan: maKhachSan},
+        data: {action: 'ks_info', maKhachSan},
         dataType: 'json',
         success: (response)=>{
             // console.log(response);
@@ -264,7 +264,7 @@ function datPhong_Info(){
         type: 'POST',
         url: '../../php/thanhToan.php',
         async: false,
-        data: {action: 'datPhong'},
+        data: {action: 'datPhong_info'},
         dataType: 'json',
         success: (response)=>{
             console.log(response);
@@ -309,10 +309,10 @@ function loadPage(phong_info, dP_info){
     phong_info.moTa.tuyChon.forEach((item)=>{
         $('.booking-bill td.text-1 ul').append('<li>'+item+'</li>')
     })
-    $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*dP_info.night)+' đ/ '+dP_info.night+' đêm');
-    $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*dP_info.night)+ ' đ');
+    $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*dP_info.night*phong_info.select_room)+' đ/ '+dP_info.night+' đêm');
+    $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*dP_info.night*phong_info.select_room)+ ' đ');
 
-    $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*dP_info.night) + ' đ');
+    $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*dP_info.night*phong_info.select_room) + ' đ');
 
     $($($('.table-3 tr')[1]).find('td')[0]).empty().append('<strong>Thanh Toán</strong> <br> ('+dP_info.night+' đêm) <br> Đã bao gồm VAT');
 
@@ -324,63 +324,46 @@ var timestart = '1970-1-1 00:00:00';
 var timeend = '1970-1-1 00:00:00';
 var night = 1;
 var email = '';
-var std = 0;
+var sdt = 0;
 var hoTen = '';
 var tinhthanhpho = '';
-var dic_month = {1:31, 2:(28 + night%4==0), 3: 31, 4:30, 5:31, 6: 30, 7:31, 8: 31, 9: 30, 10: 31, 11:30, 12:31};
+var month;
+var year;
+var PTTT = 'Thẻ Tín Dụng';
+var address_bill, address_company, code, company;
+
 $(()=>{
     $('#timeend').change(()=>{
         console.log($('#timeend').val());
         timeend = $('#timeend').val().replace('T', ' '); 
-        if(new Date(timestart)>new Date(timeend))
-            $('#error-date').text('Bạn chọn ngày không hợp lệ');
-        else{
-            $('#error-date').text('');
-            night = (new Date(timeend).getDate() - new Date(timestart).getDate());
-            night = (new Date(timeend).getDate() - new Date(timestart).getDate());
-            var month = (new Date(timestart).getMonth()+1);
-            var year = new Date(timestart).getFullYear();
-            while(night<0 || month < (new Date(timeend).getMonth()+1) || year < new Date(timeend).getFullYear()){
-                dic_month = {1:31, 2:(28 + night%4==0), 3: 31, 4:30, 5:31, 6: 30, 7:31, 8: 31, 9: 30, 10: 31, 11:30, 12:31};
-                night += dic_month[month];
-                if(month==12){
-                    month =1;
-                    year++;
-                }    
-                month++;
-            }
-            $('#numnight').val(night);
-
-            $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*night)+' đ/ '+night+' đêm');
-            $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*night)+ ' đ');
-            $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*night) + ' đ');
-            $($($('.table-3 tr')[1]).find('td')[0]).empty().append('<strong>Thanh Toán</strong> <br> ('+night+' đêm) <br> Đã bao gồm VAT');
-        }
     })
     $('#timestart').change(()=>{
         console.log($('#timestart').val());
         timestart = $('#timestart').val().replace('T', ' ');
-        if(new Date(timestart)>new Date(timeend))
+    })
+    $('#timestart, #timeend').change(()=>{
+        if(new Date(timestart)>=new Date(timeend) || new Date(timestart)<new Date())
             $('#error-date').text('Bạn chọn ngày không hợp lệ');
         else{
             $('#error-date').text('');
             night = (new Date(timeend).getDate() - new Date(timestart).getDate());
-            var month = (new Date(timestart).getMonth()+1);
-            var year = new Date(timestart).getFullYear();
+            month = (new Date(timestart).getMonth()+1);
+            year = new Date(timestart).getFullYear();
             while(night<0 || month < (new Date(timeend).getMonth()+1) || year < new Date(timeend).getFullYear()){
-                dic_month = {1:31, 2:(28 + night%4==0), 3: 31, 4:30, 5:31, 6: 30, 7:31, 8: 31, 9: 30, 10: 31, 11:30, 12:31};
+                dic_month = {1:31, 2:(28 + year%4==0), 3: 31, 4:30, 5:31, 6: 30, 7:31, 8: 31, 9: 30, 10: 31, 11:30, 12:31};
                 night += dic_month[month];
                 if(month==12){
                     month =1;
                     year++;
                 }
-                month++;
+                else
+                    month++;
             }
             $('#numnight').val(night);
 
-            $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*night)+' đ/ '+night+' đêm');
-            $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*night)+ ' đ');
-            $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*night) + ' đ');
+            $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*night*phong_info.select_room)+' đ/ '+night+' đêm');
+            $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*night*phong_info.select_room)+ ' đ');
+            $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*night*phong_info.select_room) + ' đ');
             $($($('.table-3 tr')[1]).find('td')[0]).empty().append('<strong>Thanh Toán</strong> <br> ('+night+' đêm) <br> Đã bao gồm VAT');
         }
     })
@@ -404,4 +387,41 @@ $(()=>{
         console.log($($('#province option')[$('#province').val()-1]).text());
         tinhthanhpho = $($('#province option')[$('#province').val()-1]).text();
     })
+    $('[name="PTthanhToan"]').change(()=>{
+        console.log($('input[name="PTthanhToan"]:checked').val());
+
+    })
+    $('#address-bill').change(()=>{
+        console.log($('#address-bill').val());
+        address_bill = $('#address-bill').val();
+    })
+    $('#address-company').change(()=>{
+        console.log($('#address-company').val());
+        address_company = $('#address-company').val();
+    })
+    $('#code').change(()=>{
+        console.log($('#code').val());
+        code = $('#code').val();
+    })
+    $('#company').change(()=>{
+        console.log($('#company').val());
+        company = $('#company').val();
+    })
+
 })
+function btn_datPhong(){
+    cont = false;
+    $.ajax({    
+        type: 'POST',
+        url: '../../php/thanhToan.php',
+        async: false,
+        data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company},
+        dataType: 'json',
+        success: (response)=>{
+            console.log(response);
+            if(response.success)
+                cont = true;
+        }
+    });
+    return cont;
+}

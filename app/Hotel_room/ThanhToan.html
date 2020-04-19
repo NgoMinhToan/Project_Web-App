@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <div class="form-info">
-                            <form action="" method="" class="col-sm-12 col-12" onsubmit="return CheckForm()">
+                            <form action="" method="" class="col-sm-12 col-12" onsubmit="return btn_datPhong()">
                                 <div class="titleform">
                                     <strong>Thông Tin Liên Hệ</strong>
                                     <a href="">Đăng Nhập</a>
@@ -257,7 +257,7 @@
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodcard">
                                             <a href="javascript:void(0)" onclick="openMenu(event, 'creditcard');" id="myLink">
                                                 <div class="tablink">
-                                                    <input type="radio" checked="checked" name="gender" id="radio">
+                                                    <input type="radio" checked="checked" value="Thẻ Tín Dụng" name="PTthanhToan" id="radio">
                                                     <label for="radio" class="checkmark"></label>
                                                     <label for="radio" class="cards"><small>Thẻ Tín Dụng</small></label>
                                                 </div>
@@ -266,7 +266,7 @@
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodATM">
                                             <a href="javascript:void(0)" onclick="openMenu(event, 'ATM');">
                                                 <div class="tablink">
-                                                    <input type="radio" name="gender" id="radio1">
+                                                    <input type="radio" name="PTthanhToan" value="Thẻ ATM Nội Địa" id="radio1">
                                                     <label for="radio1" class="checkmark"></label>
                                                     <label for="radio1" class="cards"><small>Thẻ ATM Nội Địa</small></label>
                                                 </div>
@@ -275,7 +275,7 @@
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12 methodtrasnfer">
                                             <a href="javascript:void(0)" onclick="openMenu(event, 'transfer');">
                                                 <div class="tablink">
-                                                    <input type="radio" name="gender" id="radio2">
+                                                    <input type="radio" name="PTthanhToan" value="Chuyển Khoản" id="radio2">
                                                     <label for="radio2" class="checkmark"></label>
                                                     <label for="radio2" class="cards"><small>Chuyển Khoản</small></label>
                                                 </div>
@@ -333,7 +333,7 @@
                                     </div>
                                 </div>
                                 <div class="payment">
-                                    <input type="submit" value="THANH TOÁN" name=""><br>
+                                    <input type="submit" value="THANH TOÁN" onclick="return CheckForm()" name=""><br>
                                     <small>Bằng cách nhấp nút Thanh toán, bạn đồng ý với <a href="#">Chính sách và quy định chung</a> của chúng tôi.</small>
                                 </div>
                             </form>

@@ -27,14 +27,14 @@
             echo json_encode(['success'=>false, 'maLoaiPhong'=>$maLoaiPhong]);
         // echo $maLoaiPhong;
     }
-    if($action=='datPhong'){
+    if($action=='datPhong_info'){
         // echo ['success'=>true]
         if(isset($_SESSION['timestart'])){
             $timestart = strtotime($_SESSION['timestart']);
             $timeend = strtotime($_SESSION['timeend']);
             if ($timestart>$timeend or $timestart<time()){
-                $timestart = time();
-                $timeend = strtotime('+1 day');
+                $timestart = strtotime('+1 day');
+                $timeend = strtotime('+2 day');
                 $night = 1;
             }
             else
@@ -46,5 +46,27 @@
             $night = 1;
         }
         echo json_encode(['success'=>true, 'timestart'=>str_replace(' ', 'T', date('Y-m-d h:i:s', $timestart)), 'timeend'=>str_replace(' ', 'T', date('Y-m-d h:i:s', $timeend)), 'night'=>$night]);
+    }
+    if($action == 'datPhong_confirm'){
+
+        $timestart = $_POST['timestart'];
+        $timeend = $_POST['timeend'];
+        $night = $_POST['night'];
+        $email = $_POST['email'];
+        $sdt = $_POST['sdt'];
+        $hoTen = $_POST['hoTen'];
+        $tinhthanhpho = $_POST['tinhthanhpho'];
+        $PTTT = $_POST['PTTT'];
+        $address_bill = $_POST['address_bill'];
+        $address_company = $_POST['address_company'];
+        $code = $_POST['code'];
+        $company = $_POST['company'];
+        $chiPhi = $_POST['chiPhi']*$night;
+        $maLoaiPhong = $_POST['maLoaiPhong'];
+        $soluong = $_POST['select_room'];
+        if($_POST['dangnhap'])
+            echo json_encode(Db::ndDatPhong($_POST['maSo_ND'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $email, $sdt, $hoTen, $tinhthanhpho));
+        else
+            echo json_encode(Db::khachDatPhong($_SESSION['maTruyCap'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $hoTen, $email, $sdt, $tinhthanhpho));
     }
 ?>      
