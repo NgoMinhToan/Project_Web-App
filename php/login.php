@@ -44,17 +44,21 @@
         // if(isset($_COOKIE['maTruyCap'])){
         if(isset($_SESSION['maTruyCap'])){
             $maTruyCap = $_SESSION['maTruyCap'];
-            Db::capNhat_IP($maTruyCap);
-
+            if(Db::capNhat_IP($maTruyCap)['success']==false)
+                $maTruyCap = Db::taoTruyCap()['maTruyCap'];
             $loginInfo = Db::getUser($maTruyCap);
+            if($loginInfo['success']==true)
+                echo json_encode(Db::dangNhap($loginInfo['email_ND'], $loginInfo['matKhau_ND'], Db::getTruyCap($maTruyCap)));
+            else
+                echo json_encode($loginInfo);
             // print_r($loginInfo);
-            echo json_encode(Db::dangNhap($loginInfo['email_ND'], $loginInfo['matKhau_ND'], Db::getTruyCap($maTruyCap)));
         }
         else
-            $maTruyCap = Db::taoTruyCap();
+            $maTruyCap = Db::taoTruyCap()['maTruyCap'];
         
         // setcookie('maTruyCap', $maTruyCap, time() + (86400 * 30), "/"); // 86400 = 1 day
         $_SESSION['maTruyCap'] = $maTruyCap;
+        // echo $maTruyCap;
     }
 
 

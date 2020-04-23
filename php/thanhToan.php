@@ -24,7 +24,7 @@
             echo json_encode($result);
         }
         else
-            echo json_encode(['success'=>false, 'maLoaiPhong'=>$maLoaiPhong]);
+            echo json_encode(['success'=>false]);
         // echo $maLoaiPhong;
     }
     if($action=='datPhong_info'){
@@ -64,9 +64,9 @@
         $chiPhi = $_POST['chiPhi']*$night;
         $maLoaiPhong = $_POST['maLoaiPhong'];
         $soluong = $_POST['select_room'];
-        if($_POST['dangnhap'])
-            echo json_encode(Db::ndDatPhong($_POST['maSo_ND'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $email, $sdt, $hoTen, $tinhthanhpho));
+        if($_POST['dangnhap']=='true')
+            echo json_encode(Db::ndDatPhong($_POST['maSo_ND'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $email, $sdt, $hoTen, $tinhthanhpho, $address_bill, $address_company, $code, $company));
         else
-            echo json_encode(Db::khachDatPhong($_SESSION['maTruyCap'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $hoTen, $email, $sdt, $tinhthanhpho));
+            echo json_encode(Db::khachDatPhong($_SESSION['maTruyCap'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $hoTen, $email, $sdt, $tinhthanhpho, $address_bill, $address_company, $code, $company));
     }
 ?>      

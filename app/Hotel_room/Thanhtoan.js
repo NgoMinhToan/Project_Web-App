@@ -139,13 +139,13 @@ function autoLogin(){
             if(response['success']){
                 userInfo = response;
             }
-            console.log(response);
+            // console.log(response);
         }
     });
     return userInfo;
 }
 $(()=>{
-    autoLogin();
+    console.log(autoLogin());   
 
 })
 $(()=>{
@@ -243,7 +243,7 @@ function get_LoaiPhong_info(){
     });
     return result;
 }
-function getKS_Info(){
+function getKS_Info(maKhachSan){
     var val;
     $.ajax({    
         type: 'POST',
@@ -330,7 +330,7 @@ var tinhthanhpho = '';
 var month;
 var year;
 var PTTT = 'Thẻ Tín Dụng';
-var address_bill, address_company, code, company;
+var address_bill = address_company = code = company = '';
 
 $(()=>{
     $('#timeend').change(()=>{
@@ -389,7 +389,7 @@ $(()=>{
     })
     $('[name="PTthanhToan"]').change(()=>{
         console.log($('input[name="PTthanhToan"]:checked').val());
-
+        PTTT = $('input[name="PTthanhToan"]:checked').val();
     })
     $('#address-bill').change(()=>{
         console.log($('#address-bill').val());
@@ -407,9 +407,11 @@ $(()=>{
         console.log($('#company').val());
         company = $('#company').val();
     })
+    // console.log()
 
 })
 function btn_datPhong(){
+    alert(address_company);
     cont = false;
     $.ajax({    
         type: 'POST',
@@ -418,10 +420,10 @@ function btn_datPhong(){
         data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company},
         dataType: 'json',
         success: (response)=>{
-            console.log(response);
             if(response.success)
                 cont = true;
+            console.log(response);
         }
     });
-    return cont;
+    return false;
 }
