@@ -481,9 +481,9 @@ ul#list_3 {
 
 .row .search-box .calendar-first,
 .row .search-box .calendar-second {
-    width: 25%;
+    width: 27%;
     height: 100%;
-    margin-left: 17px;
+    margin-left: 14px;
     border: 0 solid white;
 }
 
@@ -1068,6 +1068,10 @@ img {
     .info-type-6>a>button {
         margin-left: 25px;
     }
+    .row .search-box .calendar-first,
+    .row .search-box .calendar-second {
+        margin-left: 15px;
+    }
 }
 
 @media only screen and (min-width:768px) and (max-width:991px) {
@@ -1100,7 +1104,8 @@ img {
     }
     .row .search-box .calendar-first,
     .row .search-box .calendar-second {
-        margin-left: 20px;
+        margin-left: 2px;
+        width: 36%;
     }
     .row .search-box .guest-all .room,
     .row .search-box .guest-all .people {
@@ -1216,8 +1221,8 @@ img {
     }
     .row .search-box .calendar-first,
     .row .search-box .calendar-second {
-        margin-left: 4px;
-        width: 32%;
+       margin-left: 2px;
+       width: 36%;
     }
     .calendar .icon-calendar-1,
     .calendar .icon-calendar-2 {
@@ -1343,7 +1348,7 @@ img {
     .row .search-box .calendar-first,
     .row .search-box .calendar-second {
         margin-left: 12px;
-        width: 12%;
+        width: 15%;
     }
     .right img {
         margin-left: 192px;
