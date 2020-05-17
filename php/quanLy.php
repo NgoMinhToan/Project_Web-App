@@ -51,6 +51,7 @@
             $city = $_POST['city'];
             $new_pwd = $_POST['new_pwd'];
             echo json_encode(Db::changeInfo($rs['maSo_ND'], $name, $email, $phone, $address, $city, $new_pwd));
+            header('location: ../app/account/taikhoan.html');
         }
 
     }

@@ -92,12 +92,12 @@
  }
  autoLogin();
  $(() => {
+     $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>')
      if (userInfo.hasOwnProperty('success'))
          if (userInfo['success']) {
              // console.log(userInfo['maSo_ND']);
              let list_group = $('#login ul.list-group');
              list_group.children('li').first().remove();
-             list_group.append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>')
              list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
              list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
              let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
@@ -175,7 +175,7 @@
      // console.log(userInfo);
 
  })
-// Xac nhan doi thong tin
+ // Xac nhan doi thong tin
  function confirmEdit(e) {
      if ($('#pwd').val() == userInfo.matKhau_ND) {
          if ($('#new_pwd').val() == $('#confirm_pwd').val())
@@ -190,7 +190,7 @@
      }
 
  }
-// Doi thong tin
+ // Doi thong tin
  function edit(e) {
      $(e).attr('onclick', 'return confirmEdit(this)');
      $('#account > input').removeAttr('disabled');
@@ -238,9 +238,9 @@
                  }, 'json').done(() => {
                      let addClass = '';
                      if (e.trangThai == 'Đã thanh toán')
-                         addClass = 'complete';
+                         addClass = 'completed';
                      if (e.trangThai == 'Đã hủy')
-                         addClass = 'canceled';
+                         addClass = 'cancelled';
                      hd.find('table > tbody').append(`<tr class='${addClass}'> <td>${e.maHoaDon}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
                      hd.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=4><div><hr>
                         Tên khách sạn: ${tenKhachSan}<br>
@@ -263,7 +263,7 @@
          });
      }
  })
-// huy dat phong
+ // huy dat phong
  function cancel(maHoaDon) {
      if (userInfo.success) {
          if (confirm('Bạn có chắc muốn hủy đơn này không?')) {
@@ -276,7 +276,7 @@
          return false;
      }
  }
-// tien te
+ // tien te
  function inttomoney(int) {
      return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
  }
