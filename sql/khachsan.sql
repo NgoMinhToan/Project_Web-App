@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 17, 2020 lúc 11:44 AM
+-- Thời gian đã tạo: Th5 17, 2020 lúc 02:25 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.4
 
@@ -1780,6 +1780,94 @@ CREATE TABLE `dangnhap` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `danhgia`
+--
+
+CREATE TABLE `danhgia` (
+  `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `doHaiLong` varchar(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `gopY` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `cauHoi` varchar(1000) COLLATE utf8_vietnamese_ci NOT NULL,
+  `email_SDT_lienHe` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `danhgiawebsite`
+--
+
+CREATE TABLE `danhgiawebsite` (
+  `doHaiLong` varchar(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `gopY` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `cauHoi` varchar(1000) COLLATE utf8_vietnamese_ci NOT NULL,
+  `email_sdt_lienhe` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `danhgiawebsite`
+--
+
+INSERT INTO `danhgiawebsite` (`doHaiLong`, `gopY`, `cauHoi`, `email_sdt_lienhe`) VALUES
+('Không hài lòng', 'Góp ý Website', 'ngô minh toand', '0333033302'),
+('Không hài lòng', 'Góp ý Website', 'ngo', '2222222'),
+('Không hài lòng', 'Góp ý Website', 'sacsasx', 'ãs'),
+('Bình thường', 'Góp ý Website', 'rrrrrr', ''),
+('Bình thường', 'Góp ý Website', 'rrrrrr', ''),
+('Không hài lòng', 'Góp ý Website', 'rrrrrr', '2222222'),
+('Bình thường', 'Liên hệ', 'sdfcsc', ''),
+('Không hài lòng', 'Liên hệ', 'sdfcsc', ''),
+('Bình thường', 'Liên hệ', 'frefervf', 'drvdv'),
+('Bình thường', 'Liên hệ', 'xong roi', '44444'),
+('Không hài lòng', 'Đối tác khách sạn', 'no thing', ''),
+('Hài Lòng', 'Đối tác khách sạn', 'no thing', '552665');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `hoadon`
+--
+
+CREATE TABLE `hoadon` (
+  `maHoaDon` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `maSo_KH` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `maKhachSan` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `maLoaiPhong` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `soLuong` int(11) NOT NULL DEFAULT 1,
+  `giaPhong` double NOT NULL DEFAULT 1,
+  `tongGia` double NOT NULL DEFAULT 1,
+  `thanhTien` double NOT NULL DEFAULT 1,
+  `ngayGiaoDich` datetime NOT NULL DEFAULT current_timestamp(),
+  `TG_layPhong` datetime NOT NULL DEFAULT current_timestamp(),
+  `TG_traPhong` datetime NOT NULL DEFAULT current_timestamp(),
+  `hinhThucThanhToan` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `trangThai` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT 'Đã thanh toán',
+  `tenCongTy` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `maSoThue` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `diaChiCongTy` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `diaChiNhanHoaDon` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `hoadon`
+--
+
+INSERT INTO `hoadon` (`maHoaDon`, `maSo_KH`, `maKhachSan`, `maLoaiPhong`, `soLuong`, `giaPhong`, `tongGia`, `thanhTien`, `ngayGiaoDich`, `TG_layPhong`, `TG_traPhong`, `hinhThucThanhToan`, `trangThai`, `tenCongTy`, `maSoThue`, `diaChiCongTy`, `diaChiNhanHoaDon`) VALUES
+('HOADON0001', 'KH0001', 'MAKHACHSAN8_1', 'LOAIPHONG8_1_1', 4, 959000, 3836000, 0, '2020-05-17 01:31:21', '2020-05-18 01:31:16', '2020-05-19 01:31:16', 'Thẻ ATM Nội Địa', 'Đã hủy', NULL, NULL, NULL, NULL),
+('HOADON0002', 'KH0001', 'MAKHACHSAN8_1', 'LOAIPHONG8_1_1', 4, 959000, 3836000, 0, '2020-05-17 01:31:58', '2020-05-18 01:31:22', '2020-05-19 01:31:22', 'Thẻ ATM Nội Địa', 'Đã hủy', NULL, NULL, NULL, NULL),
+('HOADON0003', 'KH0001', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 3, 878000, 2634000, 0, '2020-05-17 02:01:07', '2020-05-18 02:01:01', '2020-05-19 02:01:01', 'Thẻ ATM Nội Địa', 'Đã hủy', NULL, NULL, NULL, NULL),
+('HOADON0004', 'KH0001', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 3, 878000, 2634000, 0, '2020-05-17 02:01:45', '2020-05-18 02:01:38', '2020-05-19 02:01:38', 'Thẻ ATM Nội Địa', 'Đã hủy', NULL, NULL, NULL, NULL),
+('HOADON0005', 'KH0001', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 3, 878000, 2634000, 0, '2020-05-17 03:55:01', '2020-05-18 02:55:43', '2020-05-19 02:55:43', 'Thẻ ATM Nội Địa', 'Đã hủy', NULL, NULL, NULL, NULL),
+('HOADON0006', 'KH0002', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 1, 878000, 878000, 0, '2020-05-17 03:55:30', '2020-05-18 03:55:22', '2020-05-19 03:55:22', 'Thẻ ATM Nội Địa', 'Đã hủy', '', '', '', ''),
+('HOADON0007', 'KH0002', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 1, 878000, 878000, 0, '2020-05-17 03:55:40', '2020-05-18 03:55:30', '2020-05-19 03:55:30', 'Thẻ Tín Dụng', 'Đã hủy', '', '', '', ''),
+('HOADON0008', 'KH0002', 'MAKHACHSAN10_1', 'LOAIPHONG10_1_1', 3, 878000, 2634000, 0, '2020-05-17 04:12:57', '2020-05-18 04:12:41', '2020-05-19 04:12:41', 'Thẻ ATM Nội Địa', 'Đã hủy', 'Toan', '448685', 'Toan', 'Test'),
+('HOADON0009', 'KH0003', 'MAKHACHSAN6_1', 'LOAIPHONG6_1_1', 14, 1466000, 20524000, 0, '2020-05-17 04:41:54', '2020-05-18 04:41:38', '2020-05-19 04:41:38', 'Thẻ Tín Dụng', 'Đã hủy', 'Toan', 'FCGW6 ', 'Toan', 'Test'),
+('HOADON0010', 'KH0003', 'MAKHACHSAN6_1', 'LOAIPHONG6_1_3', 3, 2061000, 6183000, 6801000, '2020-05-17 07:13:01', '2020-05-18 07:12:54', '2020-05-19 07:12:54', 'Thẻ ATM Nội Địa', 'Đã thanh toán', '', '', '', ''),
+('HOADON0011', 'KH0004', 'MAKHACHSAN6_1', 'LOAIPHONG6_1_3', 1, 2061000, 2061000, 2267000, '2020-05-17 07:14:32', '2020-05-18 07:14:15', '2020-05-19 07:14:15', 'Thẻ ATM Nội Địa', 'Đã thanh toán', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `items`
 --
 
@@ -1851,6 +1939,16 @@ CREATE TABLE `khachdatphong` (
   `SDT_KTC` char(10) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `tinhThanhPho_KTC` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `khachdatphong`
+--
+
+INSERT INTO `khachdatphong` (`maTruyCap`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `hinhThuc`, `hoTen_KTC`, `email_KTC`, `SDT_KTC`, `tinhThanhPho_KTC`) VALUES
+('MTC0004', 'MAPHONG6_1_3_1', '2020-05-17 07:13:01', '2020-05-18 07:12:54', '2020-05-19 07:12:54', 2061000, 'Thẻ ATM Nội Địa', 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'An Giang'),
+('MTC0004', 'MAPHONG6_1_3_2', '2020-05-17 07:13:01', '2020-05-18 07:12:54', '2020-05-19 07:12:54', 2061000, 'Thẻ ATM Nội Địa', 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'An Giang'),
+('MTC0004', 'MAPHONG6_1_3_3', '2020-05-17 07:13:01', '2020-05-18 07:12:54', '2020-05-19 07:12:54', 2061000, 'Thẻ ATM Nội Địa', 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'An Giang'),
+('MTC0005', 'MAPHONG6_1_3_4', '2020-05-17 07:14:32', '2020-05-18 07:14:15', '2020-05-19 07:14:15', 2061000, 'Thẻ ATM Nội Địa', 'ffff', 'rfffff@gmail.com', 'fff', 'Cần Thơ');
 
 --
 -- Bẫy `khachdatphong`
@@ -1958,7 +2056,8 @@ CREATE TABLE `khachhang` (
 INSERT INTO `khachhang` (`maSo_KH`, `maTruyCap`, `maSo_ND`, `hoTen_KH`, `email_KH`, `SDT_KH`, `tinhThanhPho_KH`) VALUES
 ('KH0001', NULL, 'ND0001', 'toan', '111111@gmail.com', '0346144237', 'An Giang'),
 ('KH0002', 'MTC0002', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'Cần Thơ'),
-('KH0003', 'MTC0004', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'Cà Mau');
+('KH0003', 'MTC0004', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'Cà Mau'),
+('KH0004', 'MTC0005', NULL, 'ffff', 'rfffff@gmail.com', 'fff', 'Cần Thơ');
 
 -- --------------------------------------------------------
 
@@ -2016,7 +2115,8 @@ INSERT INTO `khachtruycap` (`diaChi_IP`, `maTruyCap`, `STT`) VALUES
 ('::1', 'MTC0001', 1),
 ('::1', 'MTC0002', 2),
 ('::1', 'MTC0003', 3),
-('::1', 'MTC0004', 4);
+('::1', 'MTC0004', 4),
+('::1', 'MTC0005', 5);
 
 --
 -- Bẫy `khachtruycap`
@@ -2122,7 +2222,7 @@ INSERT INTO `loaiphong` (`maLoaiPhong`, `moTa`, `dienTich`, `phongConLai`) VALUE
 ('LOAIPHONG5_1_5', '{\"ten\":\"Executive (except Russia &amp; Greater China)\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/1.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/2.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/3.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/4.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/5.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/6.png\",\".\\/images\\/reviewPhong\\/khach-san-novotel-nha-trang\\/executive-except-russia-greater-china\\/7.png\"],\"productContent\":[\"H\\u01b0\\u1edbng bi\\u1ec3n\",\"2 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"Kh\\u00f4ng ho\\u00e0n h\\u1ee7y\"],\"uuDai\":\"37\",\"giaGoc\":\"4844000\",\"giaGiam\":3051720,\"soPhong\":13,\"choPhep\":true}', 32, 13),
 ('LOAIPHONG6_1_1', '{\"ten\":\"Deluxe h\\u01b0\\u1edbng Ph\\u1ed1 ho\\u1eb7c h\\u01b0\\u1edbng Bi\\u1ec3n\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/deluxe-huong-pho-hoac-huong-bien\\/1.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/deluxe-huong-pho-hoac-huong-bien\\/2.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/deluxe-huong-pho-hoac-huong-bien\\/3.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/deluxe-huong-pho-hoac-huong-bien\\/4.png\"],\"productContent\":[\"H\\u01b0\\u1edbng bi\\u1ec3n\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\"],\"uuDai\":0,\"giaGoc\":\"1466000\",\"giaGiam\":1466000,\"soPhong\":34,\"choPhep\":true}', 40, 34),
 ('LOAIPHONG6_1_2', '{\"ten\":\"Senior Deluxe H\\u01b0\\u1edbng Ph\\u1ed1 Ho\\u1eb7c H\\u01b0\\u1edbng Bi\\u1ec3n\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/senior-deluxe-huong-pho-hoac-huong-bien\\/1.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/senior-deluxe-huong-pho-hoac-huong-bien\\/2.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/senior-deluxe-huong-pho-hoac-huong-bien\\/3.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/senior-deluxe-huong-pho-hoac-huong-bien\\/4.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/senior-deluxe-huong-pho-hoac-huong-bien\\/5.png\"],\"productContent\":[\"H\\u01b0\\u1edbng bi\\u1ec3n\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\"],\"uuDai\":0,\"giaGoc\":\"1763000\",\"giaGiam\":1763000,\"soPhong\":45,\"choPhep\":true}', 40, 45),
-('LOAIPHONG6_1_3', '{\"ten\":\"Novela Suite h\\u01b0\\u1edbng Ph\\u1ed1 ho\\u1eb7c h\\u01b0\\u1edbng Bi\\u1ec3n\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/1.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/2.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/3.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/4.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/5.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/6.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/7.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/8.png\"],\"productContent\":[\"H\\u01b0\\u1edbng ph\\u1ed1\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\"],\"uuDai\":0,\"giaGoc\":\"2061000\",\"giaGiam\":2061000,\"soPhong\":8,\"choPhep\":true}', 70, 8);
+('LOAIPHONG6_1_3', '{\"ten\":\"Novela Suite h\\u01b0\\u1edbng Ph\\u1ed1 ho\\u1eb7c h\\u01b0\\u1edbng Bi\\u1ec3n\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/1.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/2.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/3.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/4.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/5.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/6.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/7.png\",\".\\/images\\/reviewPhong\\/novela-resort-spa-mui-ne\\/novela-suite-huong-pho-hoac-huong-bien\\/8.png\"],\"productContent\":[\"H\\u01b0\\u1edbng ph\\u1ed1\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 18\\/05\\/2020\"],\"uuDai\":0,\"giaGoc\":\"2061000\",\"giaGiam\":2061000,\"soPhong\":8,\"choPhep\":true}', 70, 4);
 INSERT INTO `loaiphong` (`maLoaiPhong`, `moTa`, `dienTich`, `phongConLai`) VALUES
 ('LOAIPHONG7_1_1', '{\"ten\":\"Lotus Deluxe Gi\\u01b0\\u1eddng \\u0110\\u00f4i\\/2 Gi\\u01b0\\u1eddng \\u0110\\u01a1n\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-deluxe-giuong-doi-2-giuong-don\\/1.png\",\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-deluxe-giuong-doi-2-giuong-don\\/2.png\",\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-deluxe-giuong-doi-2-giuong-don\\/3.png\",\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-deluxe-giuong-doi-2-giuong-don\\/4.png\"],\"productContent\":[\"Kh\\u00f4ng c\\u1eeda s\\u1ed5\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i                                                                                                                                                                              \\/ 2 Gi\\u01b0\\u1eddng \\u0111\\u01a1n\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 06\\/06\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 06\\/06\\/2020\"],\"uuDai\":0,\"giaGoc\":\"1624000\",\"giaGiam\":1624000,\"soPhong\":10,\"choPhep\":true}', 22, 10),
 ('LOAIPHONG7_1_2', '{\"ten\":\"Lotus Executive gi\\u01b0\\u1eddng \\u0111\\u00f4i\\/2 gi\\u01b0\\u1eddng \\u0111\\u01a1n h\\u01b0\\u1edbng ph\\u1ed1\",\"srcHinh\":[\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-executive-giuong-doi-2-giuong-don-huong-pho\\/1.png\",\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-executive-giuong-doi-2-giuong-don-huong-pho\\/2.png\",\".\\/images\\/reviewPhong\\/khach-san-golden-lotus-luxury\\/lotus-executive-giuong-doi-2-giuong-don-huong-pho\\/3.png\"],\"productContent\":[\"H\\u01b0\\u1edbng ph\\u1ed1\",\"1 Gi\\u01b0\\u1eddng \\u0111\\u00f4i\"],\"toiDaSoNguoi\":\"x 2 ng\\u01b0\\u1eddi\",\"tuyChon\":[\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 06\\/06\\/2020\",\"Xem chi ti\\u1ebft\",\"Bao g\\u1ed3m B\\u1eefa s\\u00e1ng\",\"H\\u1ee7y mi\\u1ec5n ph\\u00ed \\u0111\\u1ebfn 06\\/06\\/2020\"],\"uuDai\":0,\"giaGoc\":\"1782000\",\"giaGiam\":1782000,\"soPhong\":5,\"choPhep\":true}', 22, 5),
@@ -3006,10 +3106,10 @@ INSERT INTO `phong` (`maPhong`, `maLoaiPhong`, `maKhachSan`, `conTrong`, `thoiGi
 ('MAPHONG6_1_2_7', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
 ('MAPHONG6_1_2_8', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
 ('MAPHONG6_1_2_9', 'LOAIPHONG6_1_2', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
-('MAPHONG6_1_3_1', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
-('MAPHONG6_1_3_2', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
-('MAPHONG6_1_3_3', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
-('MAPHONG6_1_3_4', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
+('MAPHONG6_1_3_1', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 0, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
+('MAPHONG6_1_3_2', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 0, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
+('MAPHONG6_1_3_3', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 0, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
+('MAPHONG6_1_3_4', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 0, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
 ('MAPHONG6_1_3_5', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
 ('MAPHONG6_1_3_6', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
 ('MAPHONG6_1_3_7', 'LOAIPHONG6_1_3', 'MAKHACHSAN6_1', 1, '2020-05-17 09:51:45', '2020-05-17 09:51:45'),
@@ -3167,6 +3267,18 @@ ALTER TABLE `dangnhap`
   ADD UNIQUE KEY `maTruyCap` (`maTruyCap`);
 
 --
+-- Chỉ mục cho bảng `danhgia`
+--
+ALTER TABLE `danhgia`
+  ADD KEY `FK_danhGia_khachSan` (`maKhachSan`);
+
+--
+-- Chỉ mục cho bảng `hoadon`
+--
+ALTER TABLE `hoadon`
+  ADD PRIMARY KEY (`maHoaDon`);
+
+--
 -- Chỉ mục cho bảng `khachdatphong`
 --
 ALTER TABLE `khachdatphong`
@@ -3229,6 +3341,12 @@ ALTER TABLE `phong`
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `danhgia`
+--
+ALTER TABLE `danhgia`
+  ADD CONSTRAINT `FK_danhGia_khachSan` FOREIGN KEY (`maKhachSan`) REFERENCES `khachsan` (`maKhachSan`);
 
 --
 -- Các ràng buộc cho bảng `khachdatphong`
