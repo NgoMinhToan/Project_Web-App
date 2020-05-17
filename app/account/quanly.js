@@ -67,7 +67,6 @@
 
 
 
-
  //Kiểm tra đăng nhập 
  // Auto Login
  var userInfo = {};
