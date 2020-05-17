@@ -160,10 +160,10 @@ $(()=>{
             console.log(userInfo['maSo_ND']);
             let list_group = $('#login ul.list-group');
             list_group.children('li').first().remove();
-            list_group.append('<li class="list-group-item"><a href="">Quản lý đơn phòng</a></li>')
-            list_group.append('<li class="list-group-item"><a href="">Quản lý tài khoản</a></li>')
+            list_group.append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
+            list_group.append('<li class="list-group-item"><a href="../account/taikhoan.html">Quản lý tài khoản</a></li>')
             list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-            let account = $('<li class="list-group-item bg-primary"><a href="" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+            let account = $('<li class="list-group-item bg-primary"><a href="../account/taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
             account.children('a').append('<br><span>'+userInfo['email_ND']+'</span>');
             list_group.append(account);
         }
@@ -253,14 +253,14 @@ function get_LoaiPhong_info(maKhachSan){
     return val;
 }
 //Chuyển hướng
-function room_Choose(maLoaiPhong){
+function room_Choose(maLoaiPhong, maKhachSan){
     var select_room = $('#room_in_'+maLoaiPhong).val();
     var cont = false;
     $.ajax({
         type: 'POST',
         url: '../../php/hotel.php',
         async: false,
-        data: {action: 'direction', maKhachSan: maKhachSan, maLoaiPhong: maLoaiPhong, select_room: select_room, timestart: timestart, timeend: timeend},
+        data: {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend},
         dataType: 'json',
         success:(response)=>{
             if(response.success)
@@ -287,7 +287,7 @@ function loadPage(ks_info, loaiphong_info){
 
     //section under header 1
     $('.under-header-1').empty();
-    $('.under-header-1').append('<div class="container"> <div class="row"> <div class="col-lg-12 url"> <ul> <li> <a href="">Khách sạn</a> </li> <li class="sign">&gt;</li> <li> <a href="">'+ks_info.maKhuVuc+'</a> </li> <li class="sign">&gt;</li> <li>'+ks_info.tenKhachSan+'</li> </ul> <hr> </div> </div> </div>');
+    $('.under-header-1').append('<div class="container"> <div class="row"> <div class="col-lg-12 url"> <ul> <li> <a href="">Khách sạn</a> </li> <li class="sign">&gt;</li> <li>'+ks_info.tenKhachSan+'</li> </ul> <hr> </div> </div> </div>');// <li> <a href="">'+ks_info.maKhuVuc+'</a> </li> <li class="sign">&gt;</li>
     //section body
     body.find('.title-info h4').text(ks_info['tenKhachSan']);
     body.find('.address-info > p').text(ks_info.diaChi_KS);
@@ -362,7 +362,7 @@ function loadPage(ks_info, loaiphong_info){
             info.find('select').append('<option disabled>'+i+' phòng</option>');
         
         info = table.find('.info-type-6');
-        info.append('<a href="./ThanhToan.html" id="change_url_'+item.maLoaiPhong+'"><button type="button" class="btn btn-warning" onclick="return room_Choose(\''+item.maLoaiPhong+'\')">ĐẶT NGAY</button></a>');
+        info.append('<a href="./ThanhToan.html" id="change_url_'+item.maLoaiPhong+'"><button type="button" class="btn btn-warning" onclick="return room_Choose(\''+item.maLoaiPhong+'\', \''+ks_info.maKhachSan+'\')">ĐẶT NGAY</button></a>');
     })
 
     //section convenience
@@ -432,12 +432,28 @@ $('.nut.btn.btn-danger').click(()=>{
 })
 
 // main
-var maKhachSan = 'MAKHACHSAN11_1';//------------------------------
 $(()=>{
-    let ks_info = get_KS_Info(maKhachSan);
-    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-    loadPage(ks_info, loaiphong_info);
-})
+    var maKhachSan;//------------------------------
+    $.ajax({
+        url: '../../php/hotel.php',
+        async: false,
+        data: {'action':'setMaKhachSan'}
+    });
+    $.ajax({
+        url: '../../php/hotel.php',
+        async: false,
+        data: {'action':'maKhachSan'},
+        dataType: 'json',
+        success: function(res) {
+            maKhachSan=res.maKhachSan;
+            let ks_info = get_KS_Info(maKhachSan);
+            let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+            loadPage(ks_info, loaiphong_info);
+        }
+        
+    });
+
+});
 
 // time picker
 var timestart = '1-1-2000';

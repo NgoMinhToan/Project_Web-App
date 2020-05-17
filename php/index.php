@@ -25,4 +25,11 @@
     if($action == 'danhGia'){
         echo json_encode(Db::danhGiaWebSite($_POST['doHaiLong'], $_POST['gopY'], $_POST['cauHoi'], $_POST['email_sdt_lienhe']));
     }
+
+    if($action == 'setKhuVuc'){
+        $_SESSION['maKhuVuc'] = $_REQUEST['maKhuVuc'];
+        echo json_encode(['msg'=>'Set khuVuc done!']);
+    }
+
+
 ?>

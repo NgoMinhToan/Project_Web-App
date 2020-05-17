@@ -207,6 +207,25 @@
 
 
 
+        static function ksInKv($maKhuVuc){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT tenKhuVuc, maKhachSan from khuVuc JOIN khachSan ON khuVuc.maKhuVuc=khachSan.maKhuVuc WHERE khuVuc.maKhuVuc=?")){
+                $stmt->bind_param('s', $maKhuVuc);
+                $stmt->execute();
+                $stmt->bind_result($tenKhuVuc, $maKhachSan);
+                while ($stmt->fetch()){
+                    $rs[] = ['tenKhuVuc'=>$tenKhuVuc, 'maKhachSan'=>$maKhachSan];
+                }
+                $stmt->close();
+
+            }
+            return $rs;
+        }
+
+
+
+
+
         static function resetKhuVuc(){
             self::$mysql->query("DELETE FROM khuVuc");
             if(self::$mysql->affected_rows!=0)
@@ -290,7 +309,7 @@
 
         static function dangNhap($tenDangNhap_email_ND, $matKhau_SDT_ND, $truyCap){
             // nếu tồn tại trong đăng nhâp
-            $diaChi_IP = $truyCap['diaChi_IP'];
+            // $diaChi_IP = $truyCap['diaChi_IP'];
             // print_r($truyCap);
             // echo '<br>';
             // echo $tenDangNhap_email_ND.'<br>';
@@ -299,7 +318,7 @@
                 FROM dangNhap JOIN nguoiDung ON dangNhap.maSo_ND=nguoiDung.maSo_ND
                                 JOIN khachTruyCap ON dangNhap.maTruyCap = khachTruyCap.maTruyCap
                 WHERE (email_ND='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
-                    OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND') AND khachTruyCap.diaChi_IP='$diaChi_IP'");
+                    OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND')");
             // print_r($diaChi_IP);
             // print_r($result);
             // echo $result->num_rows;
@@ -511,14 +530,57 @@
 
 
 
-        static function ND_huyPhong($maSo_ND, $maPhong){
-            $result = self::$mysql->query("DELETE FROM ndDatPhong WHERE maSo_ND='$maSo_ND' AND maPhong='$maPhong'");
-            if(self::$mysql->affected_rows!=0)
-                return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
+        // static function ND_huyPhong($maSo_ND, $maPhong){
+        //     $result = self::$mysql->query("DELETE FROM ndDatPhong WHERE maSo_ND='$maSo_ND' AND maPhong='$maPhong'");
+        //     if(self::$mysql->affected_rows!=0)
+        //         return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
+        // }
+        static function ND_huyPhong($maSo_KH, $maHoaDon){
+            $result = self::$mysql->query("SELECT maSo_ND FROM khachHang WHERE maSo_KH='$maSo_KH'");
+            if($maSo_ND = $result->fetch_assoc()){
+                $maSo_ND = $maSo_ND['maSo_ND'];
+                $result = self::$mysql->query("SELECT maPhong FROM ndDatPhong S1 JOIN hoaDon S2 ON S1.ngayDat=S2.ngayGiaoDich WHERE S1.maSo_ND='$maSo_ND' AND maHoaDon='$maHoaDon'");
+                $stmt = self::$mysql->prepare("DELETE FROM ndDatPhong WHERE maPhong=?");
+                $stmt->bind_param('s', $phong);
+                while($phong = $result->fetch_assoc()){
+                    $phong = $phong['maPhong'];
+                    $stmt->execute();
+                }
+                if(self::$mysql->affected_rows!=0)
+                    return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
+
+            }
         }
 
 
 
+
+
+
+
+        static function thongTinHoaDon($maSo_KH){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM hoaDon WHERE maSo_KH= ?")){
+                $stmt->bind_param('s', $maSo_KH);
+                $stmt->execute();
+                $rs2 = $stmt->get_result();
+                while ($row = $rs2->fetch_assoc()){
+                    $rs[] = $row;
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+
+
+        static function getMaKhachHang($maTruyCap_maSo_ND){
+            $result = self::$mysql->query("SELECT maSo_KH FROM khachhang WHERE maTruyCap='$maTruyCap_maSo_ND' OR maSo_ND='$maTruyCap_maSo_ND'");
+            if($result = $result->fetch_assoc())
+                return array_merge(['success'=>true, 'msg'=>'Là khách hàng'], $result);
+            return ['success'=>false, 'msg'=>'Không phải khách hàng'];
+        }
 
 
 
@@ -540,6 +602,13 @@
             if(self::$mysql->affected_rows!=0)
                 return ['success'=>true, 'msg'=>'Gửi Đánh Giá Thành Công!'];
         }
+
+        static function changeInfo($maSo_ND, $name, $email, $phone, $address, $city, $new_pwd){
+            $result = self::$mysql->query("UPDATE nguoiDung SET hoTen_ND = '$name', email_ND = '$email', SDT_ND = '$phone', diaChi_ND = '$address', tinhThanhPho_ND = '$city', matKhau_ND = '$new_pwd' WHERE maSo_ND='$maSo_ND' ");
+            if(self::$mysql->affected_rows!=0)
+                return ['success'=>true, 'msg'=>'Cập nhật thông tin thành công!'];
+        }
+
     }
     
 

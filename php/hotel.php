@@ -7,10 +7,28 @@
     if(isset($_REQUEST['action']))
         $action = $_REQUEST['action'];
     
+
+    
+    if($action == 'setMaKhachSan'){
+        //-----------------------
+        $rs = DB::ksInKv($_SESSION['maKhuVuc']);
+        $_SESSION['maKhachSan'] = $rs[0]['maKhachSan'];
+        //-----------------------
+    }
+    if($action == 'maKhachSan'){
+        echo json_encode(['maKhachSan'=>$_SESSION['maKhachSan']]);
+    }
+    
     if($action == 'getLoaiPhong'){
         $result = Db::get_Phong_info_all($_POST['maKhachSan']);
         for($i=0;$i<count($result);$i++)
             $result[$i]['moTa'] = json_decode($result[$i]['moTa']);
+        echo json_encode($result);
+    }
+
+    if($action=='getLoaiPhong1'){
+        $result = Db::get_Phong_info($_POST['maLoaiPhong']);
+        $result['moTa'] = json_decode($result['moTa']);
         echo json_encode($result);
     }
 

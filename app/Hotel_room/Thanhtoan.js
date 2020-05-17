@@ -294,6 +294,7 @@ function loadPage(phong_info, dP_info){
     timestart = dP_info.timestart;
     timeend = dP_info.timeend;
     night = dP_info.night;
+
     
     let box_ks = $('#ks_box');
     box_ks.find('.box-header .title-info h4').text(ks_info.tenKhachSan);
@@ -410,13 +411,11 @@ $(()=>{
     // console.log()
 
 })
-function btn_datPhong(){
-    alert(address_company);
+async function btn_datPhong(){
     cont = false;
-    $.ajax({    
+    await $.ajax({    
         type: 'POST',
         url: '../../php/thanhToan.php',
-        async: false,
         data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company},
         dataType: 'json',
         success: (response)=>{
@@ -425,5 +424,5 @@ function btn_datPhong(){
             console.log(response);
         }
     });
-    return false;
+    return cont;
 }

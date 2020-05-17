@@ -128,13 +128,13 @@ autoLogin();
 $(()=>{
     if(userInfo.hasOwnProperty('success'))
         if(userInfo['success']){
-            console.log(userInfo['maSo_ND']);
+            // console.log(userInfo['maSo_ND']);
             let list_group = $('#login ul.list-group');
             list_group.children('li').first().remove();
-            list_group.append('<li class="list-group-item"><a href="">Quản lý đơn phòng</a></li>')
-            list_group.append('<li class="list-group-item"><a href="">Quản lý tài khoản</a></li>')
+            list_group.append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
+            list_group.append('<li class="list-group-item"><a href="../account/taikhoan.html">Quản lý tài khoản</a></li>')
             list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-            let account = $('<li class="list-group-item bg-primary"><a href="" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+            let account = $('<li class="list-group-item bg-primary"><a href="../account/taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
             account.children('a').append('<br><span>'+userInfo['email_ND']+'</span>');
             list_group.append(account);
         }
@@ -185,3 +185,11 @@ function danhGia(){
     });
     return cont;
 }
+const dsKV = [9,7,8,11,1,5,10,12,3,6,2,4];
+$(()=>{
+    for(let i=0;i<$('.number').length;i++){
+        $(`.number.number-${i+1}`).click((e)=>{
+            $.getJSON(`../../php/index.php?action=setKhuVuc&maKhuVuc=KHUVUC${dsKV[i]}`)
+        })
+    }
+})

@@ -31,9 +31,9 @@
 // _____________________________________________________________________________
 
     
-    // $khuVuc = decode_table('../json/khuVuc.json');
-    // foreach($khuVuc as $elem)
-    //     Db::khuVuc(...$elem);
+    $khuVuc = decode_table('../json/khuVuc.json');
+    foreach($khuVuc as $elem)
+        Db::khuVuc(...$elem);
 
     
     $khachSan = decode_khachSan_table('../json/khachSan.json');
