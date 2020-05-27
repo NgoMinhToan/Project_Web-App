@@ -146,7 +146,9 @@ function autoLogin(){
 }
 $(()=>{
     console.log(autoLogin());   
-
+    if(userInfo.quyenQuanTri=='1'){
+        window.location.replace("../account/adminQuanLy.html");
+    }
 })
 $(()=>{
      $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
@@ -294,8 +296,9 @@ function loadPage(phong_info, dP_info){
     timestart = dP_info.timestart;
     timeend = dP_info.timeend;
     night = dP_info.night;
+    //
 
-    
+    //
     let box_ks = $('#ks_box');
     box_ks.find('.box-header .title-info h4').text(ks_info.tenKhachSan);
     box_ks.find('.box-header .address-info p').text(ks_info.diaChi_KS);
@@ -307,9 +310,10 @@ function loadPage(phong_info, dP_info){
 
     $('.booking-bill td.text-1').empty();
     $('.booking-bill td.text-1').append(phong_info.select_room+' phòng <br> <ul> </ul>');
-    phong_info.moTa.tuyChon.forEach((item)=>{
-        $('.booking-bill td.text-1 ul').append('<li>'+item+'</li>')
-    })
+    // phong_info.moTa.tuyChon.forEach((item)=>{
+    if(phong_info.option!=undefined)
+        $('.booking-bill td.text-1 ul').append('<li>'+phong_info.option+'</li>')
+    // })
     $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*dP_info.night*phong_info.select_room)+' đ/ '+dP_info.night+' đêm');
     $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*dP_info.night*phong_info.select_room)+ ' đ');
 
@@ -411,12 +415,13 @@ $(()=>{
     // console.log()
 
 })
-async function btn_datPhong(){
+function btn_datPhong(){
     cont = false;
-    await $.ajax({    
+    $.ajax({    
         type: 'POST',
         url: '../../php/thanhToan.php',
-        data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company},
+        async: false,
+        data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company, option:phong_info.option},
         dataType: 'json',
         success: (response)=>{
             if(response.success)

@@ -69,7 +69,9 @@
 
  //Kiểm tra đăng nhập 
  // Auto Login
- var userInfo = {};
+ var userInfo = {
+     quyenQuanTri: 0
+ };
 
  function autoLogin() {
      // var isSuccess = false;
@@ -91,9 +93,10 @@
      return userInfo;
  }
  autoLogin();
- if(userInfo.quyenQuanTri=='1'){
-    window.location.replace("../account/adminQuanLy.html");
-}
+ if (userInfo.quyenQuanTri == '0') {
+     window.location.replace("./Quanly.html");
+ }
+
  $(() => {
      $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>')
      if (userInfo.hasOwnProperty('success'))
@@ -129,40 +132,7 @@
      return cont;
 
  }
- var gopY = '';
- $(() => {
-     for (let i = 0; i < $('label.check').length; i++) {
-         $($('.check')[i]).click(() => {
-             gopY = $($('.check > p')[i]).text();
-         })
-     }
- })
 
- function danhGia() {
-     let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
-     let cauHoi = $('#placetext-1').val();
-     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
-
-     var cont = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/index.php',
-         async: false,
-         data: {
-             action: 'danhGia',
-             doHaiLong: doHaiLong,
-             gopY: gopY,
-             cauHoi: cauHoi,
-             email_sdt_lienhe: email_sdt_lienhe
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 cont = true;
-         }
-     });
-     return cont;
- }
  // About account
  $(() => {
      if (userInfo.success) {
@@ -191,7 +161,6 @@
          alert('Sai mật khẩu!');
          return false;
      }
-
  }
  // Doi thong tin
  function edit(e) {
@@ -202,12 +171,18 @@
      $('#account > button').last().before(`<label for="confirm_pwd">Xác thực mật khẩu mới:</label><input type="password" name="confirm_pwd" id="confirm_pwd" value='${userInfo.matKhau_ND}'><br>`);
      return false;
  }
+
+ let sPath = window.location.pathname;
+ let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+ console.log(sPage);
+
+
  // Quan Ly Dat Phong
  $(() => {
      let hoaDon;
      $.ajax({
          type: 'POST',
-         url: '../../php/quanLy.php',
+         url: '../../php/admin.php',
          async: false,
          data: {
              action: 'getHoaDon'
@@ -219,53 +194,138 @@
              console.log(response);
          }
      });
-     if (hoaDon) {
-         let hd = $('#hoaDon_table');
-         hd.empty().append('<table></table>');
-         hd.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
-         hd.find('table').append('<tbody> </tbody>');
-         hoaDon.hoaDon.forEach((e, i) => {
-             let tenKhachSan;
-             let tenLoaiPhong;
-             $.post('../../php/hotel.php', {
-                 'action': 'ks_info',
-                 'maKhachSan': e.maKhachSan
-             }, (data) => {
-                 tenKhachSan = data.tenKhachSan;
-             }, 'json').done(() => {
+
+     if (sPage == "adminQuanLy.html") {
+         if (hoaDon) {
+             let hd = $('#hoaDon_table');
+             hd.empty().append('<table></table>');
+             hd.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Mã Khách Hàng</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
+             hd.find('table').append('<tbody> </tbody>');
+             hoaDon.hoaDon.forEach((e, i) => {
+                 let tenKhachSan;
+                 let tenLoaiPhong;
                  $.post('../../php/hotel.php', {
-                     'action': 'getLoaiPhong1',
-                     'maLoaiPhong': e.maLoaiPhong
+                     'action': 'ks_info',
+                     'maKhachSan': e.maKhachSan
                  }, (data) => {
-                     tenLoaiPhong = data.moTa.ten;
+                     tenKhachSan = data.tenKhachSan;
                  }, 'json').done(() => {
-                     let addClass = '';
-                     if (e.trangThai == 'Đã thanh toán')
-                         addClass = 'successed';
-                     else if (e.trangThai == 'Đã hủy')
-                         addClass = 'cancelled';
-                     else if (e.trangThai == 'Đang chờ duyệt')
-                         addClass = 'waitting';
-                     hd.find('table > tbody').append(`<tr class='${addClass}'> <td>${e.maHoaDon}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
-                     hd.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=4><div><hr>
-                        Tên khách sạn: ${tenKhachSan}<br>
-                        Loại phòng: ${tenLoaiPhong}<br>
-                        Số lượng: ${e.soLuong}<br>
-                        Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
-                        Tùy chọn: ${e.tuyChon}<br>
-                        Thời gian lấy phòng: ${e.TG_layPhong}<br>
-                        Thời gian trả phòng: ${e.TG_traPhong}<br>
-                        Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
-                        Tên công ty: ${e.tenCongTy}<br>
-                        Mã số thuế: ${e.maSoThue}<br>
-                        Địa chỉ công ty: ${e.diaChiCongTy}<br>
-                        Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
-                        <strong>Trạng thái: </strong>${e.trangThai}<br>
-                        <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
-                    </div></td></tr>`);
+                     $.post('../../php/hotel.php', {
+                         'action': 'getLoaiPhong1',
+                         'maLoaiPhong': e.maLoaiPhong
+                     }, (data) => {
+                         tenLoaiPhong = data.moTa.ten;
+                     }, 'json').done(() => {
+                         let addClass = '';
+                         if (e.trangThai == 'Đã thanh toán')
+                             addClass = 'successed';
+                         else if (e.trangThai == 'Đã hủy')
+                             addClass = 'cancelled';
+                         else if (e.trangThai == 'Đang chờ duyệt')
+                             addClass = 'waitting';
+                         hd.find('table > tbody').append(`<tr class='${addClass}'> <td>${e.maHoaDon}</td> <td>${e.maSo_KH}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
+                         hd.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div><hr>
+                           Tên khách sạn: ${tenKhachSan}<br>
+                           Loại phòng: ${tenLoaiPhong}<br>
+                           Số lượng: ${e.soLuong}<br>
+                           Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
+                           Tùy chọn: ${e.tuyChon}<br>
+                           Thời gian lấy phòng: ${e.TG_layPhong}<br>
+                           Thời gian trả phòng: ${e.TG_traPhong}<br>
+                           Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
+                           Tên công ty: ${e.tenCongTy}<br>
+                           Mã số thuế: ${e.maSoThue}<br>
+                           Địa chỉ công ty: ${e.diaChiCongTy}<br>
+                           Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
+                           <strong>Trạng thái: </strong>${e.trangThai}<br>
+                           <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
+                       </div></td></tr>`);
+
+                     })
+                 })
+             });
+         }
+
+     }
+     // thống kê doanh thu
+     else if (sPage == 'thongKe.html') {
+         if (hoaDon) {
+             let hd = $('#hoaDon_table');
+             hd.empty().append('<table></table>');
+             hd.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
+             hd.find('table').append('<tbody> </tbody>');
+             let list = {};
+             hoaDon.hoaDon.forEach((e, i) => {
+                 if (list.hasOwnProperty(e.maKhachSan)) {
+                     list[e.maKhachSan].tongDoanhThu += e.thanhTien;
+                     list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
+                     list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
+                 } else {
+                     list[e.maKhachSan] = {};
+                     list[e.maKhachSan].batDau = e.TG_layPhong;
+                     list[e.maKhachSan].ketThuc = e.TG_traPhong;
+                     list[e.maKhachSan].tongDoanhThu = e.thanhTien;
+                 }
+             });
+             for (let i = 0; i < Object.keys(list).length; i++) {
+                 let maKhachSan = Object.keys(list)[i];
+                 $.post('../../php/hotel.php', {
+                     'action': 'ks_info',
+                     'maKhachSan': maKhachSan
+                 }, (data) => {
+                     list[maKhachSan].tenKhachSan = data.tenKhachSan;
+                 }, 'json').done(() => {
+
+                     item = list[maKhachSan];
+                     hd.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${item.tongDoanhThu}</td></tr>`);
 
                  })
+             }
+             console.log(list);
+
+             // $.post('../../php/hotel.php', {'action': 'ks_info','maKhachSan': e.maKhachSan}, (data) => {
+             //     tenKhachSan = data.tenKhachSan;
+             // }, 'json').done(() => {
+             //         let addClass = '';
+             //         // if (e.trangThai == 'Đã thanh toán')
+             //         //     addClass = 'successed';
+             //         // else if (e.trangThai == 'Đã hủy')
+             //         //     addClass = 'cancelled';
+             //         // else if (e.trangThai == 'Đang chờ duyệt')
+             //         //     addClass = 'waitting';
+             //         hd.find('table > tbody').append(`<tr class='${addClass}'> <td>${e.maKhachSan}</td> <td>${tenKhachSan}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
+             //         hd.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div><hr>
+             //            Tên khách sạn: ${tenKhachSan}<br>
+             //            Loại phòng: ${tenLoaiPhong}<br>
+             //            Số lượng: ${e.soLuong}<br>
+             //            Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
+             //            Tùy chọn: ${e.tuyChon}<br>
+             //            Thời gian lấy phòng: ${e.TG_layPhong}<br>
+             //            Thời gian trả phòng: ${e.TG_traPhong}<br>
+             //            Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
+             //            Tên công ty: ${e.tenCongTy}<br>
+             //            Mã số thuế: ${e.maSoThue}<br>
+             //            Địa chỉ công ty: ${e.diaChiCongTy}<br>
+             //            Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
+             //            <strong>Trạng thái: </strong>${e.trangThai}<br>
+             //            <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
+             //        </div></td></tr>`);
+
+             //     })
+
+             // });
+         }
+     }
+     // quản lý đánh giá
+     else if (sPage == 'danhgia.html') {
+         $('#danhGiaks_table').append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
+         $('#danhGiaks_table').append('<tbody></tbody>');
+         let table = $('#danhGiaks_table > tbody');
+         $.getJSON(`../../php/admin.php?action=getDanhGia`, data => {
+             data.forEach((item, index) => {
+                 table.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
              })
+             console.log(data);
          });
      }
  })
@@ -273,7 +333,7 @@
  function cancel(maHoaDon) {
      if (userInfo.success) {
          if (confirm('Bạn có chắc muốn hủy đơn này không?')) {
-             $.getJSON(`../../php/quanLy.php?action=cancel&maHoaDon=${maHoaDon}`);
+             $.getJSON(`../../php/admin.php?action=duyet&&accept=0&maHoaDon=${maHoaDon}`);
              return true;
          } else
              return false;
@@ -282,6 +342,23 @@
          return false;
      }
  }
+
+ function accept(maHoaDon) {
+     if (userInfo.success) {
+         $.getJSON(`../../php/admin.php?action=duyet&accept=1&maHoaDon=${maHoaDon}`);
+         return true;
+     } else {
+         alert('Bạn không được quyền hủy đơn này!');
+         return false;
+     }
+ }
+
+
+
+
+
+
+
  // tien te
  function inttomoney(int) {
      return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');

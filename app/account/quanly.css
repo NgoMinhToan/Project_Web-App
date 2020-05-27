@@ -630,6 +630,18 @@ ul#list_3 {
     display: none;
 }
 
+.accept-btn.cancelled{
+    display: none;
+}
+
+.cancel-btn.successed{
+    display: none;
+}
+
+.accept-btn.successed{
+    display: none;
+}
+
 
 
 

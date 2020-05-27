@@ -40,6 +40,17 @@
         echo json_encode($result);
     }
 
+    if($action == 'ks_info_all'){
+        $result = Db::get_Ks_Info_all();
+        for($i=0;$i<count($result);$i++){
+            $result[$i]['anhReview'] = json_decode($result[$i]['anhReview']);
+            $result[$i]['diemDen'] = json_decode($result[$i]['diemDen']);
+            $result[$i]['tienNghi'] = json_decode($result[$i]['tienNghi']);
+
+        }
+        echo json_encode($result);
+    }
+
     // Chuyển Hướng
     if($action == 'direction'){
         $_SESSION['maKhachSan'] = $_POST['maKhachSan'];
@@ -47,6 +58,9 @@
         $_SESSION['select_room'] = $_POST['select_room'];
         $_SESSION['timestart'] = $_POST['timestart'];
         $_SESSION['timeend'] = $_POST['timeend'];
+        $_SESSION['option'] = $_POST['option'];
         echo json_encode(['success'=>true]);
     }
+
+    
 ?>

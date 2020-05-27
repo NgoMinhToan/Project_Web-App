@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     login = document.getElementById("login");
     list = document.getElementById("list");
     arrow = document.getElementById("arrow");
-    ngoai = document.getElementById("body");
+    ngoai = document.getElementsByClassName("body");
     login.onclick = function() {
         list.classList.toggle("xuat");
     }
@@ -154,6 +154,9 @@ function autoLogin(){
     return userInfo;
 }
 autoLogin();
+if(userInfo.quyenQuanTri=='1'){
+    window.location.replace("../account/adminQuanLy.html");
+}
 $(()=>{
      $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
      if(userInfo.hasOwnProperty('success'))
@@ -255,12 +258,16 @@ function get_LoaiPhong_info(maKhachSan){
 //Chuyển hướng
 function room_Choose(maLoaiPhong, maKhachSan){
     var select_room = $('#room_in_'+maLoaiPhong).val();
+    if($(`#${maLoaiPhong}_option0`).is(":checked"))
+        var option = $(`#${maLoaiPhong}_option0`).val();
+    else
+        var option = '';
     var cont = false;
     $.ajax({
         type: 'POST',
         url: '../../php/hotel.php',
         async: false,
-        data: {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend},
+        data: {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend, option},
         dataType: 'json',
         success:(response)=>{
             if(response.success)
@@ -336,10 +343,12 @@ function loadPage(ks_info, loaiphong_info){
         info = table.find('.info-type-2');
         info.append('<i class="fa fa-user"></i><small>  '+item.moTa.toiDaSoNguoi+'</small>');
         info = table.find('.info-type-3');
-        if(item.moTa.tuyChon[0]!=undefined)
-            info.append('<i class="fa fa-coffee"> '+item.moTa.tuyChon[0]+'</i>');
-        if(item.moTa.tuyChon[1]!=undefined)
-            info.append('<br><i class="fa fa-times"> '+item.moTa.tuyChon[1]+'</i>');
+
+        // for(let i=0;i<item.moTa.tuyChon.length-1;i++){
+            // i=0;
+            info.append(`<input type="checkbox" id="${item.maLoaiPhong}_option${0}" name="option" value="${item.moTa.tuyChon[0]}">`);
+            info.append(`<label for="option${0}">  ${item.moTa.tuyChon[0]}</label><br>`);
+        // }
 
         info = table.find('.info-type-4');
         if(item.moTa.uuDai>0){
@@ -354,7 +363,7 @@ function loadPage(ks_info, loaiphong_info){
         info = table.find('.info-type-5');
         info.append('<select name="" id="room_in_'+item.maLoaiPhong+'"> </select>');
         
-        var i =1;
+        let i = 1;
         for(;i<=item.phongConLai;i++)
             info.find('select').append('<option value="'+i+'">'+i+' phòng</option>');
         
@@ -425,11 +434,6 @@ function loadPage(ks_info, loaiphong_info){
 
 }
 
-$('.nut.btn.btn-danger').click(()=>{
-    let ks_info = get_KS_Info(maKhachSan);
-    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-    loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai > numPhong));
-})
 
 // main
 $(()=>{
@@ -453,39 +457,43 @@ $(()=>{
         
     });
 
-});
 
-// time picker
-var timestart = '1-1-2000';
-var timeend = '1-1-2000';
-$('#calendar').on('change', ()=>{
-    timestart = $('#calendar').val();
-    console.log(timestart);
-})
-$('#calendar-2').on('change', ()=>{
-    timeend =$('#calendar-2').val();
-    console.log(timeend);
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '../../php/hotel.php',
-    //     async: false,
-    //     data: {action: 'pulltimeend', timeend: timeend},
-    //     dataType: 'json',
-    //     success:(response)=>{
-    //         if(response.success)
-    //             cont=true;
-    //         console.log(cont);
-    //     }
-    // });
-})
-var numPhong = 0;
-var numNguoi = 0;
-$('#demo0').on('change', ()=>{
-    numPhong = $('#demo0').val();
-    console.log(numPhong);
-})
-$('#demo01').on('change', ()=>{
-    numNguoi =$('#demo01').val();
-    console.log(numNguoi);
-})
+
+
+    // thong tin tim kiem
+    // time picker
+    let timestart = '1-1-2000';
+    let timeend = '1-1-2000';
+    // let keyword = '';
+    // $('#search').on('change', (e)=>{
+    //     keyword = $(e.target).val();
+    //     console.log(keyword);
+    // })
+    $('#calendar').on('change', ()=>{
+        timestart = $('#calendar').val();
+        console.log(timestart);
+    })
+    $('#calendar-2').on('change', ()=>{
+        timeend =$('#calendar-2').val();
+        console.log(timeend);
+    })
+    let numPhong = 1;
+    let numNguoi = 2;
+    $('#demo0').on('change', ()=>{
+        numPhong = $('#demo0').val();
+        $('#demo0').val(`  ${numPhong} phòng`);
+        console.log(numPhong);
+    })
+    $('#demo01').on('change', ()=>{
+        numNguoi =$('#demo01').val();
+        $('#demo01').val(`  ${numNguoi} người`);
+        console.log(numNguoi);
+    })
+    $('#btn_search').click((e)=>{
+        let ks_info = get_KS_Info(maKhachSan);
+        let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+        loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai >= numPhong));
+    })
+
+});
 

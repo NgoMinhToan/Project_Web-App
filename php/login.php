@@ -43,8 +43,11 @@
             $maTruyCap = $_SESSION['maTruyCap'];
             Db::capNhat_IP($maTruyCap)['success'];
             $loginInfo = Db::getUser($maTruyCap);
-            if($loginInfo['success']==true)
-                echo json_encode(Db::dangNhap($loginInfo['email_ND'], $loginInfo['matKhau_ND'], Db::getTruyCap($maTruyCap)));
+            if($loginInfo['success']==true){
+                $rs = Db::dangNhap($loginInfo['email_ND'], $loginInfo['matKhau_ND'], Db::getTruyCap($maTruyCap));
+                echo json_encode($rs);
+                $_SESSION['login_info'] = $rs;
+            }
             else
                 echo json_encode($loginInfo);
             // print_r($loginInfo);

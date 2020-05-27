@@ -125,6 +125,9 @@ function autoLogin(){
     return userInfo;
 }
 autoLogin();
+if(userInfo.quyenQuanTri=='1'){
+    window.location.replace("../account/adminQuanLy.html");
+}
 $(()=>{
      $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
      if(userInfo.hasOwnProperty('success'))
@@ -188,7 +191,62 @@ const dsKV = [9,7,8,11,1,5,10,12,3,6,2,4];
 $(()=>{
     for(let i=0;i<$('.number').length;i++){
         $(`.number.number-${i+1}`).click((e)=>{
-            $.getJSON(`../../php/index.php?action=setKhuVuc&maKhuVuc=KHUVUC${dsKV[i]}`)
+            $.getJSON(`../../php/index.php?action=setKhuVuc&maKhuVuc=KHUVUC${dsKV[i]}`);
         })
     }
 })
+// Main
+$(()=>{
+    // Tìm kiếm
+    // time picker
+    let timestart = '1-1-2000';
+    let timeend = '1-1-2000';
+    let keyword = '';
+    $('#search').on('change', (e)=>{
+        keyword = $(e.target).val();
+        console.log(keyword);
+    })
+    $('#calendar').on('change', ()=>{
+        timestart = $('#calendar').val();
+        console.log(timestart);
+    })
+    $('#calendar-2').on('change', ()=>{
+        timeend =$('#calendar-2').val();
+        console.log(timeend);
+    })
+    let numPhong = 1;
+    let numNguoi = 2;
+    $('#demo0').on('change', ()=>{
+        numPhong = $('#demo0').val();
+        $('#demo0').val(`  ${numPhong} phòng`);
+        console.log(numPhong);
+    })
+    $('#demo01').on('change', ()=>{
+        numNguoi =$('#demo01').val();
+        $('#demo01').val(`  ${numNguoi} người`);
+        console.log(numNguoi);
+    })
+    $('#btn_search').click((e)=>{
+        // alert('chua tim dc'+keyword);
+        searchEngine(keyword);
+    })
+
+})
+
+
+function searchEngine(keyword) {
+    let filter, list;
+    let rs = [];
+    filter = keyword.toUpperCase();
+
+    $.getJSON(`../../php/hotel.php?action=ks_info_all`, data=>{
+        list = data.map(value=>[value.maKhachSan, value.tenKhachSan]);
+    }).done(()=>{
+        for (i = 0; i < list.length; i++) {
+            if (list[i][1].toUpperCase().indexOf(filter) > -1) {
+                rs.push(list[i]);
+            }
+        }
+    })
+    console.log(rs);
+}

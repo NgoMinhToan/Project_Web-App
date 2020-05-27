@@ -450,7 +450,7 @@
                 $stmt->execute();
                 $stmt->bind_result($maKhachSan, $maKhuVuc, $tenKhachSan, $diaChi_KS, $Review, $diemDen, $tienNghi, $anhReview);
                 while ($stmt->fetch()){
-                    $rs = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>$tenKhachSan, 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
+                    $rs = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>htmlspecialchars_decode($tenKhachSan), 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
                 }
                 $stmt->close();
             }
@@ -460,7 +460,24 @@
 
 
 
-        static function khachDatPhong($maTruyCap, $maLoaiPhong, $soluong,$thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC, $address_bill, $address_company, $code, $company){
+
+        static function get_Ks_Info_all(){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM khachSan")){
+                $stmt->execute();
+                $stmt->bind_result($maKhachSan, $maKhuVuc, $tenKhachSan, $diaChi_KS, $Review, $diemDen, $tienNghi, $anhReview);
+                while ($stmt->fetch()){
+                    $rs[] = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>htmlspecialchars_decode($tenKhachSan), 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+
+
+        static function khachDatPhong($maTruyCap, $maLoaiPhong, $soluong,$thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $tuyChon, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC, $address_bill, $address_company, $code, $company){
             $ngayDat = date("Y-m-d h:i:s",time());
             $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
             if($phongConLai = $result->fetch_assoc()){
@@ -468,18 +485,18 @@
                     return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
             }else
                 return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Không tồn tại mã phòng!'];
-            $stmt = self::$mysql->prepare("INSERT INTO khachDatPhong(maTruyCap, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = self::$mysql->prepare("INSERT INTO khachDatPhong(maTruyCap, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, tuyChon, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for($i=1;$i<=$soluong;$i++){
                 
                 $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
                 $maPhong = $result->fetch_assoc()['maPhong'];
                 
-                $stmt->bind_param('sssssisssss', $maTruyCap, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC);
+                $stmt->bind_param('sssssissssss', $maTruyCap, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $tuyChon, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC);
                 $stmt->execute();
                 if($stmt->affected_rows<1){
                     echo $stmt->error.'<br>';
-                    echo json_encode([$maTruyCap, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC]);
+                    echo json_encode([$maTruyCap, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $tuyChon, $hinhThuc, $hoTen_KTC, $email_KTC, $SDT_KTC, $tinhThanhPho_KTC]);
                     return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
                 }
                 // self::$mysql->query("INSERT INTO khachDatPhong(maTruyCap, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, hoTen_KTC, email_KTC, SDT_KTC, tinhThanhPho_KTC)
@@ -496,7 +513,7 @@
 
 
 
-        static function ndDatPhong($maSo_ND, $maLoaiPhong, $soluong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $email_2, $SDT_2, $hoTen_2, $tinhThanhPho_2, $address_bill, $address_company, $code, $company){
+        static function ndDatPhong($maSo_ND, $maLoaiPhong, $soluong, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $tuyChon, $hinhThuc, $email_2, $SDT_2, $hoTen_2, $tinhThanhPho_2, $address_bill, $address_company, $code, $company){
             $ngayDat = date("Y-m-d h:i:s",time());
             $result = self::$mysql->query("SELECT phongConLai FROM loaiPhong WHERE maLoaiPhong='$maLoaiPhong'");
             if($phongConLai = $result->fetch_assoc()){
@@ -504,13 +521,13 @@
                     return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Hết phòng trống!'];
             }else
                 return ['success'=>false, 'msg'=>'Đặt phòng thất bại | Không tồn tại mã phòng!'];
-            $stmt = self::$mysql->prepare("INSERT INTO ndDatPhong(maSo_ND, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, hinhThuc, email_2, SDT_2, hoTen_2, tinhThanhPho_2)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = self::$mysql->prepare("INSERT INTO ndDatPhong(maSo_ND, maPhong, ngayDat, thoiGianBatDau, thoiGianKetThuc, tongChiPhi, tuyChon, hinhThuc, email_2, SDT_2, hoTen_2, tinhThanhPho_2)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for($i=1;$i<=$soluong;$i++){
                 $result = self::$mysql->query("SELECT maPhong FROM phong WHERE conTrong=1 AND maLoaiPhong='$maLoaiPhong' LIMIT 1");
                 $maPhong = $result->fetch_assoc()['maPhong'];
 
-                $stmt->bind_param('sssssisssss', $maSo_ND, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $hinhThuc, $email_2, $SDT_2, $hoTen_2, $tinhThanhPho_2);
+                $stmt->bind_param('sssssissssss', $maSo_ND, $maPhong, $ngayDat, $thoiGianBatDau, $thoiGianKetThuc, $tongChiPhi, $tuyChon, $hinhThuc, $email_2, $SDT_2, $hoTen_2, $tinhThanhPho_2);
                 $stmt->execute();
                 if($stmt->affected_rows<1){
                     return ['success'=>false, 'msg'=>'Đặt phòng thất bại!'];
@@ -575,6 +592,38 @@
 
 
 
+
+
+
+        static function thongTinHoaDonADMIN(){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM hoaDon")){
+                $stmt->execute();
+                $rs2 = $stmt->get_result();
+                while ($row = $rs2->fetch_assoc()){
+                    $rs[] = $row;
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+
+
+        static function duyetDonADMIN($maHoaDon, $accept){
+            if($accept){
+                self::$mysql->query("UPDATE hoaDon SET trangThai = 'Đã thanh toán' WHERE maHoaDon='$maHoaDon'");
+            }else{
+                self::$mysql->query("UPDATE hoaDon SET trangThai = 'Đã hủy' WHERE maHoaDon='$maHoaDon'");
+            }
+            if(self::$mysql->affected_rows!=0)
+                return ['success'=>true, 'msg'=>'Duyệt thành công'];
+        }
+
+
+
+
         static function getMaKhachHang($maTruyCap_maSo_ND){
             $result = self::$mysql->query("SELECT maSo_KH FROM khachhang WHERE maTruyCap='$maTruyCap_maSo_ND' OR maSo_ND='$maTruyCap_maSo_ND'");
             if($result = $result->fetch_assoc())
@@ -584,24 +633,35 @@
 
 
 
-        //hủy đặt phong nd | db +1
-        //hủy đặt phong khach | db +1
-        //lưu lại thông tin của khách không đăng nhập
-        //lưu thông tin sang bảng khách hàng
-        //thống kê số phòng đã đặt như loại phòng
-
-        // static function yKien_KH($maKhachSan, $doHaiLong, $gopY, $cauHoi, $email_SDT_lienHe){
-        //     $result = self::$mysql->query("INSERT INTO danhGia VALUES('$maKhachSan', $doHaiLong, '$gopY', '$cauHoi', '$email_SDT_lienHe')");
-        //     if(self::$mysql->affected_rows!=0)
-        //         return ['success'=>true, 'msg'=>'Gửi Đánh Giá Thành Công!'];
+      
+        // static function isAdmin($maSo_ND){
+        //     $result = self::$mysql->query("SELECT quyenQuanTri FROM nguoidung WHERE maSo_ND = '$maSo_ND'");
+        //     if($result = $result->fetch_assoc())
+        //         return array_merge(['success'=>true, 'msg'=>'Là quản trị viên'], $result);
+        //     return ['success'=>false, 'msg'=>'là khách hàng'];
         // }
         
         
         static function danhGiaWebSite($doHaiLong, $gopY, $cauHoi, $email_SDT_lienHe){
             $result = self::$mysql->query("INSERT INTO danhGiaWebSite VALUES('$doHaiLong', '$gopY', '$cauHoi', '$email_SDT_lienHe')");
             if(self::$mysql->affected_rows!=0)
-                return ['success'=>true, 'msg'=>'Gửi Đánh Giá Thành Công!'];
+                return ['success'=>true, 'msg'=>'Gửi Đánh Giá Thành Công!', 'err'=>self::$mysql->affected_rows];
         }
+
+
+        static function getDanhGia(){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM danhGiaWebSite")){
+                $stmt->execute();
+                $rs2 = $stmt->get_result();
+                while ($row = $rs2->fetch_assoc()){
+                    $rs[] = $row;
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
 
         static function changeInfo($maSo_ND, $name, $email, $phone, $address, $city, $new_pwd){
             $result = self::$mysql->query("UPDATE nguoiDung SET hoTen_ND = '$name', email_ND = '$email', SDT_ND = '$phone', diaChi_ND = '$address', tinhThanhPho_ND = '$city', matKhau_ND = '$new_pwd' WHERE maSo_ND='$maSo_ND' ");

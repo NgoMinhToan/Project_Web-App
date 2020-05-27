@@ -14,6 +14,7 @@
         $maLoaiPhong = $_SESSION['maLoaiPhong'];
         $maKhachSan = $_SESSION['maKhachSan'];
         $select_room = $_SESSION['select_room'];
+        $option = $_SESSION['option'];
     }
     if($action=='getLoaiPhong'){
         if(isset($maLoaiPhong)){
@@ -21,6 +22,7 @@
             $result['moTa'] = json_decode($result['moTa']);
             $result['select_room'] = $select_room;
             $result['maKhachSan'] = $maKhachSan;
+            $result['option'] = $option;
             echo json_encode($result);
         }
         else
@@ -64,9 +66,12 @@
         $chiPhi = $_POST['chiPhi']*$night;
         $maLoaiPhong = $_POST['maLoaiPhong'];
         $soluong = $_POST['select_room'];
+        if(empty($option))
+            $option = '';
+
         if($_POST['dangnhap']=='true')
-            echo json_encode(Db::ndDatPhong($_POST['maSo_ND'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $email, $sdt, $hoTen, $tinhthanhpho, $address_bill, $address_company, $code, $company));
+            echo json_encode(Db::ndDatPhong($_POST['maSo_ND'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $option, $PTTT, $email, $sdt, $hoTen, $tinhthanhpho, $address_bill, $address_company, $code, $company));
         else
-            echo json_encode(Db::khachDatPhong($_SESSION['maTruyCap'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $PTTT, $hoTen, $email, $sdt, $tinhthanhpho, $address_bill, $address_company, $code, $company));
+            echo json_encode(Db::khachDatPhong($_SESSION['maTruyCap'], $maLoaiPhong, $soluong, $timestart, $timeend, $chiPhi, $option, $PTTT, $hoTen, $email, $sdt, $tinhthanhpho, $address_bill, $address_company, $code, $company));
     }
 ?>      

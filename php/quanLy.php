@@ -24,7 +24,7 @@
 
     }
 
-    if($action=='delete'){
+    if($action=='cancel'){
         $maHoaDon = $_REQUEST['maHoaDon'];
         $maTruyCap = $_SESSION['maTruyCap'];
         $rs = Db::getMaKhachHang($maTruyCap);
