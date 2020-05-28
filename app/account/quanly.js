@@ -64,108 +64,54 @@
      }
      return true;
  }
-
-
-
- //Kiểm tra đăng nhập 
  // Auto Login
- var userInfo = {};
-
  function autoLogin() {
-     // var isSuccess = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/login.php',
-         async: false,
-         data: {
-             action: 'Auto-Login'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success']) {
-                 userInfo = response;
-             }
-             console.log(response);
+     let = userInfo;
+     reqAjax('../../php/login.php', {
+         action: 'Auto-Login'
+     }, res => {
+         if (res.success) {
+             userInfo = res;
          }
-     });
+         console.log(res);
+     })
      return userInfo;
  }
- autoLogin();
- if (userInfo.quyenQuanTri == '1') {
-     window.location.replace("../account/adminQuanLy.html");
- }
+
+
+ // MAIN
+ let userInfo = {};
+ let gopY = '';
+ 
  $(() => {
-     $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>')
-     if (userInfo.hasOwnProperty('success'))
-         if (userInfo['success']) {
-             // console.log(userInfo['maSo_ND']);
-             let list_group = $('#login ul.list-group');
-             list_group.children('li').first().remove();
-             list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
-             list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-             let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
-             account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
-             list_group.append(account);
-         }
+     let sPath = window.location.pathname;
+     let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+     console.log(sPage);
 
- })
+     userInfo = autoLogin();
+     if (userInfo.quyenQuanTri == '1') {
+         window.location.replace("../account/adminQuanLy.html");
+     }
 
- //LogOut
- function logOut() {
-     var cont = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/index.php',
-         async: false,
-         data: {
-             action: 'LogOut'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 cont = true;
-         }
-     });
-     return cont;
+     $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>');
+     if (userInfo.success) {
+         let list_group = $('#login ul.list-group');
+         list_group.children('li').first().remove();
+         list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
+         list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
+         let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+         account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
+         list_group.append(account);
+     }
 
- }
- var gopY = '';
- $(() => {
      for (let i = 0; i < $('label.check').length; i++) {
          $($('.check')[i]).click(() => {
              gopY = $($('.check > p')[i]).text();
          })
      }
- })
 
- function danhGia() {
-     let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
-     let cauHoi = $('#placetext-1').val();
-     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
-
-     var cont = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/index.php',
-         async: false,
-         data: {
-             action: 'danhGia',
-             doHaiLong: doHaiLong,
-             gopY: gopY,
-             cauHoi: cauHoi,
-             email_sdt_lienhe: email_sdt_lienhe
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 cont = true;
-         }
-     });
-     return cont;
- }
- // About account
- $(() => {
-     if (userInfo.success) {
+     // About account
+     if (sPage == 'taikhoan.html' && userInfo.success) {
          $('#name').val(userInfo.hoTen_ND);
          $('#email').val(userInfo.email_ND);
          $('#phone').val(userInfo.SDT_ND);
@@ -175,9 +121,69 @@
      } else {
          $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
      }
-     // console.log(userInfo);
 
+
+     // Quan Ly Dat Phong
+     let ks_info;
+     reqAjax('../../php/hotel.php', {
+         action: 'ks_info_all'
+     }, res => ks_info = res);
+     let phong_info = [];
+     let hoaDon = [];
+     reqAjax('../../php/quanLy.php', {
+         action: 'getHoaDon'
+     }, res => {
+         if (res.success) hoaDon = res.hoaDon
+     });
+     hoaDon.forEach(value => {
+         reqAjax('../../php/hotel.php', {
+             action: 'getLoaiPhong1',
+             'maLoaiPhong': value.maLoaiPhong
+         }, res => phong_info.push(res));
+     })
+     let paging = 'all';
+     loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+     $('#typePage').on('change', e => {
+         paging = $(e.target).val();
+         loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         console.log(paging)
+     })
+     $('#search_hoaDon').keyup((e) => {
+         loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+     })
  })
+
+ //LogOut
+ function logOut() {
+     let cont = false;
+     reqAjax('../../php/index.php', {
+         action: 'LogOut'
+     }, res => {
+         if (res.success)
+             cont = true;
+     })
+     return cont;
+ }
+
+ function danhGia() {
+     let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
+     let cauHoi = $('#placetext-1').val();
+     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
+
+     var cont = false;
+     reqAjax('../../php/index.php', {
+         action: 'danhGia',
+         doHaiLong,
+         gopY,
+         cauHoi,
+         email_sdt_lienhe
+     }, res => {
+         if (res.success)
+             cont = true;
+     })
+     return cont;
+ }
+
  // Xac nhan doi thong tin
  function confirmEdit(e) {
      if ($('#pwd').val() == userInfo.matKhau_ND) {
@@ -214,32 +220,34 @@
          success: callBack
      });
  }
+
  function searchEngine(keyword, list, ks_info, phong_info) {
-    let filter;
-    let rs = [];
-    filter = keyword.toUpperCase();
-    for (i = 0; i < Object.keys(list).length; i++) {
-        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==list[i].maKhachSan)[0].tenKhachSan;
-        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==list[i].maLoaiPhong)[0].moTa.ten;
-        if (list[i].maHoaDon.toUpperCase().indexOf(filter) > -1 || list[i].maSo_KH.toUpperCase().indexOf(filter) > -1 
-        || list[i].maKhachSan.toUpperCase().indexOf(filter) > -1 || list[i].maLoaiPhong.toUpperCase().indexOf(filter) > -1 
-        || list[i].hinhThucThanhToan.toUpperCase().indexOf(filter) > -1 || list[i].trangThai.toUpperCase().indexOf(filter) > -1 
-        || list[i].soLuong == filter || tenKhachSan.toUpperCase().indexOf(filter) > -1 || tenLoaiPhong.toUpperCase().indexOf(filter) > -1) {
-            rs.push(list[i]);
-        }
-    }
-    // console.log(rs);
-    return rs;
-}
- function loadQuanLyPage(hoaDon, ks_info, phong_info, page='all') {
+     let filter;
+     let rs = [];
+     filter = keyword.toUpperCase();
+     for (i = 0; i < Object.keys(list).length; i++) {
+         let tenKhachSan = ks_info.filter(value => value.maKhachSan == list[i].maKhachSan)[0].tenKhachSan;
+         let tenLoaiPhong = phong_info.filter(value => value.maLoaiPhong == list[i].maLoaiPhong)[0].moTa.ten;
+         if (list[i].maHoaDon.toUpperCase().indexOf(filter) > -1 || list[i].maSo_KH.toUpperCase().indexOf(filter) > -1 ||
+             list[i].maKhachSan.toUpperCase().indexOf(filter) > -1 || list[i].maLoaiPhong.toUpperCase().indexOf(filter) > -1 ||
+             list[i].hinhThucThanhToan.toUpperCase().indexOf(filter) > -1 || list[i].trangThai.toUpperCase().indexOf(filter) > -1 ||
+             list[i].soLuong == filter || tenKhachSan.toUpperCase().indexOf(filter) > -1 || tenLoaiPhong.toUpperCase().indexOf(filter) > -1) {
+             rs.push(list[i]);
+         }
+     }
+     // console.log(rs);
+     return rs;
+ }
+
+ function loadQuanLyPage(hoaDon, ks_info, phong_info, page = 'all') {
      let hoaDonTable = $('#_table');
      hoaDonTable.empty().append('<table></table>');
      hoaDonTable.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
      hoaDonTable.find('table').append('<tbody> </tbody>');
 
      hoaDon.forEach((e, i) => {
-        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==e.maKhachSan)[0].tenKhachSan;
-        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==e.maLoaiPhong)[0].moTa.ten;
+         let tenKhachSan = ks_info.filter(value => value.maKhachSan == e.maKhachSan)[0].tenKhachSan;
+         let tenLoaiPhong = phong_info.filter(value => value.maLoaiPhong == e.maLoaiPhong)[0].moTa.ten;
 
          let addClass = '';
          if (e.trangThai == 'Đã thanh toán')
@@ -279,27 +287,7 @@
 
      });
  }
- // Quan Ly Dat Phong
- $(() => {
-    let ks_info;
-    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
-    let phong_info = [];
-    let hoaDon = [];
-     reqAjax('../../php/quanLy.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
-     hoaDon.forEach(value=>{
-        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
-    })
-     let paging = 'all';
-     loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-         $('#typePage').on('change', e=>{
-            paging = $(e.target).val();
-            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-            console.log(paging)
-         })
-        $('#search_hoaDon').keyup((e)=>{
-            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
-        })
- })
+
  // huy dat phong
  function cancel(maHoaDon) {
      if (userInfo.success) {
@@ -317,11 +305,6 @@
  function inttomoney(int) {
      return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
  }
-
-
-
-
-
 
  //Kiểm tra đăng kí
  function Check_2() {

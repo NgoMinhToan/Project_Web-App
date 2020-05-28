@@ -660,7 +660,7 @@ ul#list_3 {
     background-color: #dddddd;
 }
 #_table > table tr:hover {
-    background-color: #ddd;
+    background-color: rgba(221, 221, 221, 0.63);
 }
 #_table > table th {
     padding-top: 12px;

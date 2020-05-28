@@ -64,90 +64,139 @@
      }
      return true;
  }
-
-
-
- //Kiểm tra đăng nhập 
  // Auto Login
- var userInfo = {
-     quyenQuanTri: 0
- };
-
  function autoLogin() {
-     // var isSuccess = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/login.php',
-         async: false,
-         data: {
-             action: 'Auto-Login'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success']) {
-                 userInfo = response;
-             }
-             console.log(response);
-         }
-     });
+     reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+        if (res.success) {
+            userInfo = res;
+        }
+        console.log(res);
+     })
      return userInfo;
  }
- autoLogin();
- if (userInfo.quyenQuanTri == '0') {
-     window.location.replace("./Quanly.html");
- }
+
+ // MAIN 
+ let userInfo = {};
 
  $(() => {
-     $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>')
-     if (userInfo.hasOwnProperty('success'))
-         if (userInfo['success']) {
-             // console.log(userInfo['maSo_ND']);
-             let list_group = $('#login ul.list-group');
-             list_group.children('li').first().remove();
-             list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
-             list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-             let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
-             account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
-             list_group.append(account);
+    let sPath = window.location.pathname;
+    let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+    console.log(sPage);
+
+    userInfo = autoLogin();
+    if (userInfo.quyenQuanTri == '0') {
+        window.location.replace("./Quanly.html");
+    }
+
+     $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>');
+    if (userInfo.success) {
+        let list_group = $('#login ul.list-group');
+        list_group.children('li').first().remove();
+        list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
+        list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
+        let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+        account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
+        list_group.append(account);
+    }
+
+    let ks_info;
+    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
+    console.log(ks_info);
+
+    let phong_info = [];
+    let hoaDon = [];
+    reqAjax('../../php/admin.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
+    hoaDon.forEach(value=>{
+        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
+    })
+
+    // Quan Ly Dat Phong
+     if (sPage == "adminQuanLy.html") {
+         let paging = 'all';
+         loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         $('#typePage').on('change', e=>{
+            paging = $(e.target).val();
+            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         })
+        $('#search_hoaDon').keyup((e)=>{
+            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+        })
+     }
+     // thống kê doanh thu
+     else if (sPage == 'thongKe.html') {
+        let thongKeTable = $('#_table');
+        thongKeTable.empty().append('<table></table>');
+        thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
+        thongKeTable.find('table').append('<tbody> </tbody>');
+        let list = {};
+        hoaDon.forEach((e, i) => {
+            if (list.hasOwnProperty(e.maKhachSan)) {
+                list[e.maKhachSan].tongDoanhThu += e.thanhTien;
+                list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
+                list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
+            } else {
+                list[e.maKhachSan] = {};
+                list[e.maKhachSan].batDau = e.TG_layPhong;
+                list[e.maKhachSan].ketThuc = e.TG_traPhong;
+                list[e.maKhachSan].tongDoanhThu = e.thanhTien;
+            }
+        });
+        for (let i = 0; i < Object.keys(list).length; i++) {
+            let maKhachSan = Object.keys(list)[i];
+            $.post('../../php/hotel.php', {
+                'action': 'ks_info',
+                'maKhachSan': maKhachSan
+            }, (data) => {
+                list[maKhachSan].tenKhachSan = data.tenKhachSan;
+            }, 'json').done(() => {
+
+                item = list[maKhachSan];
+                thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
+
+            })
+        }
+     }
+     // quản lý đánh giá
+     else if (sPage == 'danhgia.html') {
+         $('#_table').empty().append('<table></table>');
+         let danhGiaTable = $('#_table > table');
+         danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
+         danhGiaTable.append('<tbody></tbody>');
+         let danhGiaTbody = danhGiaTable.find('tbody');
+         $.getJSON(`../../php/admin.php?action=getDanhGia`, data => {
+             data.forEach((item, index) => {
+                 danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
+             })
+             console.log(data);
+         });
+     }
+     // About account
+     else if (sPage == 'taiKhoanAdmin.html'){
+         if (userInfo.success) {
+             $('#name').val(userInfo.hoTen_ND);
+             $('#email').val(userInfo.email_ND);
+             $('#phone').val(userInfo.SDT_ND);
+             $('#address').val(userInfo.diaChi_ND);
+             $('#city').val(userInfo.tinhThanhPho_ND);
+             $('#account > input').attr('disabled', 'on');
+         } else {
+             $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
          }
+     }
 
  })
 
  //LogOut
  function logOut() {
-     var cont = false;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/index.php',
-         async: false,
-         data: {
-             action: 'LogOut'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 cont = true;
-         }
-     });
-     return cont;
-
- }
-
- // About account
- $(() => {
-     if (userInfo.success) {
-         $('#name').val(userInfo.hoTen_ND);
-         $('#email').val(userInfo.email_ND);
-         $('#phone').val(userInfo.SDT_ND);
-         $('#address').val(userInfo.diaChi_ND);
-         $('#city').val(userInfo.tinhThanhPho_ND);
-         $('#account > input').attr('disabled', 'on');
-     } else {
-         $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
-     }
-     // console.log(userInfo);
-
- })
+    let cont = false;
+    reqAjax('../../php/index.php', {
+        action: 'LogOut'
+    }, res => {
+        if (res.success)
+            cont = true;
+    })
+    return cont;
+}
  // Xac nhan doi thong tin
  function confirmEdit(e) {
      if ($('#pwd').val() == userInfo.matKhau_ND) {
@@ -171,8 +220,6 @@
      $('#account > button').last().before(`<label for="confirm_pwd">Xác thực mật khẩu mới:</label><input type="password" name="confirm_pwd" id="confirm_pwd" value='${userInfo.matKhau_ND}'><br>`);
      return false;
  }
-
-
 
  function reqAjax(url, data, callBack = undefined, method = 'POST', async = false, dataType = 'json') {
      $.ajax({
@@ -227,21 +274,21 @@
             }
         }
         hoaDonTable.find('table > tbody').append(`<tr class='hoaDon ${addClass}'> <td>${e.maHoaDon}</td> <td>${e.maSo_KH}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
-        hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div class='hide'><hr>
-       Tên khách sạn: ${tenKhachSan}<br>
-       Loại phòng: ${tenLoaiPhong}<br>
-       Số lượng: ${e.soLuong}<br>
-       Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
-       Tùy chọn: ${e.tuyChon}<br>
-       Thời gian lấy phòng: ${e.TG_layPhong}<br>
-       Thời gian trả phòng: ${e.TG_traPhong}<br>
-       Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
-       Tên công ty: ${e.tenCongTy}<br>
-       Mã số thuế: ${e.maSoThue}<br>
-       Địa chỉ công ty: ${e.diaChiCongTy}<br>
-       Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
+        hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div class='hide'>
+       <strong>Tên khách sạn:</strong> ${tenKhachSan}<br>
+       <strong>Loại phòng:</strong> ${tenLoaiPhong}<br>
+       <strong>Số lượng:</strong> ${e.soLuong}<br>
+       <strong>Giá phòng:</strong> ${inttomoney(e.giaPhong)} đ<br>
+       <strong>Tùy chọn:</strong> ${e.tuyChon}<br>
+       <strong>Thời gian lấy phòng:</strong> ${e.TG_layPhong}<br>
+       <strong>Thời gian trả phòng:</strong> ${e.TG_traPhong}<br>
+       <strong>Hình thức thanh toán:</strong> ${e.hinhThucThanhToan}<hr>
+       <strong>Tên công ty:</strong> ${e.tenCongTy}<br>
+       <strong>Mã số thuế:</strong> ${e.maSoThue}<br>
+       <strong>Địa chỉ công ty:</strong> ${e.diaChiCongTy}<br>
+       <strong>Địa chỉ nhận hóa đơn:</strong> ${e.diaChiNhanHoaDon}<hr>
        <strong>Trạng thái: </strong>${e.trangThai}<br>
-       <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Hủy</a><hr>
+       <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Hủy</a>
    </div></td></tr>`);
 
         let hoaDonTbody = $(`table > tbody > tr.hoaDon`)
@@ -251,83 +298,6 @@
         })
     })
  }
-
- $(() => {
-    let sPath = window.location.pathname;
-    let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
-    console.log(sPage);
-    let ks_info;
-    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
-    console.log(ks_info);
-
-    let phong_info = [];
-    let hoaDon = [];
-    reqAjax('../../php/admin.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
-    hoaDon.forEach(value=>{
-        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
-    })
-
-    // Quan Ly Dat Phong
-     if (sPage == "adminQuanLy.html") {
-         let paging = 'all';
-         loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-         $('#typePage').on('change', e=>{
-            paging = $(e.target).val();
-            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-         })
-        $('#search_hoaDon').keyup((e)=>{
-            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
-        })
-     }
-     // thống kê doanh thu
-     else if (sPage == 'thongKe.html') {
-        let thongKeTable = $('#_table');
-        thongKeTable.empty().append('<table></table>');
-        thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
-        thongKeTable.find('table').append('<tbody> </tbody>');
-        let list = {};
-        hoaDon.hoaDon.forEach((e, i) => {
-            if (list.hasOwnProperty(e.maKhachSan)) {
-                list[e.maKhachSan].tongDoanhThu += e.thanhTien;
-                list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
-                list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
-            } else {
-                list[e.maKhachSan] = {};
-                list[e.maKhachSan].batDau = e.TG_layPhong;
-                list[e.maKhachSan].ketThuc = e.TG_traPhong;
-                list[e.maKhachSan].tongDoanhThu = e.thanhTien;
-            }
-        });
-        for (let i = 0; i < Object.keys(list).length; i++) {
-            let maKhachSan = Object.keys(list)[i];
-            $.post('../../php/hotel.php', {
-                'action': 'ks_info',
-                'maKhachSan': maKhachSan
-            }, (data) => {
-                list[maKhachSan].tenKhachSan = data.tenKhachSan;
-            }, 'json').done(() => {
-
-                item = list[maKhachSan];
-                thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
-
-            })
-        }
-     }
-     // quản lý đánh giá
-     else if (sPage == 'danhgia.html') {
-         $('#_table').empty().append('<table></table>');
-         let danhGiaTable = $('#_table > table');
-         danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
-         danhGiaTable.append('<tbody></tbody>');
-         let danhGiaTbody = danhGiaTable.find('tbody');
-         $.getJSON(`../../php/admin.php?action=getDanhGia`, data => {
-             data.forEach((item, index) => {
-                 danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
-             })
-             console.log(data);
-         });
-     }
- })
  // huy dat phong
  function cancel(maHoaDon, maSo_KH) {
      if (userInfo.success) {
@@ -342,7 +312,6 @@
          return false;
      }
  }
-
  function accept(maHoaDon, maSo_KH) {
      if (userInfo.success) {
          reqAjax('../../php/admin.php', {action: 'duyet', accept: 1, maHoaDon, maSo_KH});
@@ -353,23 +322,10 @@
          return false;
      }
  }
-
-
-
-
-
-
-
  // tien te
  function inttomoney(int) {
      return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
  }
-
-
-
-
-
-
  //Kiểm tra đăng kí
  function Check_2() {
      var emailcheck_2 = document.getElementById("email-2");

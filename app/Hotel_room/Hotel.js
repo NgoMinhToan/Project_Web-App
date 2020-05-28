@@ -128,124 +128,143 @@ for (var j = 0; j < questions.length; j++) {
 }
 
 // Auto Login
-var userInfo = {};
-function autoLogin(){
-    // var isSuccess = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/login.php',
-        async: false,
-        data: {action: 'Auto-Login'},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success']){
-                userInfo = response;
-            }
-            console.log(response);
-        }
-    });
+function autoLogin() {
+    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+       if (res.success) {
+           userInfo = res;
+       }
+       console.log(res);
+    })
     return userInfo;
 }
-autoLogin();
-if(userInfo.quyenQuanTri=='1'){
-    window.location.replace("../account/adminQuanLy.html");
-}
-$(()=>{
-     $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
-     if(userInfo.hasOwnProperty('success'))
-        if(userInfo['success']){
-            console.log(userInfo['maSo_ND']);
-            let list_group = $('#login ul.list-group');
-            list_group.children('li').first().remove();
-            list_group.append('<li class="list-group-item"><a href="../account/taikhoan.html">Quản lý tài khoản</a></li>')
-            list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-            let account = $('<li class="list-group-item bg-primary"><a href="../account/taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
-            account.children('a').append('<br><span>'+userInfo['email_ND']+'</span>');
-            list_group.append(account);
-        }
+// MAIN 
+let userInfo = {};
+let maKhachSan;//------------------------------
+let gopY = '';
+let timestart = '1-1-2000';
+let timeend = '1-1-2000';
+let numPhong = 1;
+let numNguoi = 2;
+$(() => {
+   let sPath = window.location.pathname;
+   let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+   console.log(sPage);
 
-})
+   userInfo = autoLogin();
+   if(userInfo.quyenQuanTri=='1'){
+        window.location.replace("../account/adminQuanLy.html");
+    }
 
-//LogOut
-function logOut(){
-    var cont = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/index.php',
-        async: false,
-        data: {action: 'LogOut'},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success'])
-                cont = true;
-        }
-    });
-    return cont;
-
-}
-var gopY = '';
-$(()=>{
-    for(let i =0;i<$('label.check').length;i++){
-        $($('.check')[i]).click(()=>{
+    $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>');
+   if (userInfo.success) {
+       let list_group = $('#login ul.list-group');
+       list_group.children('li').first().remove();
+       list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
+       list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
+       let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+       account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
+       list_group.append(account);
+   }
+   for (let i = 0; i < $('label.check').length; i++) {
+        $($('.check')[i]).click(() => {
             gopY = $($('.check > p')[i]).text();
         })
     }
+
+    reqAjax('../../php/hotel.php', {action:'setMaKhachSan'});
+    reqAjax('../../php/hotel.php', {action:'maKhachSan'}, res=>{
+        maKhachSan=res.maKhachSan;
+        let ks_info = get_KS_Info(maKhachSan);
+        let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+        loadPage(ks_info, loaiphong_info);
+    });
+
+    // thong tin tim kiem
+    // time picker
+
+    // let keyword = '';
+    // $('#search').on('change', (e)=>{
+    //     keyword = $(e.target).val();
+    //     console.log(keyword);
+    // })
+    $('#calendar').on('change', ()=>{
+        timestart = $('#calendar').val();
+        console.log(timestart);
+    })
+    $('#calendar-2').on('change', ()=>{
+        timeend =$('#calendar-2').val();
+        console.log(timeend);
+    })
+    $('#demo0').on('change', ()=>{
+        numPhong = $('#demo0').val();
+        $('#demo0').val(`  ${numPhong} phòng`);
+        console.log(numPhong);
+    })
+    $('#demo01').on('change', ()=>{
+        numNguoi =$('#demo01').val();
+        $('#demo01').val(`  ${numNguoi} người`);
+        console.log(numNguoi);
+    })
+    $('#btn_search').click(()=>{
+        let ks_info = get_KS_Info(maKhachSan);
+        let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+        loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai >= numPhong && intFromString(item.moTa.toiDaSoNguoi) >= numNguoi));
+    })
 })
-function danhGia(){
+
+//LogOut
+function logOut() {
+   let cont = false;
+   reqAjax('../../php/index.php', {
+       action: 'LogOut'
+   }, res => {
+       if (res.success)
+           cont = true;
+   })
+   return cont;
+}
+
+function danhGia() {
     let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
     let cauHoi = $('#placetext-1').val();
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
-    
+
     var cont = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/index.php',
-        async: false,
-        data: {action: 'danhGia', doHaiLong: doHaiLong, gopY: gopY, cauHoi: cauHoi, email_sdt_lienhe: email_sdt_lienhe},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success'])
-                cont = true;
-        }
-    });
+    reqAjax('../../php/index.php', {
+        action: 'danhGia',
+        doHaiLong,
+        gopY,
+        cauHoi,
+        email_sdt_lienhe
+    }, res => {
+        if (res.success)
+            cont = true;
+    })
     return cont;
+}
+
+function reqAjax(url, data, callBack, method = 'POST', async = false, dataType = 'json') {
+    $.ajax({
+        type: method,
+        url: url,
+        async: async,
+        data: data,
+        dataType: dataType,
+        success: callBack
+    });
 }
 
 // Lấy Dữ Liệu các phòng của Khách Sạn
 
-
-
-
-
 function get_KS_Info(maKhachSan){
-    var val;
-    $.ajax({    
-        type: 'POST',
-        url: '../../php/hotel.php',
-        async: false,
-        data: {action: 'ks_info', maKhachSan: maKhachSan},
-        dataType: 'json',
-        success: (response)=>{
-            // console.log(response);
-            val = response;
-        }
-    });
+    let val;
+    reqAjax('../../php/hotel.php', {action: 'ks_info', maKhachSan: maKhachSan}, res=> val = res);
     return val;
 }    
 
 function get_LoaiPhong_info(maKhachSan){
-    var val;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/hotel.php',
-        async: false,
-        data: {action: 'getLoaiPhong', maKhachSan: maKhachSan},
-        dataType: 'json',
-        success: (response)=>{
-            // console.log(response);
-            val = response;
-        }
-    });
+    let val;
+    reqAjax('../../php/hotel.php', {action: 'getLoaiPhong', maKhachSan: maKhachSan}, res=> val = res);
     return val;
 }
 //Chuyển hướng
@@ -257,17 +276,10 @@ function room_Choose(maLoaiPhong, maKhachSan){
     else
         option = '';
     var cont = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/hotel.php',
-        async: false,
-        data: {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend, option},
-        dataType: 'json',
-        success:(response)=>{
-            if(response.success)
-                cont=true;
-            console.log(cont);
-        }
+    reqAjax('../../php/hotel.php', {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend, option}, res=>{
+        if(res.success)
+            cont=true;
+        console.log(cont);
     })
     return cont;
 }
@@ -288,6 +300,7 @@ function loadPage(ks_info, loaiphong_info){
     // let ks_info = get_KS_Info(maKhachSan);
     // let loaiphong_info = get_LoaiPhong_info(maKhachSan);
     // console.log(ks_info);
+    $('title').text(ks_info.tenKhachSan);
     let body = $('#id-body');
 
     //section header
@@ -435,63 +448,3 @@ function loadPage(ks_info, loaiphong_info){
     })
 
 }
-
-
-// main
-let maKhachSan;//------------------------------
-$(()=>{
-    $.ajax({
-        url: '../../php/hotel.php',
-        async: false,
-        data: {'action':'setMaKhachSan'}
-    });
-    $.ajax({
-        url: '../../php/hotel.php',
-        async: false,
-        data: {'action':'maKhachSan'},
-        dataType: 'json',
-        success: function(res) {
-            maKhachSan=res.maKhachSan;
-            let ks_info = get_KS_Info(maKhachSan);
-            let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-            loadPage(ks_info, loaiphong_info);
-        }
-        
-    });
-    
-});
-// thong tin tim kiem
-// time picker
-let timestart = '1-1-2000';
-let timeend = '1-1-2000';
-let numPhong = 1;
-let numNguoi = 2;
-// let keyword = '';
-// $('#search').on('change', (e)=>{
-//     keyword = $(e.target).val();
-//     console.log(keyword);
-// })
-$('#calendar').on('change', ()=>{
-    timestart = $('#calendar').val();
-    console.log(timestart);
-})
-$('#calendar-2').on('change', ()=>{
-    timeend =$('#calendar-2').val();
-    console.log(timeend);
-})
-$('#demo0').on('change', ()=>{
-    numPhong = $('#demo0').val();
-    $('#demo0').val(`  ${numPhong} phòng`);
-    console.log(numPhong);
-})
-$('#demo01').on('change', ()=>{
-    numNguoi =$('#demo01').val();
-    $('#demo01').val(`  ${numNguoi} người`);
-    console.log(numNguoi);
-})
-$('#btn_search').click(()=>{
-    let ks_info = get_KS_Info(maKhachSan);
-    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-    loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai >= numPhong && intFromString(item.moTa.toiDaSoNguoi) >= numNguoi));
-})
-

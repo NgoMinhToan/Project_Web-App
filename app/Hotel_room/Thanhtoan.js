@@ -125,219 +125,79 @@ function openMenu(evt, menuName) {
 document.getElementById("myLink").click();
 
 
-// Auto Login
-var userInfo = {success: false};
-function autoLogin(){
-    // var isSuccess = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/login.php',
-        async: false,
-        data: {action: 'Auto-Login'},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success']){
-                userInfo = response;
-            }
-            // console.log(response);
-        }
-    });
+ // Auto Login
+ function autoLogin() {
+    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+       if (res.success) {
+           userInfo = res;
+       }
+       console.log(res);
+    })
     return userInfo;
 }
-$(()=>{
-    console.log(autoLogin());   
-    if(userInfo.quyenQuanTri=='1'){
+// MAIN 
+let userInfo = {success: false};
+let gopY = '';
+let dP_info = datPhong_Info();
+let phong_info = get_LoaiPhong_info();
+console.log(phong_info);
+let maLoaiPhong;
+let maKhachSan;
+let timestart = '1970-1-1 00:00:00';
+let timeend = '1970-1-1 00:00:00';
+let night = 1;
+let email = '';
+let sdt = 0;
+let hoTen = '';
+let tinhthanhpho = '';
+let month;
+let year;
+let PTTT = 'Thẻ Tín Dụng';
+let address_bill = address_company = code = company = '';
+$(() => {
+   let sPath = window.location.pathname;
+   let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+   console.log(sPage);
+
+   userInfo = autoLogin();
+   if(userInfo.quyenQuanTri=='1'){
         window.location.replace("../account/adminQuanLy.html");
     }
-})
-$(()=>{
-     $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/quanly.html">Quản lý đơn phòng</a></li>')
-     if(userInfo.hasOwnProperty('success'))
-        if(userInfo['success']){
-            console.log(userInfo['maSo_ND']);
-            let list_group = $('#login ul.list-group');
-            list_group.children('li').first().remove();
-            list_group.append('<li class="list-group-item"><a href="">Quản lý tài khoản</a></li>')
-            list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-            let account = $('<li class="list-group-item bg-primary"><a href="" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
-            account.children('a').append('<br><span>'+userInfo['email_ND']+'</span>');
-            list_group.append(account);
 
-            // phần thanh toán
-            $('.titleform a').empty();
-            $('#email').val(userInfo.email_ND);
-            $('#phone').val(userInfo.SDT_ND);
-            $('#name').val(userInfo.hoTen_ND);
-
-            for(let i=0; i<$('#province option').length; i++){
-                if($($('#province option')[i]).text==userInfo.tinhThanhPho_ND)
-                    $($('#province option')[i]).attr('selected');
-            }
-
-            email = userInfo.email_ND;
-            std = userInfo.SDT_ND;
-            hoTen = userInfo.hoTen_ND;
-            tinhthanhpho = userInfo.tinhThanhPho_ND;
-
-        }
-
-})
-
-//LogOut
-function logOut(){
-    var cont = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/index.php',
-        async: false,
-        data: {action: 'LogOut'},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success'])
-                cont = true;
-        }
-    });
-    return cont;
-
-}
-var gopY = '';
-$(()=>{
-    for(let i =0;i<$('label.check').length;i++){
-        $($('.check')[i]).click(()=>{
+    $('#login ul.list-group').append('<li class="list-group-item"><a href="./quanly.html">Quản lý đơn phòng</a></li>');
+   if (userInfo.success) {
+       let list_group = $('#login ul.list-group');
+       list_group.children('li').first().remove();
+       list_group.append('<li class="list-group-item"><a href="./taikhoan.html">Quản lý tài khoản</a></li>')
+       list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
+       let account = $('<li class="list-group-item bg-primary"><a href="./taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+       account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
+       list_group.append(account);
+   }
+   for (let i = 0; i < $('label.check').length; i++) {
+        $($('.check')[i]).click(() => {
             gopY = $($('.check > p')[i]).text();
         })
     }
-})
-function danhGia(){
-    let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
-    let cauHoi = $('#placetext-1').val();
-    let email_sdt_lienhe = $('#email_sdt_lienhe').val();
-    
-    var cont = false;
-    $.ajax({
-        type: 'POST',
-        url: '../../php/index.php',
-        async: false,
-        data: {action: 'danhGia', doHaiLong, gopY, cauHoi, email_sdt_lienhe},
-        dataType: 'json',
-        success: (response)=>{
-            if(response['success'])
-                cont = true;
-        }
-    });
-    return cont;
-}
-// Accept Link
-function get_LoaiPhong_info(){
-    let result = '';
-    $.ajax({
-        type: 'POST',
-        url: '../../php/thanhToan.php',
-        async: false,
-        data: {action: 'getLoaiPhong'},
-        dataType: 'json',
-        success: (response)=>{
-            if(response.success){
-                result = response;
-                console.log(response);
-            }
-        }
-    });
-    return result;
-}
-function getKS_Info(maKhachSan){
-    var val;
-    $.ajax({    
-        type: 'POST',
-        url: '../../php/hotel.php',
-        async: false,
-        data: {action: 'ks_info', maKhachSan},
-        dataType: 'json',
-        success: (response)=>{
-            // console.log(response);
-            val = response;
-        }
-    });
-    return val;
-}
-function datPhong_Info(){
-    var val;
-    $.ajax({    
-        type: 'POST',
-        url: '../../php/thanhToan.php',
-        async: false,
-        data: {action: 'datPhong_info'},
-        dataType: 'json',
-        success: (response)=>{
-            console.log(response);
-            val = response;
-        }
-    });
-    return val;
-}
 
-var dP_info = datPhong_Info();
-var phong_info = get_LoaiPhong_info();
-console.log(phong_info);
-$(()=>{
+    // phần thanh toán
+    $('.titleform a').empty();
+    $('#email').val(userInfo.email_ND);
+    $('#phone').val(userInfo.SDT_ND);
+    $('#name').val(userInfo.hoTen_ND);
+
+    for(let i=0; i<$('#province option').length; i++){
+        if($($('#province option')[i]).text==userInfo.tinhThanhPho_ND)
+            $($('#province option')[i]).attr('selected');
+    }
+
+    email = userInfo.email_ND;
+    std = userInfo.SDT_ND;
+    hoTen = userInfo.hoTen_ND;
+    tinhthanhpho = userInfo.tinhThanhPho_ND;
+
     loadPage(phong_info, dP_info);
-    
-})
-var maLoaiPhong;
-var maKhachSan;
-function inttomoney(int){
-    return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
-}
-function loadPage(phong_info, dP_info){
-    maLoaiPhong = phong_info.maLoaiPhong;
-    maKhachSan = phong_info.maKhachSan;
-    let ks_info = getKS_Info(maKhachSan);
 
-    timestart = dP_info.timestart;
-    timeend = dP_info.timeend;
-    night = dP_info.night;
-    //
-
-    //
-    let box_ks = $('#ks_box');
-    box_ks.find('.box-header .title-info h4').text(ks_info.tenKhachSan);
-    box_ks.find('.box-header .address-info p').text(ks_info.diaChi_KS);
-    $(box_ks.find('.box-header .time-info .time-info-2 p')[0]).html('<input type="datetime-local" id="timestart" value="'+dP_info.timestart+'" name="timestart" style="width: 100%">');
-    $(box_ks.find('.box-header .time-info .time-info-2 p')[1]).html('<input type="datetime-local" id="timeend" value="'+dP_info.timeend+'" name="timeend" style="width: 100%">');
-    $(box_ks.find('.box-header .time-info .time-info-2 p')[2]).html('<input type="number" disabled id="numnight" value="'+dP_info.night+'" name="numnight" min="1" max="10" style="width: 20%">');
-
-    $('.booking-bill td.text').text(phong_info.moTa.ten);
-
-    $('.booking-bill td.text-1').empty();
-    $('.booking-bill td.text-1').append(phong_info.select_room+' phòng <br> <ul> </ul>');
-    // phong_info.moTa.tuyChon.forEach((item)=>{
-    if(phong_info.option!=undefined)
-        $('.booking-bill td.text-1 ul').append('<li>'+phong_info.option+'</li>')
-    // })
-    $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*dP_info.night*phong_info.select_room)+' đ/ '+dP_info.night+' đêm');
-    $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*dP_info.night*phong_info.select_room)+ ' đ');
-
-    $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*dP_info.night*phong_info.select_room) + ' đ');
-
-    $($($('.table-3 tr')[1]).find('td')[0]).empty().append('<strong>Thanh Toán</strong> <br> ('+dP_info.night+' đêm) <br> Đã bao gồm VAT');
-
-
-
-    // alert(maLoaiPhong.dienTich);
-}
-var timestart = '1970-1-1 00:00:00';
-var timeend = '1970-1-1 00:00:00';
-var night = 1;
-var email = '';
-var sdt = 0;
-var hoTen = '';
-var tinhthanhpho = '';
-var month;
-var year;
-var PTTT = 'Thẻ Tín Dụng';
-var address_bill = address_company = code = company = '';
-
-$(()=>{
     $('#timeend').change(()=>{
         console.log($('#timeend').val());
         timeend = $('#timeend').val().replace('T', ' '); 
@@ -412,22 +272,120 @@ $(()=>{
         console.log($('#company').val());
         company = $('#company').val();
     })
-    // console.log()
 
 })
-function btn_datPhong(){
-    cont = false;
-    $.ajax({    
-        type: 'POST',
-        url: '../../php/thanhToan.php',
-        async: false,
-        data: {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company, option:phong_info.option},
-        dataType: 'json',
-        success: (response)=>{
-            if(response.success)
-                cont = true;
-            console.log(response);
-        }
-    });
+
+//LogOut
+function logOut() {
+   let cont = false;
+   reqAjax('../../php/index.php', {
+       action: 'LogOut'
+   }, res => {
+       if (res.success)
+           cont = true;
+   })
+   return cont;
+}
+
+function danhGia() {
+    let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
+    let cauHoi = $('#placetext-1').val();
+    let email_sdt_lienhe = $('#email_sdt_lienhe').val();
+
+    var cont = false;
+    reqAjax('../../php/index.php', {
+        action: 'danhGia',
+        doHaiLong,
+        gopY,
+        cauHoi,
+        email_sdt_lienhe
+    }, res => {
+        if (res.success)
+            cont = true;
+    })
     return cont;
 }
+
+function reqAjax(url, data, callBack, method = 'POST', async = false, dataType = 'json') {
+    $.ajax({
+        type: method,
+        url: url,
+        async: async,
+        data: data,
+        dataType: dataType,
+        success: callBack
+    });
+}
+
+// Accept Link
+function get_LoaiPhong_info(){
+    let result = '';
+    reqAjax('../../php/thanhToan.php', {action: 'getLoaiPhong'}, res=> {
+        if(res.success)
+            result = res;
+        console.log(res);
+    })
+    return result;
+}
+function getKS_Info(maKhachSan){
+    let val;
+    reqAjax('../../php/hotel.php', {action: 'ks_info', maKhachSan}, res=> val=res);
+    return val;
+}
+function datPhong_Info(){
+    let val;
+    reqAjax('../../php/thanhToan.php', {action: 'datPhong_info'}, res=> {
+        console.log(res);
+        val = res;
+    })
+    return val;
+}
+function btn_datPhong(){
+    let cont = false;
+    reqAjax('../../php/thanhToan.php', {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company, option:phong_info.option}, res=>{
+        if(res.success)
+            cont = true;
+        console.log(res);
+    })
+    return cont;
+}
+function inttomoney(int){
+    return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
+}
+function loadPage(phong_info, dP_info){
+    maLoaiPhong = phong_info.maLoaiPhong;
+    maKhachSan = phong_info.maKhachSan;
+    let ks_info = getKS_Info(maKhachSan);
+
+    timestart = dP_info.timestart;
+    timeend = dP_info.timeend;
+    night = dP_info.night;
+    //
+
+    //
+    let box_ks = $('#ks_box');
+    box_ks.find('.box-header .title-info h4').text(ks_info.tenKhachSan);
+    box_ks.find('.box-header .address-info p').text(ks_info.diaChi_KS);
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[0]).html('<input type="datetime-local" id="timestart" value="'+dP_info.timestart+'" name="timestart" style="width: 100%">');
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[1]).html('<input type="datetime-local" id="timeend" value="'+dP_info.timeend+'" name="timeend" style="width: 100%">');
+    $(box_ks.find('.box-header .time-info .time-info-2 p')[2]).html('<input type="number" disabled id="numnight" value="'+dP_info.night+'" name="numnight" min="1" max="10" style="width: 20%">');
+
+    $('.booking-bill td.text').text(phong_info.moTa.ten);
+
+    $('.booking-bill td.text-1').empty();
+    $('.booking-bill td.text-1').append(phong_info.select_room+' phòng <br> <ul> </ul>');
+    // phong_info.moTa.tuyChon.forEach((item)=>{
+    if(phong_info.option!=undefined)
+        $('.booking-bill td.text-1 ul').append('<li>'+phong_info.option+'</li>')
+    // })
+    $('.booking-bill td.text-2 p.price').text(inttomoney(phong_info.moTa.giaGiam*dP_info.night*phong_info.select_room)+' đ/ '+dP_info.night+' đêm');
+    $('.table-1 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*0.1/1000)*1000*dP_info.night*phong_info.select_room)+ ' đ');
+
+    $('.table-3 td.price').text(inttomoney(Math.floor(phong_info.moTa.giaGiam*1.1/1000)*1000*dP_info.night*phong_info.select_room) + ' đ');
+
+    $($($('.table-3 tr')[1]).find('td')[0]).empty().append('<strong>Thanh Toán</strong> <br> ('+dP_info.night+' đêm) <br> Đã bao gồm VAT');
+
+    // alert(maLoaiPhong.dienTich);
+}
+
+
