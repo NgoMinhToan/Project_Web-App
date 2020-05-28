@@ -591,6 +591,36 @@ ul#list_3 {
     color: #bf3566;
 }
 
+#danhGiaks_table > table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+#danhGiaks_table > table td, #danhGiaks_table > table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+#danhGiaks_table > table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+#danhGiaks_table > table tr:hover {
+    background-color: #ddd;
+}
+#danhGiaks_table > table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #d3e8f0;
+    color: black;
+}
+#danhGiaks_table > table,
+#danhGiaks_table > table th,
+#danhGiaks_table > table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
 @media only screen and (max-width:1200px) {
     .row .login .image-phone {
         margin-left: -50px;
