@@ -35,14 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 }, false)
 
-//Tìm phòng và tìm khách sạn
-document.addEventListener("DOMContentLoaded", function() {
-    search = document.getElementById("search");
-    search.onclick = function() {
-        list_2.classList.toggle("hien");
 
-    }
-}, false)
 $(function() {
     $("#calendar").datepicker({ dateFormat: "dd-mm-yy" }).val();
 });
@@ -257,11 +250,12 @@ function get_LoaiPhong_info(maKhachSan){
 }
 //Chuyển hướng
 function room_Choose(maLoaiPhong, maKhachSan){
-    var select_room = $('#room_in_'+maLoaiPhong).val();
+    let select_room = $('#room_in_'+maLoaiPhong).val();
+    let option = '';
     if($(`#${maLoaiPhong}_option0`).is(":checked"))
-        var option = $(`#${maLoaiPhong}_option0`).val();
+        option = $(`#${maLoaiPhong}_option0`).val();
     else
-        var option = '';
+        option = '';
     var cont = false;
     $.ajax({
         type: 'POST',
@@ -274,12 +268,20 @@ function room_Choose(maLoaiPhong, maKhachSan){
                 cont=true;
             console.log(cont);
         }
-    });
+    })
     return cont;
 }
 
 function inttomoney(int){
     return int.toString().split('').reverse().join('').replace(/(...?)/g, '$1,').split('').reverse().join('').replace(/^,/, '');
+}
+
+function intFromString(s){
+	a = NaN;
+    for(let i=0; i<s.length && !Number.isInteger(a); i++){
+    	a = parseInt(s.slice(i,));
+    }
+    return a
 }
 
 function loadPage(ks_info, loaiphong_info){
@@ -436,8 +438,8 @@ function loadPage(ks_info, loaiphong_info){
 
 
 // main
+let maKhachSan;//------------------------------
 $(()=>{
-    var maKhachSan;//------------------------------
     $.ajax({
         url: '../../php/hotel.php',
         async: false,
@@ -456,44 +458,40 @@ $(()=>{
         }
         
     });
-
-
-
-
-    // thong tin tim kiem
-    // time picker
-    let timestart = '1-1-2000';
-    let timeend = '1-1-2000';
-    // let keyword = '';
-    // $('#search').on('change', (e)=>{
-    //     keyword = $(e.target).val();
-    //     console.log(keyword);
-    // })
-    $('#calendar').on('change', ()=>{
-        timestart = $('#calendar').val();
-        console.log(timestart);
-    })
-    $('#calendar-2').on('change', ()=>{
-        timeend =$('#calendar-2').val();
-        console.log(timeend);
-    })
-    let numPhong = 1;
-    let numNguoi = 2;
-    $('#demo0').on('change', ()=>{
-        numPhong = $('#demo0').val();
-        $('#demo0').val(`  ${numPhong} phòng`);
-        console.log(numPhong);
-    })
-    $('#demo01').on('change', ()=>{
-        numNguoi =$('#demo01').val();
-        $('#demo01').val(`  ${numNguoi} người`);
-        console.log(numNguoi);
-    })
-    $('#btn_search').click((e)=>{
-        let ks_info = get_KS_Info(maKhachSan);
-        let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-        loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai >= numPhong));
-    })
-
+    
 });
+// thong tin tim kiem
+// time picker
+let timestart = '1-1-2000';
+let timeend = '1-1-2000';
+let numPhong = 1;
+let numNguoi = 2;
+// let keyword = '';
+// $('#search').on('change', (e)=>{
+//     keyword = $(e.target).val();
+//     console.log(keyword);
+// })
+$('#calendar').on('change', ()=>{
+    timestart = $('#calendar').val();
+    console.log(timestart);
+})
+$('#calendar-2').on('change', ()=>{
+    timeend =$('#calendar-2').val();
+    console.log(timeend);
+})
+$('#demo0').on('change', ()=>{
+    numPhong = $('#demo0').val();
+    $('#demo0').val(`  ${numPhong} phòng`);
+    console.log(numPhong);
+})
+$('#demo01').on('change', ()=>{
+    numNguoi =$('#demo01').val();
+    $('#demo01').val(`  ${numNguoi} người`);
+    console.log(numNguoi);
+})
+$('#btn_search').click(()=>{
+    let ks_info = get_KS_Info(maKhachSan);
+    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+    loadPage(ks_info, loaiphong_info.filter((item)=>item.phongConLai >= numPhong && intFromString(item.moTa.toiDaSoNguoi) >= numNguoi));
+})
 

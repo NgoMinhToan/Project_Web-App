@@ -204,79 +204,101 @@
  }
 
 
- function reqAjax(url, data, callBack, method='POST', async = false, dataType='json'){
-    $.ajax({
-        type: method,
-        url: url,
-        async: async,
-        data: data,
-        dataType: dataType,
-        success: callBack
-    });
+ function reqAjax(url, data, callBack, method = 'POST', async = false, dataType = 'json') {
+     $.ajax({
+         type: method,
+         url: url,
+         async: async,
+         data: data,
+         dataType: dataType,
+         success: callBack
+     });
+ }
+ function searchEngine(keyword, list, ks_info, phong_info) {
+    let filter;
+    let rs = [];
+    filter = keyword.toUpperCase();
+    for (i = 0; i < Object.keys(list).length; i++) {
+        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==list[i].maKhachSan)[0].tenKhachSan;
+        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==list[i].maLoaiPhong)[0].moTa.ten;
+        if (list[i].maHoaDon.toUpperCase().indexOf(filter) > -1 || list[i].maSo_KH.toUpperCase().indexOf(filter) > -1 
+        || list[i].maKhachSan.toUpperCase().indexOf(filter) > -1 || list[i].maLoaiPhong.toUpperCase().indexOf(filter) > -1 
+        || list[i].hinhThucThanhToan.toUpperCase().indexOf(filter) > -1 || list[i].trangThai.toUpperCase().indexOf(filter) > -1 
+        || list[i].soLuong == filter || tenKhachSan.toUpperCase().indexOf(filter) > -1 || tenLoaiPhong.toUpperCase().indexOf(filter) > -1) {
+            rs.push(list[i]);
+        }
+    }
+    // console.log(rs);
+    return rs;
 }
+ function loadQuanLyPage(hoaDon, ks_info, phong_info, page='all') {
+     let hoaDonTable = $('#_table');
+     hoaDonTable.empty().append('<table></table>');
+     hoaDonTable.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
+     hoaDonTable.find('table').append('<tbody> </tbody>');
+
+     hoaDon.forEach((e, i) => {
+        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==e.maKhachSan)[0].tenKhachSan;
+        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==e.maLoaiPhong)[0].moTa.ten;
+
+         let addClass = '';
+         if (e.trangThai == 'Đã thanh toán')
+             addClass = 'successed';
+         else if (e.trangThai == 'Đã hủy')
+             addClass = 'cancelled';
+         else if (e.trangThai == 'Đang chờ duyệt')
+             addClass = 'waitting';
+         if (page != 'all') {
+             if (page != addClass) {
+                 addClass += ' hide';
+             }
+         }
+         hoaDonTable.find('table > tbody').append(`<tr class='hoaDon ${addClass}'> <td>${e.maHoaDon}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
+         hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=4><div class='hide'><hr>
+    Tên khách sạn: ${tenKhachSan}<br>
+    Loại phòng: ${tenLoaiPhong}<br>
+    Số lượng: ${e.soLuong}<br>
+    Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
+    Tùy chọn: ${e.tuyChon}<br>
+    Thời gian lấy phòng: ${e.TG_layPhong}<br>
+    Thời gian trả phòng: ${e.TG_traPhong}<br>
+    Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
+    Tên công ty: ${e.tenCongTy}<br>
+    Mã số thuế: ${e.maSoThue}<br>
+    Địa chỉ công ty: ${e.diaChiCongTy}<br>
+    Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
+    <strong>Trạng thái: </strong>${e.trangThai}<br>
+    <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
+</div></td></tr>`);
+
+         let hoaDonTbody = $(`table > tbody > tr.hoaDon`)
+         $(hoaDonTbody[i]).click(e => {
+             $(hoaDonTbody[i]).next().slideToggle('fast');
+             $(hoaDonTbody[i]).next().find('div').slideToggle('fast');
+         })
+
+     });
+ }
  // Quan Ly Dat Phong
  $(() => {
-     let hoaDon;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/quanLy.php',
-         async: false,
-         data: {
-             action: 'getHoaDon'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 hoaDon = response;
-             console.log(response);
-         }
-     });
-     if (hoaDon) {
-         let hoaDonTable = $('#hoaDon_table');
-         hoaDonTable.empty().append('<table></table>');
-         hoaDonTable.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
-         hoaDonTable.find('table').append('<tbody> </tbody>');
-         hoaDon.hoaDon.forEach((e, i) => {
-             let tenKhachSan;
-             let tenLoaiPhong;
-            reqAjax('../../php/hotel.php', { action: 'ks_info', 'maKhachSan': e.maKhachSan}, res => tenKhachSan = res.tenKhachSan);
-            reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': e.maLoaiPhong}, res => tenLoaiPhong = res.moTa.ten);
-
-             let addClass = '';
-             if (e.trangThai == 'Đã thanh toán')
-                 addClass += ' successed';
-             else if (e.trangThai == 'Đã hủy')
-                 addClass += ' cancelled';
-             else if (e.trangThai == 'Đang chờ duyệt')
-                 addClass += ' waitting';
-             hoaDonTable.find('table > tbody').append(`<tr class='hoaDon ${addClass}'> <td>${e.maHoaDon}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
-             hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=4><div class='hide'><hr>
-            Tên khách sạn: ${tenKhachSan}<br>
-            Loại phòng: ${tenLoaiPhong}<br>
-            Số lượng: ${e.soLuong}<br>
-            Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
-            Tùy chọn: ${e.tuyChon}<br>
-            Thời gian lấy phòng: ${e.TG_layPhong}<br>
-            Thời gian trả phòng: ${e.TG_traPhong}<br>
-            Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
-            Tên công ty: ${e.tenCongTy}<br>
-            Mã số thuế: ${e.maSoThue}<br>
-            Địa chỉ công ty: ${e.diaChiCongTy}<br>
-            Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
-            <strong>Trạng thái: </strong>${e.trangThai}<br>
-            <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
-        </div></td></tr>`);
-
-             let hoaDonTbody = $(`table > tbody > tr.hoaDon`)
-             $(hoaDonTbody[i]).click(e => {
-                 $(hoaDonTbody[i]).next().slideToggle('fast');
-                 $(hoaDonTbody[i]).next().find('div').slideToggle('fast');
-
-                 console.log($(e));
-             })
-
-         });
-     }
+    let ks_info;
+    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
+    let phong_info = [];
+    let hoaDon = [];
+     reqAjax('../../php/quanLy.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
+     hoaDon.forEach(value=>{
+        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
+    })
+     let paging = 'all';
+     loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         $('#typePage').on('change', e=>{
+            paging = $(e.target).val();
+            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+            console.log(paging)
+         })
+        $('#search_hoaDon').keyup((e)=>{
+            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+        })
  })
  // huy dat phong
  function cancel(maHoaDon) {

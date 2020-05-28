@@ -278,6 +278,7 @@ function datPhong_Info(){
 
 var dP_info = datPhong_Info();
 var phong_info = get_LoaiPhong_info();
+console.log(phong_info);
 $(()=>{
     loadPage(phong_info, dP_info);
     
@@ -291,7 +292,6 @@ function loadPage(phong_info, dP_info){
     maLoaiPhong = phong_info.maLoaiPhong;
     maKhachSan = phong_info.maKhachSan;
     let ks_info = getKS_Info(maKhachSan);
-    console.log(ks_info);
 
     timestart = dP_info.timestart;
     timeend = dP_info.timeend;

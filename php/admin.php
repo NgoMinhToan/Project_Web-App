@@ -16,11 +16,12 @@
 
     if($action=='duyet'){
         if($_REQUEST['accept']==1)
-                $accept = true;
-            else
-                $accept = false;
+        $accept = true;
+        else
+        $accept = false;
+        $maSo_KH = $_POST['maSo_KH'];
         $maHoaDon = $_REQUEST['maHoaDon'];
-        echo json_encode(Db::duyetDonADMIN($maHoaDon, $accept));
+        echo json_encode(Db::duyetDonADMIN($maHoaDon, $maSo_KH, $accept));
            
     }
 

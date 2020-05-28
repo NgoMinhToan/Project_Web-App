@@ -646,32 +646,32 @@ ul#list_3 {
     display: none;
 }
 
-#hoaDon_table > table{
+#_table > table{
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
-#hoaDon_table > table td, #hoaDon_table > table th {
+#_table > table td, #_table > table th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
 }
-#hoaDon_table > table tr:nth-child(even) {
+#_table > table tr:nth-child(even) {
     background-color: #dddddd;
 }
-#hoaDon_table > table tr:hover {
+#_table > table tr:hover {
     background-color: #ddd;
 }
-#hoaDon_table > table th {
+#_table > table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #d3e8f0;
     color: black;
 }
-#hoaDon_table > table,
-#hoaDon_table > table th,
-#hoaDon_table > table td {
+#_table > table,
+#_table > table th,
+#_table > table td {
     border: 1px solid #ddd;
     padding: 8px;
 }

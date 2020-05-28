@@ -16,6 +16,7 @@
         }
         if($rs['success']){
             $hoadon = Db::thongTinHoaDon($rs['maSo_KH']);
+            // echo $rs['maSo_KH'];
             // $hoadon['success'] = true;
             echo json_encode(['hoaDon'=>$hoadon, 'success'=>true]);
         }

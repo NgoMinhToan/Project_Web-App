@@ -545,13 +545,6 @@
 
 
 
-
-
-        // static function ND_huyPhong($maSo_ND, $maPhong){
-        //     $result = self::$mysql->query("DELETE FROM ndDatPhong WHERE maSo_ND='$maSo_ND' AND maPhong='$maPhong'");
-        //     if(self::$mysql->affected_rows!=0)
-        //         return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
-        // }
         static function ND_huyPhong($maSo_KH, $maHoaDon){
             $result = self::$mysql->query("SELECT maSo_ND FROM khachHang WHERE maSo_KH='$maSo_KH'");
             if($maSo_ND = $result->fetch_assoc()){
@@ -565,7 +558,26 @@
                 }
                 if(self::$mysql->affected_rows!=0)
                     return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
+                else
+                    return ['success'=>false, 'msg'=>'Hủy phòng không thành công'];
 
+            }
+        }
+        static function khach_huyPhong($maSo_KH, $maHoaDon){
+            $result = self::$mysql->query("SELECT maTruyCap FROM khachHang WHERE maSo_KH='$maSo_KH'");
+            if($maTruyCap = $result->fetch_assoc()){
+                $maTruyCap = $maTruyCap['maTruyCap'];
+                $result = self::$mysql->query("SELECT maPhong FROM khachDatPhong S1 JOIN hoaDon S2 ON S1.ngayDat=S2.ngayGiaoDich WHERE S1.maTruyCap='$maTruyCap' AND maHoaDon='$maHoaDon'");
+                $stmt = self::$mysql->prepare("DELETE FROM khachDatPhong WHERE maPhong=?");
+                $stmt->bind_param('s', $phong);
+                while($phong = $result->fetch_assoc()){
+                    $phong = $phong['maPhong'];
+                    $stmt->execute();
+                }
+                if(self::$mysql->affected_rows!=0)
+                    return ['success'=>true, 'msg'=>'Đã hủy đặt phòng'];
+                else
+                    return ['success'=>false, 'msg'=>'Hủy phòng không thành công'];
             }
         }
 
@@ -611,11 +623,12 @@
 
 
 
-        static function duyetDonADMIN($maHoaDon, $accept){
+        static function duyetDonADMIN($maHoaDon, $maSo_KH, $accept){
             if($accept){
                 self::$mysql->query("UPDATE hoaDon SET trangThai = 'Đã thanh toán' WHERE maHoaDon='$maHoaDon'");
             }else{
-                self::$mysql->query("UPDATE hoaDon SET trangThai = 'Đã hủy' WHERE maHoaDon='$maHoaDon'");
+                self::ND_huyPhong($maSo_KH, $maHoaDon);
+                self::khach_huyPhong($maSo_KH, $maHoaDon);
             }
             if(self::$mysql->affected_rows!=0)
                 return ['success'=>true, 'msg'=>'Duyệt thành công'];

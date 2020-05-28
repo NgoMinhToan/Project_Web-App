@@ -172,147 +172,168 @@
      return false;
  }
 
- let sPath = window.location.pathname;
- let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
- console.log(sPage);
 
-function reqAjax(url, data, callBack, method='POST', async = false, dataType='json'){
-    $.ajax({
-        type: method,
-        url: url,
-        async: async,
-        data: data,
-        dataType: dataType,
-        success: callBack
-    });
+
+ function reqAjax(url, data, callBack = undefined, method = 'POST', async = false, dataType = 'json') {
+     $.ajax({
+         type: method,
+         url: url,
+         async: async,
+         data: data,
+         dataType: dataType,
+         success: callBack
+     });
+ }
+
+ function searchEngine(keyword, list, ks_info, phong_info) {
+    let filter;
+    let rs = [];
+    filter = keyword.toUpperCase();
+    for (i = 0; i < Object.keys(list).length; i++) {
+        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==list[i].maKhachSan)[0].tenKhachSan;
+        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==list[i].maLoaiPhong)[0].moTa.ten;
+        if (list[i].maHoaDon.toUpperCase().indexOf(filter) > -1 || list[i].maSo_KH.toUpperCase().indexOf(filter) > -1 
+        || list[i].maKhachSan.toUpperCase().indexOf(filter) > -1 || list[i].maLoaiPhong.toUpperCase().indexOf(filter) > -1 
+        || list[i].hinhThucThanhToan.toUpperCase().indexOf(filter) > -1 || list[i].trangThai.toUpperCase().indexOf(filter) > -1 
+        || list[i].soLuong == filter || tenKhachSan.toUpperCase().indexOf(filter) > -1 || tenLoaiPhong.toUpperCase().indexOf(filter) > -1) {
+            rs.push(list[i]);
+        }
+    }
+    // console.log(rs);
+    return rs;
 }
 
- // Quan Ly Dat Phong
+ function loadQuanLyPage(hoaDon, ks_info, phong_info, page='all'){
+     console.log(hoaDon)
+    let hoaDonTable = $('#_table');
+    hoaDonTable.empty().append('<table></table>');
+    hoaDonTable.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Mã Khách Hàng</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
+    hoaDonTable.find('table').append('<tbody> </tbody>');
+    hoaDon.forEach((e, i) => {
+        let tenKhachSan = ks_info.filter(value=>value.maKhachSan==e.maKhachSan)[0].tenKhachSan;
+        let tenLoaiPhong = phong_info.filter(value=>value.maLoaiPhong==e.maLoaiPhong)[0].moTa.ten;
+
+
+        let addClass = '';
+        if (e.trangThai == 'Đã thanh toán')
+            addClass = 'successed';
+        else if (e.trangThai == 'Đã hủy')
+            addClass = 'cancelled';
+        else if (e.trangThai == 'Đang chờ duyệt')
+            addClass = 'waitting';
+        if(page != 'all'){
+            if(page != addClass){
+                addClass += ' hide';
+            }
+        }
+        hoaDonTable.find('table > tbody').append(`<tr class='hoaDon ${addClass}'> <td>${e.maHoaDon}</td> <td>${e.maSo_KH}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
+        hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div class='hide'><hr>
+       Tên khách sạn: ${tenKhachSan}<br>
+       Loại phòng: ${tenLoaiPhong}<br>
+       Số lượng: ${e.soLuong}<br>
+       Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
+       Tùy chọn: ${e.tuyChon}<br>
+       Thời gian lấy phòng: ${e.TG_layPhong}<br>
+       Thời gian trả phòng: ${e.TG_traPhong}<br>
+       Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
+       Tên công ty: ${e.tenCongTy}<br>
+       Mã số thuế: ${e.maSoThue}<br>
+       Địa chỉ công ty: ${e.diaChiCongTy}<br>
+       Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
+       <strong>Trạng thái: </strong>${e.trangThai}<br>
+       <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}", "${e.maSo_KH}");' href=''>Hủy</a><hr>
+   </div></td></tr>`);
+
+        let hoaDonTbody = $(`table > tbody > tr.hoaDon`)
+        $(hoaDonTbody[i]).click(e => {
+            $(hoaDonTbody[i]).next().slideToggle('fast');
+            $(hoaDonTbody[i]).next().find('div').slideToggle('fast');
+        })
+    })
+ }
+
  $(() => {
-     let hoaDon;
-     $.ajax({
-         type: 'POST',
-         url: '../../php/admin.php',
-         async: false,
-         data: {
-             action: 'getHoaDon'
-         },
-         dataType: 'json',
-         success: (response) => {
-             if (response['success'])
-                 hoaDon = response;
-             console.log(response);
-         }
-     });
+    let sPath = window.location.pathname;
+    let sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+    console.log(sPage);
+    let ks_info;
+    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
+    console.log(ks_info);
 
+    let phong_info = [];
+    let hoaDon = [];
+    reqAjax('../../php/admin.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
+    hoaDon.forEach(value=>{
+        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
+    })
+
+    // Quan Ly Dat Phong
      if (sPage == "adminQuanLy.html") {
-         if (hoaDon) {
-             let hoaDonTable = $('#hoaDon_table');
-             hoaDonTable.empty().append('<table></table>');
-             hoaDonTable.find('table').append('<thead> <th>Mã Hóa Đơn</th> <th>Mã Khách Hàng</th> <th>Tổng giá</th> <th>Thành tiền</th> <th>Ngày giao dịch</th> </thead>');
-             hoaDonTable.find('table').append('<tbody> </tbody>');
-             hoaDon.hoaDon.forEach((e, i) => {
-                 let tenKhachSan;
-                 let tenLoaiPhong;
-                 reqAjax('../../php/hotel.php', { action: 'ks_info', 'maKhachSan': e.maKhachSan}, res => tenKhachSan = res.tenKhachSan);
-                 reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': e.maLoaiPhong}, res => tenLoaiPhong = res.moTa.ten);
-                     
-                let addClass = '';
-                if (e.trangThai == 'Đã thanh toán')
-                    addClass = 'successed';
-                else if (e.trangThai == 'Đã hủy')
-                    addClass = 'cancelled';
-                else if (e.trangThai == 'Đang chờ duyệt')
-                    addClass = 'waitting';
-                hoaDonTable.find('table > tbody').append(`<tr class='hoaDon ${addClass}'> <td>${e.maHoaDon}</td> <td>${e.maSo_KH}</td> <td>${inttomoney(e.tongGia)} đ</td> <td>${inttomoney(e.thanhTien)} đ</td> <td>${e.ngayGiaoDich}</td> </tr>`);
-                hoaDonTable.find('table > tbody').append(`<tr class='${addClass} hide'><td colspan=5><div class='hide'><hr>
-                Tên khách sạn: ${tenKhachSan}<br>
-                Loại phòng: ${tenLoaiPhong}<br>
-                Số lượng: ${e.soLuong}<br>
-                Giá phòng: ${inttomoney(e.giaPhong)} đ<br>
-                Tùy chọn: ${e.tuyChon}<br>
-                Thời gian lấy phòng: ${e.TG_layPhong}<br>
-                Thời gian trả phòng: ${e.TG_traPhong}<br>
-                Hình thức thanh toán: ${e.hinhThucThanhToan}<hr>
-                Tên công ty: ${e.tenCongTy}<br>
-                Mã số thuế: ${e.maSoThue}<br>
-                Địa chỉ công ty: ${e.diaChiCongTy}<br>
-                Địa chỉ nhận hóa đơn: ${e.diaChiNhanHoaDon}<hr>
-                <strong>Trạng thái: </strong>${e.trangThai}<br>
-                <a role='button' class='btn btn-success text-light accept-btn ${addClass}' onclick='return accept("${e.maHoaDon}");' href=''>Duyệt</a> <a role='button' class='btn btn-danger text-light cancel-btn ${addClass}' onclick='return cancel("${e.maHoaDon}");' href=''>Hủy</a><hr>
-            </div></td></tr>`);
-
-            let hoaDonTbody = $(`table > tbody > tr.hoaDon`)
-            $(hoaDonTbody[i]).click(e => {
-                $(hoaDonTbody[i]).next().slideToggle('fast');
-                $(hoaDonTbody[i]).next().find('div').slideToggle('fast');
-
-                console.log($(e));
-            })
-                     
-                 
-             });
-         }
-
+         let paging = 'all';
+         loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         $('#typePage').on('change', e=>{
+            paging = $(e.target).val();
+            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+         })
+        $('#search_hoaDon').keyup((e)=>{
+            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+        })
      }
      // thống kê doanh thu
      else if (sPage == 'thongKe.html') {
-         if (hoaDon) {
-             let thongKeTable = $('#hoaDon_table');
-             thongKeTable.empty().append('<table></table>');
-             thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
-             thongKeTable.find('table').append('<tbody> </tbody>');
-             let list = {};
-             hoaDon.hoaDon.forEach((e, i) => {
-                 if (list.hasOwnProperty(e.maKhachSan)) {
-                     list[e.maKhachSan].tongDoanhThu += e.thanhTien;
-                     list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
-                     list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
-                 } else {
-                     list[e.maKhachSan] = {};
-                     list[e.maKhachSan].batDau = e.TG_layPhong;
-                     list[e.maKhachSan].ketThuc = e.TG_traPhong;
-                     list[e.maKhachSan].tongDoanhThu = e.thanhTien;
-                 }
-             });
-             for (let i = 0; i < Object.keys(list).length; i++) {
-                 let maKhachSan = Object.keys(list)[i];
-                 $.post('../../php/hotel.php', {
-                     'action': 'ks_info',
-                     'maKhachSan': maKhachSan
-                 }, (data) => {
-                     list[maKhachSan].tenKhachSan = data.tenKhachSan;
-                 }, 'json').done(() => {
+        let thongKeTable = $('#_table');
+        thongKeTable.empty().append('<table></table>');
+        thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
+        thongKeTable.find('table').append('<tbody> </tbody>');
+        let list = {};
+        hoaDon.hoaDon.forEach((e, i) => {
+            if (list.hasOwnProperty(e.maKhachSan)) {
+                list[e.maKhachSan].tongDoanhThu += e.thanhTien;
+                list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
+                list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
+            } else {
+                list[e.maKhachSan] = {};
+                list[e.maKhachSan].batDau = e.TG_layPhong;
+                list[e.maKhachSan].ketThuc = e.TG_traPhong;
+                list[e.maKhachSan].tongDoanhThu = e.thanhTien;
+            }
+        });
+        for (let i = 0; i < Object.keys(list).length; i++) {
+            let maKhachSan = Object.keys(list)[i];
+            $.post('../../php/hotel.php', {
+                'action': 'ks_info',
+                'maKhachSan': maKhachSan
+            }, (data) => {
+                list[maKhachSan].tenKhachSan = data.tenKhachSan;
+            }, 'json').done(() => {
 
-                     item = list[maKhachSan];
-                     thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
+                item = list[maKhachSan];
+                thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
 
-                 })
-             }
-             console.log(list);
-
-         }
+            })
+        }
      }
      // quản lý đánh giá
      else if (sPage == 'danhgia.html') {
-        $('#danhGiaks_table').empty().append('<table></table>');
-        let danhGiaTable = $('#danhGiaks_table > table');
-        danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
-        danhGiaTable.append('<tbody></tbody>');
+         $('#_table').empty().append('<table></table>');
+         let danhGiaTable = $('#_table > table');
+         danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
+         danhGiaTable.append('<tbody></tbody>');
          let danhGiaTbody = danhGiaTable.find('tbody');
          $.getJSON(`../../php/admin.php?action=getDanhGia`, data => {
              data.forEach((item, index) => {
-                danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
+                 danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
              })
              console.log(data);
          });
      }
  })
  // huy dat phong
- function cancel(maHoaDon) {
+ function cancel(maHoaDon, maSo_KH) {
      if (userInfo.success) {
          if (confirm('Bạn có chắc muốn hủy đơn này không?')) {
-             $.getJSON(`../../php/admin.php?action=duyet&&accept=0&maHoaDon=${maHoaDon}`);
+            reqAjax('../../php/admin.php', {action: 'duyet', accept: 0, maHoaDon, maSo_KH});
+            //  $.getJSON(`../../php/admin.php?action=duyet&&accept=0&maHoaDon=${maHoaDon}`);
              return true;
          } else
              return false;
@@ -322,9 +343,10 @@ function reqAjax(url, data, callBack, method='POST', async = false, dataType='js
      }
  }
 
- function accept(maHoaDon) {
+ function accept(maHoaDon, maSo_KH) {
      if (userInfo.success) {
-         $.getJSON(`../../php/admin.php?action=duyet&accept=1&maHoaDon=${maHoaDon}`);
+         reqAjax('../../php/admin.php', {action: 'duyet', accept: 1, maHoaDon, maSo_KH});
+        //  $.getJSON(`../../php/admin.php?action=duyet&accept=1&maHoaDon=${maHoaDon}`);
          return true;
      } else {
          alert('Bạn không được quyền hủy đơn này!');
