@@ -1,0 +1,461 @@
+<?php
+    session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="CafeDaLat.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fancybox-master/src/css/core.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/fullscreen.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/share.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/slideshow.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/thumbs.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="animate.css">
+    <title>Đã Lên Săn Mây Đà Lạt Phải Lưu Lại Ngay 5 Quán Cafe Siêu Mê Này</title>
+</head>
+
+<body>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="../Home/index.html">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="../Home/index.html"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="./camnang.html"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="#">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                        <input type="text" id="email_sdt_lienhe"  class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng kí</a></li>
+                                        <li class="list-group-item"><a href="#">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="body">
+        <div class="container">
+            <div class="head">
+                <div class="in-head">
+                    <a href="../Home/index.html">
+                        <span>Cẩm nang du lịch</span>
+                    </a>
+
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <!-- chuyên mục -->
+                <div class="left col-xl-3 ">
+                    <div class="box-1">
+                        <div class="border-1">
+                            <span><span>Chuyên Mục</span> <span class="fa fa-chevron-up"></span></span>
+                        </div>
+                        <div class="border-2">
+                            <p class="line-1"><a href="#">Cảnh đẹp</a></p>
+                            <p><a href="#">Khám phá</a></p>
+                            <p><a href="#">Du lịch biển</a></p>
+                        </div>
+                    </div>
+                    <!--Bài viết xem nhiều -->
+                    <div class="box-2">
+                        <div class="border-3">
+                            <p style="text-transform: uppercase;">Bài viết xem nhiều nhất</p>
+                        </div>
+                        <div class="border-4">
+                            <div class="row line-1">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-1.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">Trót gặp nàng thơ Côn Đảo </a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-2.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">4 Điểm check-in siêu chất ở Đà Nẵng</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-3.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Những địa danh đẹp ở Huế là ở đâu?</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-4.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Top 5 resort ở Côn Đảo, cứ ở là mê</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <p>Đã Lên Săn Mây Đà Lạt Phải Lưu Lại Ngay 5 Quán Cafe Siêu Mê Này</p>
+                    <i class="fa fa-calendar"> 14/04/2020</i>
+                    <i class="fa fa-eye"> 157</i>
+                    <hr>
+                    <div class="row resort-info">
+                        <small class="intro">Săn mây Đà Lạt xưa nay luôn được biết đến là một trong những “thánh địa” của dân “sống ảo” âu cũng là điều dễ hiểu. Bởi đến với xứ sở sương mù này, bên cạnh việc được tự do khám phá thiên nhiên giữa tiết trời ôn hòa dễ chịu, bạn còn có cơ hội tham gia những chuyến “săn mây” với 5 quán cafe siêu mê dưới đây. </small>
+
+                        <p class="title">1. Gió Cầu Đất Coffee </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat1.jpg"><img src="./images/DaLat/dalat1.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @__chang__97 </small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat2.jpg"><img src="./images/DaLat/dalat2.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @coffee_gio_cau_dat </small>
+                        <p class="under-img-info">
+                            Điểm đến đầu tiên trong cẩm nang vi vu Đà Lạt của nhiều phượt thủ là Gió Cầu Đất Coffee. Nằm trên quốc lộ 20, thuộc địa phận xã Xuân Trường và có khung giờ mở cửa khá thoải mái (7h00-22h00), quán được rất nhiều du khách tìm đến, nhất là các bạn trẻ khao
+                            khát tìm kiếm hành trình săn mây Đà Lạt.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat3.jpg"><img src="./images/DaLat/dalat3.jpg" style="width:600px; height:340px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @goilasun</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat4.jpg"><img src="./images/DaLat/dalat4.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @nguyenny_ </small>
+                        <p class="under-img-info">
+                            Là quán cà phê có vị trí khá cao, từ Gió Cầu Đất nhìn ra xung quanh, bạn sẽ có cảm giác như đang ở giữa không gian núi rừng hùng vĩ, tựa như chỉ cần giơ tay ra là có thể chạm lấy bầu trời.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat5.jpg"><img src="./images/DaLat/dalat5.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @ntt.chan13 </small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat6.jpg"><img src="./images/DaLat/dalat6.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @foodoogoo </small>
+                        <p class="under-img-info">
+                            Với phong cách bài trí nhẹ nhàng, lại có ban công hướng gió - background tiềm năng cho những bức ảnh nghìn tim, Gió Cầu Đất Coffee dễ dàng ghi được ấn tượng với du khách ngay từ lần đầu ghé thăm. Ngoài ra tại đây, bạn còn có cơ hội tự trải nghiệm quy
+                            trình rang xay để chế ra một ly cà phê ngay tại chỗ, hứa hẹn mang đến những phút giây thư giãn tuyệt vời.
+                        </p>
+
+                        <p class="title">2. Quán mây coffee & more</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat7.jpg"><img src="./images/DaLat/dalat7.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: Thương Lê</small>
+                        <p class="under-img-info">
+                            Hướng tới mô hình kết hợp cà phê - homestay và có thời gian mở cửa từ 7h30 hàng ngày, Quán mây coffee & more chắc chắn là điểm đến hấp dẫn với nhiều bạn trẻ lựa chọn du lịch Đà Lạt tự túc vì tính tiện lợi trong suốt kỳ nghỉ. Tọa lạc tại số 7B hẻm Hoàng
+                            Hoa Thám, Phường 10, đây cũng là một trong những điểm săn mây lý tưởng.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat8.jpg"><img src="./images/DaLat/dalat8.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @thonehh</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat9.jpg"><img src="./images/DaLat/dalat9.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: Mây Lang Thang</small>
+                        <p class="under-img-info">
+                            So với nhiều quán cà phê khác, Quán mây coffee & more tận dụng không gian vô cùng hiệu quả khi bài trí những bộ bàn ghế gỗ tại nhiều điểm có view siêu lãng mạn, kế bên quầy cà phê nhỏ thanh lịch. Tại đây, bạn có thể vừa nhâm nhi những tách cà phê thơm
+                            ngon hay mơ Má Đào ngọt thanh, vừa tận hưởng không khí trong lành đặc trưng của Đà Lạt và nhìn ngắm khung cảnh thiên nhiên thơ mộng từ trên cao.
+                        </p>
+
+                        <p class="title">3. Hai Ả Cafe</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat10.jpg"><img src="./images/DaLat/dalat10.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @lyvaindra </small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat11.jpg"><img src="./images/DaLat/dalat11.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @pham.hien1401</small>
+                        <p class="under-img-info">
+                            Mở cửa từ 7h00 đến 23h00, Hai Ả Cafe chắc chắn là lựa chọn hoàn hảo cho những ai muốn vừa ngắm nhìn Đà Lạt về đêm, vừa thưởng thức những ly đồ uống ấm áp.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat12.jpg"><img src="./images/DaLat/dalat12.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @haia.homestay.cafe </small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat13.jpg"><img src="./images/DaLat/dalat13.jpg" style="width:600px; height:695px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @phunnw</small>
+                        <p class="under-img-info">
+                            Có địa chỉ tại Vòng xoay trại mát, phường 11, 77 Sào Nam, đây còn là điểm đến lý tưởng cho bạn săn mây buổi sớm và đón bình minh trên cao giữa khung cảnh thiên nhiên đất trời yên bình, êm ả. Đặc biệt, ngoài khu Cafe, nơi đây cũng cung cấp dịch vụ homestay
+                            và tổ chức tiệc nướng theo yêu cầu của bạn, hứa hẹn mang đến trải nghiệm 3-trong-1 tuyệt vời cho một kỳ nghỉ đúng nghĩa.
+                        </p>
+
+                        <p class="title">4. Gâu Garden</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat14.jpg"><img src="./images/DaLat/dalat14.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @gaugarden</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat15.jpg"><img src="./images/DaLat/dalat15.jpg" style="width:600px; height:470px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @kelly_tykcok</small>
+                        <p class="under-img-info">
+                            Tuy có “tuổi đời” ngắn hơn so với nhiều quán cà phê Đà Lạt nhưng ngay từ khi ra mắt, Gâu Garden đã nhanh chóng bứt phá và trở thành nơi chốn nhận được nhiều sự quan tâm từ đông đảo du khách đến với xứ sở ngàn hoa.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat16.jpg"><img src="./images/DaLat/dalat16.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @maphinntmp</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat17.jpg"><img src="./images/DaLat/dalat17.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @thuc.tri.543 </small>
+                        <p class="under-img-info">
+                            Mở cửa từ sau 8 giờ sáng, quán chắc chắn là lựa chọn phù hợp cho bạn sau một bữa sáng nhẹ nhàng để bắt đầu ngày mới. Nằm tại địa chỉ 2/2 Trần Quang Diệu, Phường 10, đây cũng là một địa điểm phù hợp cho những chuyến săn mây, giúp bạn có cơ hội lưu lại
+                            những bức ảnh đẹp.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat18.jpg"><img src="./images/DaLat/dalat18.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @uyentrinh_221</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat19.jpg"><img src="./images/DaLat/dalat19.jpg" style="width:600px; height:670px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @yyengo </small>
+                        <p class="under-img-info">
+                            Ngoài ra, với cách bài trí tinh tế, tỉ mỉ và sự xuất hiện của những chú cún vô cùng thân thiện, dễ thương, Gâu Garden chắc chắn sẽ mang đến những giây phút thư giãn tuyệt vời và trở thành điểm nhấn cho chuyến du lịch Đà Lạt tự túc của bạn.
+                        </p>
+
+                        <p class="title">5. Sleep Box Horizon Coffee</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat20.jpg"><img src="./images/DaLat/dalat20.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @bichloan.vt </small>
+                        <p class="under-img-info">
+                            “Trùm cuối” trong mục “săn mây” của những cuốn cẩm nang du lịch Đà Lạt từ các phượt thủ chính là Sleep Box Horizon Coffee. Mở cửa từ 0h00 đến 23h30p hàng ngày - gần như 24/24, nơi đây sẽ giúp bạn có được một ngày cảm nhận trọn vẹn Đà Lạt từ trên cao tại
+                            địa chỉ 31/6 đường ¾, Phường 3.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat21.jpg"><img src="./images/DaLat/dalat21.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @my_duyen_le</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat22.jpg"><img src="./images/DaLat/dalat22.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @nini.laurita </small>
+                        <p class="under-img-info">
+                            Lấy ý tưởng từ những khu vườn nhân tạo khổng lồ của Singapore và được bài trí với những cột sắt có họa tiết cầu kỳ mang đậm vẻ đẹp cổ điển, những chiếc ghế mây giản đơn mà ấm cúng, Sleep Box Horizon Coffee cũng hứa hẹn mang đến cho du khách không gian
+                            thoải mái, dễ chịu như ở nhà để có một kỳ nghỉ đúng nghĩa.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat23.jpg"><img src="./images/DaLat/dalat23.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @jackiez_zz</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/DaLat/dalat24.jpg"><img src="./images/DaLat/dalat24.jpg" style="width:600px; height:670px" alt=""></a>
+                        </p>
+                        <small class="under-img">Ảnh: @nhungnguyen.2708 </small>
+                        <p class="under-img-info">
+                            Trên đây là 5 quán cafe siêu mê mà bất kỳ phượt thủ nào trên hành trình kiếm tìm những chuyến săn mây lý thú cũng đều nghe tên. Đừng quên ghi lại cẩn thận những địa chỉ này và ghé thăm chúng một ngày không xa trong chuyến du lịch Đà Lạt sắp tới để có
+                            được hành trình trọn vẹn, bạn nhé.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="container">
+            <h2>Hotel Tourist</h2>
+            <div class="row">
+                <div class="end line-1 col-xl-4">
+                    <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                    <p>Hà Nội: 024 7109 9999</p>
+                    <p>Hồ Chí Minh: 028 7109 9998</p>
+                    <p>Email: admin@Hotel-Tourist.vn</p>
+                    <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                    <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                    <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                    <p>Địa chỉ tên miền: Hotel-Tourist.vn</p>
+                </div>
+                <div class="end line-2 col-xl-4">
+                    <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                    <a href="quydinhchung.html">
+                        <p>Chính sách và quy định chung</p>
+                    </a>
+                    <a href="./quydinhthanhtoan.html">
+                        <p>Quy định về thanh toán</p>
+                    </a>
+                    <a href="./xacnhandatphong.html">
+                        <p>Quy định về xác nhận thông tin đặt phòng</p>
+                    </a>
+                    <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt="#"></a>
+                    <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+
+                    <p>Chính sách bảo mật</p>
+
+
+                    <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                    <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt="#"></a>
+                </div>
+                <div class="end line-3 col-xl-4">
+                    <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+
+
+                    <p>Tích lũy Vpoint</p>
+
+
+                    <h5>TẢI MOBILE APP: Hotel-Tourist.VN</h5>
+                    <img src="./images/app.jpg" alt="#">
+                    <img src="./images/gg.jpg" alt="#"><br>
+                    <br>
+                    <h5>KẾT NỐI VỚI Hotel-Tourist.VN</h5>
+                    <div class="icon-fa">
+                        <a href="#">
+                            <div class="fa fa-facebook-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-google-plus-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-instagram"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="fancybox-master/src/js/core.js"></script>
+    <script src="fancybox-master/src/js/fullscreen.js"></script>
+    <script src="fancybox-master/src/js/guestures.js"></script>
+    <script src="fancybox-master/src/js/hash.js"></script>
+    <script src="fancybox-master/src/js/media.js"></script>
+    <script src="fancybox-master/src/js/share.js"></script>
+    <script src="fancybox-master/src/js/slideshow.js"></script>
+    <script src="fancybox-master/src/js/thumbs.js"></script>
+    <script src="fancybox-master/src/js/wheel.js"></script>
+    <script src="camnang.js"></script>
+</body>
+
+</html>
+
+</html>

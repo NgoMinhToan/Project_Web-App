@@ -1,0 +1,403 @@
+<?php
+    session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="HotelDaNang.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fancybox-master/src/css/core.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/fullscreen.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/share.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/slideshow.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/thumbs.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="animate.css">
+    <title>Top 3 Khách Sạn Đà Nẵng Gần Biển "Thích Là Phải Nhích" Ngay</title>
+</head>
+
+<body>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="../Home/index.html">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="../Home/index.html"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="./camnang.html"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="#">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                        <input type="text" id="email_sdt_lienhe"  class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng kí</a></li>
+                                        <li class="list-group-item"><a href="#">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="body">
+        <div class="container">
+            <div class="head">
+                <div class="in-head">
+                    <a href="./camnang.html">
+                        <span>Cẩm nang du lịch</span>
+                    </a>
+
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <!-- chuyên mục -->
+                <div class="left col-xl-3 ">
+                    <div class="box-1">
+                        <div class="border-1">
+                            <span><span>Chuyên Mục</span> <span class="fa fa-chevron-up"></span></span>
+                        </div>
+                        <div class="border-2">
+                            <p class="line-1"><a href="#">Cảnh đẹp</a></p>
+                            <p><a href="#">Khám phá</a></p>
+                            <p><a href="#">Du lịch biển</a></p>
+                        </div>
+                    </div>
+                    <!--Bài viết xem nhiều -->
+                    <div class="box-2">
+                        <div class="border-3">
+                            <p style="text-transform: uppercase;">Bài viết xem nhiều nhất</p>
+                        </div>
+                        <div class="border-4">
+                            <div class="row line-1">
+                                <div class="col-xl-3">
+                                    <a href="./PouloCondorBoutiqueResortSpa.html"><img src="./images/img-1.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="./PouloCondorBoutiqueResortSpa.html">Trót gặp nàng thơ Côn Đảo </a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="./CheckInDaNang.html"><img src="./images/img-2.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="./CheckInDaNang.html">4 Điểm check-in siêu chất ở Đà Nẵng</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="./Hue.html"><img src="./images/img-3.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="./Hue.html"> Những địa danh đẹp ở Huế là ở đâu?</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="./ResortConDao.html"><img src="./images/img-4.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="./ResortConDao.html"> Top 5 resort ở Côn Đảo, cứ ở là mê</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <p>Top 3 Khách Sạn Đà Nẵng Gần Biển "Thích Là Phải Nhích" Ngay</p>
+                    <i class="fa fa-calendar"> 08/04/2020</i>
+                    <i class="fa fa-eye"> 210</i>
+                    <hr>
+                    <div class="row resort-info">
+                        <small class="intro">Bạn đang tìm kiếm những khách sạn gần biển Đà Nẵng thuận tiện nhất? Bạn mong muốn kỳ nghỉ sắp tới thật lãng mạn và đáng nhớ? Vậy thì hãy tham khảo ngay bài viết sau! Mytour sẽ giới thiệu đến bạn top 3 khách sạn Đà Nẵng gần biển giá lại cực kỳ hợp lý nhé.</small>
+
+                        <p class="title">1. Khách Sạn Eco Green Boutique Đà Nẵng</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-1.jpg"><img src="./images/danang/da-nang-1.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Khách sạn hướng biển thân thiện với môi trường - Ảnh: @EcoGreenDaNang</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-2.jpg"><img src="./images/danang/da-nang-2.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Xây dựng từ những nguồn “xanh” - Ảnh: @EcoGreenDaNang</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-3.jpg"><img src="./images/danang/da-nang-3.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Vận hành bởi năng lượng mặt trời - Ảnh: @EcoGreenDaNang</small>
+                        <p class="under-img-info">
+                            Eco Green Boutique là một khách sạn đặc biệt, kế thừa cảm hứng từ phong cách “sống xanh”. Tất cả các nguyên vật liệu dùng trong thiết kế và xây dựng khách sạn này đều vô cùng thân thiện với môi trường. Thậm chí, năng lượng dùng để vận hành khách sạn cũng
+                            là năng lượng mặt trời. Với mục tiêu bảo tồn những gì trong sạch của thiên nhiên, Eco Green Boutique sử dụng các thiết bị tiết kiệm nước.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-4.jpg"><img src="./images/danang/da-nang-4.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Không gian bài trí khéo léo - Ảnh: @EcoGreenDaNang</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-5.jpg"><img src="./images/danang/da-nang-5.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Phối hợp màu sắc dễ thương - Ảnh: @EcoGreenDaNang</small>
+                        <p class="under-img-info">
+                            Cũng bởi xu hướng thân thiện với môi trường, khách sạn này được thiết kế vô cùng dễ thương, với những không gian mở, hài hòa với thiên nhiên. Cấu trúc của các phòng suite được thiết kế thông minh, nhằm lưu thông không khí và điều hòa ánh sáng tự nhiên.
+                            Nhờ vậy, dù là vào mùa nắng nóng, khách sạn đông du khách thì cũng không làm tốn nhiều năng lượng vào điều hòa nhiệt độ.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-6.jpg"><img src="./images/danang/da-nang-6.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Bữa ăn tràn đầy năng lượng - Ảnh: @EcoGreenDaNang</small>
+                        <p class="under-img-info">
+                            Đến với khách sạn gần biển Đà Nẵng này, du khách sẽ được tận hưởng những gì trong sạch, khỏe mạnh nhất. Kể cả những bữa ăn hàng ngày cũng vô cùng “healthy” với những món hoa quả nhiệt đới thân thuộc.
+                        </p>
+
+                        <p class="title">2. Le House Boutique Hotel Đà Nẵng</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-7.jpg"><img src="./images/danang/da-nang-7.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Thiết kế “xanh” độc đáo - Ảnh: @LeHouseHotel</small>
+                        <p class="under-img-info">
+                            Le House Boutique là khách sạn độc đáo, nằm cách bãi biển Mỹ Khê chỉ chừng vài trăm mét. Khách sạn này được thiết kế theo kiến trúc Pháp, có một chút cổ điển, một chút lãng mạn. Khung cảnh chung khá bình dị, đem lại cảm giác thân thuộc cho tất cả du khách
+                            đến với Đà Nẵng.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-8.jpg"><img src="./images/danang/da-nang-8.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Sảnh lớn bài trí khéo léo - Ảnh: @LeHouseHotel</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-9.jpg"><img src="./images/danang/da-nang-9.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Sự liên kết giữa từng không gian tách bạch - Ảnh: @LeHouseHotel</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-10.jpg"><img src="./images/danang/da-nang-10.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Phòng ăn ấm cúng mà tao nhã - Ảnh: @LeHouseHotel</small>
+                        <p class="under-img-info">
+                            Khách sạn Le House Boutique tạo được ấn tượng nhờ kiến trúc độc đáo. Sự kết hợp vô cùng hài hòa của những hoa văn, họa tiết đặc trưng. Sử dụng màu nâu gỗ ấm áp làm chủ đạo, khách sạn Đà Nẵng này rất khéo tạo được vẻ ấm cúng và thân thiết. Le House cũng
+                            không quên bày biện những chậu cây xanh mướt để vừa làm điểm nhấn, vừa tạo không gian xanh.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-11.jpg"><img src="./images/danang/da-nang-11.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Không gian riêng với thiết kế độc đáo - Ảnh: @LeHouseHotel</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-12.jpg"><img src="./images/danang/da-nang-12.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">View trông xuống toàn thành phố - Ảnh: Ảnh: @LeHouseHotel</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-13.jpg"><img src="./images/danang/da-nang-13.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Với những tiện ích không thể thiếu - Ảnh: Ảnh: @LeHouseHotel</small>
+                        <p class="under-img-info">
+                            Các phòng suite luôn được mở rộng, view xuống thành phố vô cùng lãng mạn. Ở trong những căn phòng thế này, du khách sẽ luôn cảm thấy thư giãn, thoải mái và vô tư nhất. Không những vậy, các nhân viên của Le House cũng sẽ luôn dành tặng cho du khách những
+                            dịch vụ chu đáo nhất.
+                        </p>
+
+                        <p class="title">3. Khách Sạn Mercury Boutique Đà Nẵng </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-14.jpg"><img src="./images/danang/da-nang-14.jpg" style="width:600px; height:200px" alt=""></a>
+                        </p>
+                        <small class="under-img">Vẻ đẹp sang trọng, hút hồn du khách từ cái nhìn đầu tiên - Ảnh: @MercuryHotelDaNang</small>
+                        <p class="under-img-info">
+                            Không thể bỏ qua một Mercury Boutique đầy sang trọng khi đến với Đà Nẵng. Khác với 2 khách sạn trên, Mercury có thiết kế đơn giản hơn nhưng đem lại cảm giác ấm cúng hơn. Vẫn là nội thất gỗ làm chủ đạo, nhưng sự sắc nét trong từng chi tiết giúp cho khách
+                            sạn này có vẻ trang nhã, riêng tư hơn.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-15.jpg"><img src="./images/danang/da-nang-15.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Nội thất gỗ làm chủ đạo - Ảnh: @MercuryHotelDaNang</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-16.jpg"><img src="./images/danang/da-nang-16.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Vẻ sang trọng toát lên trong từng đường nét - Ảnh: @MercuryHotelDaNang</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/danang/da-nang-17.jpg"><img src="./images/danang/da-nang-17.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">Phòng suite lớn đón ánh sáng tự nhiên - Ảnh: @MercuryHotelDaNang</small>
+                        <p class="under-img-info">
+                            Với lối bài trí đơn giản, gọn gàng mà thân thiện, khách sạn Mercury Boutique Hotel của Đà Nẵng tạo cho du khách cảm giác thuận tiện, thoải mái trong suốt thời gian lưu trú. Không gian luôn mở rộng để đón ánh sáng, không khí tự nhiên giúp du khách có được
+                            một thể trạng và tinh thần tốt trước mỗi chuyến du ngoạn.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="container">
+            <h2>Hotel Tourist</h2>
+            <div class="row">
+                <div class="end line-1 col-xl-4">
+                    <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                    <p>Hà Nội: 024 7109 9999</p>
+                    <p>Hồ Chí Minh: 028 7109 9998</p>
+                    <p>Email: admin@Hotel-Tourist.vn</p>
+                    <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                    <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                    <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                    <p>Địa chỉ tên miền: Hotel-Tourist.vn</p>
+                </div>
+                <div class="end line-2 col-xl-4">
+                    <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                    <a href="../Footer/quydinhchung.html">
+                        <p>Chính sách và quy định chung</p>
+                    </a>
+                    <a href="../Footer/quydinhthanhtoan.html">
+                        <p>Quy định về thanh toán</p>
+                    </a>
+                    <a href="../footer/xacnhandatphong.html">
+                        <p>Quy định về xác nhận thông tin đặt phòng</p>
+                    </a>
+                    <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt="#"></a>
+                    <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+                    <p>Chính sách bảo mật</p>
+                    <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                    <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt="#"></a>
+                </div>
+                <div class="end line-3 col-xl-4">
+                    <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+                    <p>Tích lũy Vpoint</p>
+                    <h5>TẢI MOBILE APP: Hotel-Tourist.VN</h5>
+                    <img src="./images/app.jpg" alt="#">
+                    <img src="./images/gg.jpg" alt="#"><br>
+                    <br>
+                    <h5>KẾT NỐI VỚI Hotel-Tourist.VN</h5>
+                    <div class="icon-fa">
+                        <a href="#">
+                            <div class="fa fa-facebook-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-google-plus-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-instagram"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="fancybox-master/src/js/core.js"></script>
+    <script src="fancybox-master/src/js/fullscreen.js"></script>
+    <script src="fancybox-master/src/js/guestures.js"></script>
+    <script src="fancybox-master/src/js/hash.js"></script>
+    <script src="fancybox-master/src/js/media.js"></script>
+    <script src="fancybox-master/src/js/share.js"></script>
+    <script src="fancybox-master/src/js/slideshow.js"></script>
+    <script src="fancybox-master/src/js/thumbs.js"></script>
+    <script src="fancybox-master/src/js/wheel.js"></script>
+    <script src="camnang.js"></script>
+</body>
+
+</html>
+
+</html>

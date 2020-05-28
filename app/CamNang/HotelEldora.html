@@ -1,0 +1,412 @@
+<?php
+    session_start();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="HotelEldora.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fancybox-master/src/css/core.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/fullscreen.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/share.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/slideshow.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/thumbs.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="animate.css">
+    <title>Review Toàn Tập Khách Sạn Hoàng Gia Eldora Ở Huế</title>
+</head>
+
+<body>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="../Home/index.html">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="../Home/index.html"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="./camnang.html"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="#">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                        <input type="text" id="email_sdt_lienhe"  class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng kí</a></li>
+                                        <li class="list-group-item"><a href="#">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="body">
+        <div class="container">
+            <div class="head">
+                <div class="in-head">
+                    <a href="../Home/index.html">
+                        <span>Cẩm nang du lịch</span>
+                    </a>
+
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <!-- chuyên mục -->
+                <div class="left col-xl-3 ">
+                    <div class="box-1">
+                        <div class="border-1">
+                            <span><span>Chuyên Mục</span> <span class="fa fa-chevron-up"></span></span>
+                        </div>
+                        <div class="border-2">
+                            <p class="line-1"><a href="#">Cảnh đẹp</a></p>
+                            <p><a href="#">Khám phá</a></p>
+                            <p><a href="#">Du lịch biển</a></p>
+                        </div>
+                    </div>
+                    <!--Bài viết xem nhiều -->
+                    <div class="box-2">
+                        <div class="border-3">
+                            <p style="text-transform: uppercase;">Bài viết xem nhiều nhất</p>
+                        </div>
+                        <div class="border-4">
+                            <div class="row line-1">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-1.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">Trót gặp nàng thơ Côn Đảo </a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-2.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">4 Điểm check-in siêu chất ở Đà Nẵng</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-3.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Những địa danh đẹp ở Huế là ở đâu?</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-4.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Top 5 resort ở Côn Đảo, cứ ở là mê</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <p>Review Toàn Tập Khách Sạn Hoàng Gia Eldora Ở Huế</p>
+                    <i class="fa fa-calendar"> 20/04/2020</i>
+                    <i class="fa fa-eye"> 143</i>
+                    <hr>
+                    <div class="row resort-info">
+                        <small class="intro">Ai đã từng đi du lịch Huế, chắc hẳn sẽ nhớ mãi đến vẻ lung linh, tinh tế đầy mê hoặc của khách sạn Eldora - khách sạn hoàng gia số 1 Cố đô. Hãy cùng Mytour dạo một vòng, khám phá bằng hết điểm dừng chân lý tưởng này nhé.</small>
+
+                        <p class="title">Khách sạn Eldora - Cung điện tráng lệ giữa lòng kinh đô Huế</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue38.jpg"><img src="./images/hue/Hue38.jpg" style="width:600px; height:777px" alt=""></a>
+                        </p>
+                        <small class="under-img">Khách sạn tọa lạc tại vị trí đắc địa - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Khách sạn hoàng gia Eldora thu hút được du khách đến với Cố đô Huế, trước tiên là nhờ vào vị trí vô cùng đắc địa. Tọa lạc ngay trong trung tâm thành phố, du khách nghỉ dưỡng tại Eldora có thể tìm đến những điểm du lịch nổi tiếng một cách nhanh chóng và
+                            thuận tiện.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue39.jpg"><img src="./images/hue/Hue39.jpg" style="width:600px; height:380px" alt=""></a>
+                        </p>
+                        <small class="under-img">Căn phòng hài hòa với những gam màu trầm đầy quyến rũ - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue40.jpg"><img src="./images/hue/Hue40.jpg" style="width:600px; height:390px" alt=""></a>
+                        </p>
+                        <small class="under-img">Bắt mắt bởi những họa tiết được phối hợp khéo léo - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue41.jpg"><img src="./images/hue/Hue41.jpg" style="width:600px; height:355px" alt=""></a>
+                        </p>
+                        <small class="under-img">Mềm mại và cuốn hút trong từng đường nét - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Bước chân vào trong sảnh, có lẽ bạn sẽ không khỏi choáng ngợp bởi lối kiến trúc cổ điển nhưng đầy sang trọng và tao nhã. Từ nền lát gạch trám nâu, đến bộ sofa kẻ sọc tinh tế, một chiếc rèm nhung màu rêu cổ, và điểm nhấn là những lọ hoa rực rỡ màu sắc.
+                            Ánh sáng vàng dịu xa hoa mà hết sức lãng mạn.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue42.jpg"><img src="./images/hue/Hue42.jpg" style="width:600px; height:375px" alt=""></a>
+                        </p>
+                        <small class="under-img">Sự bài trí hết sức hoàn hảo cho một phòng double room thứ thiệt - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue43.jpg"><img src="./images/hue/Hue43.jpg" style="width:600px; height:350px" alt=""></a>
+                        </p>
+                        <small class="under-img">Lãng mạn, phong cách và một chút riêng tư khơi gợi - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue44.jpg"><img src="./images/hue/Hue44.jpg" style="width:600px; height:900px" alt=""></a>
+                        </p>
+                        <small class="under-img">Lấp lánh và hút mắt trong từng chi tiết nhỏ nhất - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Với vẻ đẹp độc đáo ấy, khách sạn Eldora lôi cuốn du khách đến với không gian riêng của mình. Tại đây, bạn sẽ được trải nghiệm 2 hạng phòng là Deluxe Double Room và Deluxe Twin Room. Bởi vậy, bạn có thể tới cùng bạn bè, người thân, người yêu để cùng tận
+                            hưởng sự ấm cúng. Còn nếu bạn chỉ có một mình? Đừng ngần ngại bởi bạn sẽ trở thành những ông bà hoàng trong cung điện của riêng mình.
+                        </p>
+
+                        <p class="title">Dịch vụ đẳng cấp, khơi gợi mọi giác quan </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue45.jpg"><img src="./images/hue/Hue45.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Coffee lounge trang hoàng với những bộ bàn ghế kiểu cách - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue46.jpg"><img src="./images/hue/Hue46.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Bạn sẽ được phục vụ những ly cocktail đặc trưng - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue47.jpg"><img src="./images/hue/Hue47.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Hoặc những ly nước hoa quả bắt mắt - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Bạn hãy tìm đến Coffee Lounge của Eldora để đắm chìm trong những khúc nhạc du dương. Hãy thưởng thức một ly cocktail phá cách để từng giác quan trở nên mê đắm. Đừng quên rằng tại đây bạn hãy cứ mặc nhiên tận hưởng. Một chén rượu nhỏ cũng có thể gột bỏ
+                            hết mọi phiền toái của cuộc sống thường ngày.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue48.jpg"><img src="./images/hue/Hue48.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Phòng ăn nhỏ riêng tư cho các gia đình, hội nhóm, công ty - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Bạn muốn có được một bữa điểm tâm riêng tư cùng bạn bè, gia đình, đồng nghiệp? Eldora cũng sẽ cung cấp cho bạn những phòng ăn riêng hết sức trang hoàng như vậy. Cũng vẫn là ánh đèn vàng ấm cúng, cũng vẫn là những họa tiết vô cùng ăn nhập, bộ bàn ghế thì
+                            có phần thanh thoát hơn. Quan trọng hơn cả, phòng ăn này đem đến sự yên tĩnh và đầm ấm hơn rất nhiều.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue49.jpg"><img src="./images/hue/Hue49.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Nhà hàng lớn cho mọi du khách của khách sạn Eldora - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue50.jpg"><img src="./images/hue/Hue50.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Các nhân viên tất bật chuẩn bị cho bữa buffet - Ảnh: @EldoraHotelHue</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue51.jpg"><img src="./images/hue/Hue51.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Những món ăn được bảo quản vô cùng sạch sẽ, vệ sinh - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Bạn cũng đừng bỏ lỡ khu vực nhà hàng của khách sạn Eldora Huế nhé. Những bữa buffet ban sáng sẽ giúp bạn nạp đủ năng lượng cho một ngày dài khám phá Cố đô. Có thể thưởng thức những bữa ăn thịnh soạn trong một không gian sang trọng như thế, thật giống
+                            như đang bay bổng trong chốn thiên đường vậy.
+                        </p>
+
+                        <p class="title">Sự say mê và lãng mạn toát lên trong mọi không gian </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue52.jpg"><img src="./images/hue/Hue52.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Bể bơi trông ra toàn cảnh thành phố - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Và nếu bạn muốn được thư giãn trong dòng nước mát sau khi đã thăm thú hết những điểm du lịch nổi tiếng, hãy đến với hồ bơi của Eldora. Chắc chắn bạn sẽ không thể cảm nhận được sự quyến rũ đến mê hồn đó tại bất cứ resort Huế nào khác.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/hue/Hue53.jpg"><img src="./images/hue/Hue53.jpg" style="width:600px; height:400px" alt=""></a>
+                        </p>
+                        <small class="under-img">Những chi tiết vuông vắn xen kẽ đường nét mềm mại cực kỳ thu hút - Ảnh: @EldoraHotelHue</small>
+                        <p class="under-img-info">
+                            Bạn có thể buông thõng mình trong mặt hồ bơi tĩnh lặng, ngắm nhìn những chiếc đèn treo xen kẽ trên trần nhà. Từng đường nét tưởng chừng chẳng ăn nhập gì với nhau, nhưng lại cuốn hút đến lạ kỳ. Hoặc bạn cũng có thể tấp vào bên thành hồ, đưa tầm mắt nhìn
+                            xuống thành phố Huế bên dưới. Đó thực sự là một khung cảnh quá đỗi lãng mạn.
+                        </p>
+                        <p class="under-img-info">
+                            Hy vọng những chia sẻ trên đây của Mytour về khách sạn Eldora sẽ là một trong những kinh nghiệm du lịch Huế khó quên với bạn. Chúc bạn có được những phút giây thư giãn, ưng ý nhất trong chuyến du lịch Huế sắp tới nhé.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="container">
+            <h2>Hotel Tourist</h2>
+            <div class="row">
+                <div class="end line-1 col-xl-4">
+                    <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                    <p>Hà Nội: 024 7109 9999</p>
+                    <p>Hồ Chí Minh: 028 7109 9998</p>
+                    <p>Email: admin@Hotel-Tourist.vn</p>
+                    <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                    <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                    <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                    <p>Địa chỉ tên miền: Hotel-Tourist.vn</p>
+                </div>
+                <div class="end line-2 col-xl-4">
+                    <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                    <a href="quydinhchung.html">
+                        <p>Chính sách và quy định chung</p>
+                    </a>
+                    <a href="./quydinhthanhtoan.html">
+                        <p>Quy định về thanh toán</p>
+                    </a>
+                    <a href="./xacnhandatphong.html">
+                        <p>Quy định về xác nhận thông tin đặt phòng</p>
+                    </a>
+                    <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt="#"></a>
+                    <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+
+                    <p>Chính sách bảo mật</p>
+
+
+                    <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                    <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt="#"></a>
+                </div>
+                <div class="end line-3 col-xl-4">
+                    <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+
+
+                    <p>Tích lũy Vpoint</p>
+
+
+                    <h5>TẢI MOBILE APP: Hotel-Tourist.VN</h5>
+                    <img src="./images/app.jpg" alt="#">
+                    <img src="./images/gg.jpg" alt="#"><br>
+                    <br>
+                    <h5>KẾT NỐI VỚI Hotel-Tourist.VN</h5>
+                    <div class="icon-fa">
+                        <a href="#">
+                            <div class="fa fa-facebook-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-google-plus-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-instagram"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="fancybox-master/src/js/core.js"></script>
+    <script src="fancybox-master/src/js/fullscreen.js"></script>
+    <script src="fancybox-master/src/js/guestures.js"></script>
+    <script src="fancybox-master/src/js/hash.js"></script>
+    <script src="fancybox-master/src/js/media.js"></script>
+    <script src="fancybox-master/src/js/share.js"></script>
+    <script src="fancybox-master/src/js/slideshow.js"></script>
+    <script src="fancybox-master/src/js/thumbs.js"></script>
+    <script src="fancybox-master/src/js/wheel.js"></script>
+    <script src="camnang.js"></script>
+</body>
+
+</html>
+
+</html>

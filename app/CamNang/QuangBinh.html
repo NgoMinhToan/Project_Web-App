@@ -1,0 +1,414 @@
+<?php
+    session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="QuangBinh.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fancybox-master/src/css/core.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/fullscreen.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/share.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/slideshow.css" />
+    <link rel="stylesheet" href="fancybox-master/src/css/thumbs.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="animate.css">
+    <title>Về Thăm Quảng Bình, Ngắm Nhìn 2 Bãi Biển Đẹp Như Thiên Đường</title>
+</head>
+
+<body>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="titlemenu col-lg-8">
+                    <h2><a href="../Home/index.html">Hotel Tourist</a></h2>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-building"></div>
+                                </a>
+                                <a class="ks" href="../Home/index.html"> Khách sạn</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="icon-all fa fa-bookmark"></div>
+                                </a>
+                                <a class="cn" href="./camnang.html"> Cẩm nang du lịch</a>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="login col-lg-4">
+                    <div class="image-phone">
+                        <img src="./images/247.jpg" alt="#">
+                        <div class="phone">
+                            <p id="Hanoi">
+                                <strong>Hà Nội</strong>"012 3845 6789"
+                            </p>
+                            <p id="TPHCM">
+                                <strong>TPHCM</strong>"012 345 6789"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="three-icon">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">
+                            <div class="login feedback fa fa-comments"></div>
+                        </a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content note">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">GÓP Ý WEBSITE</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-1">Đánh giá của bạn về website Hotel-Tourist.vn (*)</p>
+                                        <div class="fa emoj fa-minus-circle" data-mk="tuong">
+                                            <p>Rất không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-stop-circle">
+                                            <p>Không hài lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-pause-circle">
+                                            <p>Bình thường</p>
+                                        </div>
+                                        <div class="fa emoj fa-times-circle">
+                                            <p>Hài Lòng</p>
+                                        </div>
+                                        <div class="fa emoj fa-plus-circle">
+                                            <p>Rất Hài Lòng</p>
+                                        </div>
+                                        <p class="text-1">Góp ý của bạn dành cho Hotel-Tourist.vn (*)</p>
+                                        <label class="check">
+                                            <p class="text-2">Góp ý Website</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Liên hệ</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác khách sạn</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                        <label class="check">
+                                            <p class="text-2">Đối tác Maketing</p>
+                                            <input class="int" type="radio" checked="checked" name="radio">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <input id="placetext-1" class="input" type="text" placeholder="Bạn muốn hỏi?...">
+                                        <p>Hotel-Tourist có thể liên hệ với bạn qua:</p>
+                                        <input type="text" id="email_sdt_lienhe"  class="input-1" placeholder="Email/Số điện thoại của bạn">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="return danhGia();">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="login log fa fa-user-circle" id="login">
+                                <nav class="list" id="list">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="../Login/login.html">Đăng nhập và Đăng kí</a></li>
+                                        <li class="list-group-item"><a href="#">Chính sách và quy định</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="login log arrow fa fa-sort-down" id="arrow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="body">
+        <div class="container">
+            <div class="head">
+                <div class="in-head">
+                    <a href="../Home/index.html">
+                        <span>Cẩm nang du lịch</span>
+                    </a>
+
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <!-- chuyên mục -->
+                <div class="left col-xl-3 ">
+                    <div class="box-1">
+                        <div class="border-1">
+                            <span><span>Chuyên Mục</span> <span class="fa fa-chevron-up"></span></span>
+                        </div>
+                        <div class="border-2">
+                            <p class="line-1"><a href="#">Cảnh đẹp</a></p>
+                            <p><a href="#">Khám phá</a></p>
+                            <p><a href="#">Du lịch biển</a></p>
+                        </div>
+                    </div>
+                    <!--Bài viết xem nhiều -->
+                    <div class="box-2">
+                        <div class="border-3">
+                            <p style="text-transform: uppercase;">Bài viết xem nhiều nhất</p>
+                        </div>
+                        <div class="border-4">
+                            <div class="row line-1">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-1.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">Trót gặp nàng thơ Côn Đảo </a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-2.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#">4 Điểm check-in siêu chất ở Đà Nẵng</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-3.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Những địa danh đẹp ở Huế là ở đâu?</a></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <a href="#"><img src="./images/img-4.jpeg" alt="#"></a>
+                                </div>
+                                <div class="col-xl-9">
+                                    <p><a href="#"> Top 5 resort ở Côn Đảo, cứ ở là mê</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9">
+                    <p>Về Thăm Quảng Bình, Ngắm Nhìn 2 Bãi Biển Đẹp Như Thiên Đường</p>
+                    <i class="fa fa-calendar"> 30/04/2020</i>
+                    <i class="fa fa-eye"> 202</i>
+                    <hr>
+                    <div class="row resort-info">
+                        <small class="intro">Nhắc đến du lịch Quảng Bình, người ta thường lập tức nghĩ về những hang động khổng lồ đầy thách thức mà quên mất rằng mảnh đất này còn có cả biển trời bao la, bát ngát. Với đường bờ biển dài hơn 100km, quê hương sông Gianh sở hữu tới 2 bãi biển đẹp tựa thiên đường. Nếu có cơ hội ghé thăm Quảng Bình mùa hè này, bạn nhất định đừng bỏ qua cơ hội trải nghiệm nhé.</small>
+
+                        <p class="title">1. Bãi Nhật Lệ</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-1.jpg"><img src="./images/quangbinh/quang-binh-1.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">@yen_trang.90</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-2.jpg"><img src="./images/quangbinh/quang-binh-2.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">@seu_bi_beo</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-3.jpg"><img src="./images/quangbinh/quang-binh-3.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">@thaochu_</small>
+                        <p class="under-img-info">
+                            Nằm ngay gần trung tâm thành phố Đồng Hới - Quảng Bình, từ lâu, bãi biển Nhật Lệ đã nổi tiếng với cảnh vật hữu tình do thiên nhiên ban tặng. Ghé thăm nơi đây vào những ngày vắng khách, bạn sẽ thấy cả một vùng bờ bãi cát trắng trải dài tưởng chừng bất
+                            tận. Màu xanh của biển cả như hòa chung với màu xanh đất trời, mở ra cả “thiên đường biển khơi” đẹp tới mê mẩn.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-4.jpg"><img src="./images/quangbinh/quang-binh-4.jpg" style="width:600px; height:460px" alt=""></a>
+                        </p>
+                        <small class="under-img">@takashi_nguyen</small>
+                        <p class="under-img-info">
+                            Khi hoàng hôn dần buông trên biển Nhật Lệ, khung cảnh nơi đây lại càng trở nên cuốn hút, lộng lẫy. Cả một vùng sóng nước mênh mông, trong khoảnh khắc, được nhuộm đỏ bởi ánh tà dương. Điểm tô trên nền cảnh huy hoàng đó là dáng hình những con thuyền đánh
+                            cá mờ xa. Tất cả như vẽ nên một bức tranh sơn mài khổng lồ, cổ điển và ấn tượng.
+                        </p>
+
+                        <p class="title">Hướng dẫn di chuyển </p>
+                        <p class="under-img-info">
+                            Để di chuyển từ các tỉnh thành trên cả nước đến Đồng Hới, bạn có thể sử dụng một trong ba phương tiện cơ bản. Trong đó, nhanh chóng và thoải mái nhất chắc chắn là máy bay. Hiện nay, ngoài Vietnam Airlines, các hãng bay giá rẻ như Jetstar và Vietjet Air
+                            cũng đã có chặng bay từ Hải Phòng, Hà Nội, Nha Trang, Sài Gòn… tới Đồng Hới. Tuy nhiên, để tiết kiệm tối đa chi phí, chúng mình nên đặt trước vé từ 3 – 5 tháng, bạn nhé.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-5.jpg"><img src="./images/quangbinh/quang-binh-5.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">@tran.hoangggg</small>
+                        <p class="under-img-info">
+                            Bên cạnh máy bay, xe khách và tàu hỏa sẽ là 2 lựa chọn “kinh tế” hơn cho chuyến du lịch Quảng Bình của bạn. Cụ thể, với xe khách, tuyến Hà Nội – Đồng Hới thường có giá vé dao động từ 220.000 – 250.000 đồng, tuyến Sài Gòn – Đồng Hới có giá trung bình từ
+                            550.000 - 570.000 đồng. Nếu di chuyển bằng tàu hỏa, các bạn ở Hà Nội sẽ phải chi từ 350.000 – 700.000 đồng. Trong khi đó, team Sài Gòn cần bỏ ra từ 600.000 – 1.400.000 đồng tùy theo loại chỗ ngồi.
+                        </p>
+
+                        <p class="title">Gợi ý lịch trình và địa điểm ăn uống</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-6.jpg"><img src="./images/quangbinh/quang-binh-6.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">@phuong.bui23</small>
+                        <p class="under-img-info">
+                            Sau khi đặt chân tới thành phố Đồng Hới - Quảng Bình, bạn có thể thuê phòng nghỉ ngay tại trung tâm thành phố hoặc khu vực gần bãi biển Nhật Lệ. Với khoảng cách chỉ chừng 1km, dù du khách lựa chọn điểm dừng chân ra sao thì việc di chuyển vẫn đảm bảo được
+                            sự tiện lợi. Vì thế, cứ ở đâu phòng đẹp, giá mềm là mình thẳng tiến, bạn nhé.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-7.jpg"><img src="./images/quangbinh/quang-binh-7.jpg" style="width:600px; height:500px" alt=""></a>
+                        </p>
+                        <small class="under-img">@gloriaortegaa</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-8.jpg"><img src="./images/quangbinh/quang-binh-8.jpg" style="width:600px; height:450px" alt=""></a>
+                        </p>
+                        <small class="under-img">@gloriaortegaa</small>
+                        <p class="under-img-info">
+                            Đã đến vùng biển, đương nhiên chúng ta không thể bỏ lỡ cơ hội thưởng thức hải sản tươi ngon. Nào mực trứng, sò huyết, cá mú, cá hố… không chỉ phong phú mà món nào món nấy còn có giá cả vô cùng phải chăng. Đặc biệt, nếu muốn gia tăng trải nghiệm, bạn hãy
+                            bỏ qua những quán xá sang trọng, đắt đỏ. Chỉ với một bếp than nhỏ bắc trên kè đá ven bờ thôi, chúng ta đã có ngay một bữa đại tiệc đúng chất “ăn sóng nói gió” rồi.
+                        </p>
+
+                        <p class="title">2. Bãi Nhật Lệ</p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-9.jpg"><img src="./images/quangbinh/quang-binh-9.jpg" style="width:600px; height:313px" alt=""></a>
+                        </p>
+                        <small class="under-img">@tiendung561</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-10.jpg"><img src="./images/quangbinh/quang-binh-10.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">@bun_holic</small>
+                        <p class="under-img-info">
+                            Đá Nhảy là một địa điểm khác lạ so với hầu hết các bãi biển dọc theo chiều dài đất nước. Ngoài dải cát trắng trải dài và nước biển xanh biếc xanh, cảnh quan nơi đây còn có sự góp của vô số núi đá, cột đá đủ hình thù, kích thước. Chỉ khi nước triều lên
+                            cao, sóng xô tới chân bờ, ta mới cảm nhận được sự hồi sinh kỳ diệu của những tảng đá. Đó là lý do bãi biển này được dân gian gọi tên là Đá Nhảy.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-11.jpg"><img src="./images/quangbinh/quang-binh-11.jpg" style="width:600px; height:420px" alt=""></a>
+                        </p>
+                        <small class="under-img">@jner</small>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-12.jpg"><img src="./images/quangbinh/quang-binh-12.jpg" style="width:600px; height:600px" alt=""></a>
+                        </p>
+                        <small class="under-img">@quinc.quynhchau</small>
+                        <p class="under-img-info">
+                            Ngoài tắm nắng và thư giãn trên bờ biển, du khách đến với Bãi Đá Nhảy Quảng Bình có thể tham gia vào nhiều hoạt động thú vị như bơi thuyền, leo núi hoặc thong thả dạo bước bên những hàng phi lao xanh mướt.
+                        </p>
+
+                        <p class="title">Hướng di chuyển</p>
+                        <p class="under-img-info">
+                            Cách Đồng Hới tới 40km về phía Bắc, việc di chuyển và lựa chọn điểm dừng chân để khám phá Bãi Đá Nhảy chắc chắn sẽ khiến du khách tốn thêm khá nhiều công sức. Tuy nhiên, bạn nhất định đừng để một chút khó khăn làm cho nản lòng.
+                        </p>
+                        <p class="img">
+                            <a data-fancybox="gallery" href="./images/quangbinh/quang-binh-13.jpg"><img src="./images/quangbinh/quang-binh-13.jpg" style="width:600px; height:750px" alt=""></a>
+                        </p>
+                        <small class="under-img">@ling_ling.1310</small>
+                        <p class="under-img-info">
+                            Đường đi Bãi Đá Nhảy dù xa nhưng không quá lắt léo. Từ trung tâm thành phố, du khách chỉ cần bám sát QL1A, qua đèo Ngang, sông Gianh và chạm đến chân đèo Lý Hòa. Ở đây, bạn sẽ tìm thấy những chỉ dẫn chi tiết để đến được bãi đá “trong truyền thuyết”.
+                        </p>
+                        <p class="title">Hướng di chuyển</p>
+                        <p class="under-img-info">
+                            Không chỉ có cảnh vật độc đáo, hữu tình, Bãi Đá Nhảy Quảng Bình còn nổi tiếng với các món hải sản đa dạng, phong phú. Như vậy, bạn sẽ không cần phải lo lắng quá nhiều về câu chuyện “Hôm nay ăn gì?”. Tuy nhiên, hãy cố gắng làm giàu thêm các trải nghiệm
+                            của bản thân. Thay vì lựa chọn nhà hàng đắt đỏ nào đó, một bữa tiệc nướng ngoài trời ngay trên bờ biển chắc chắn sẽ là ý tưởng tuyệt vời để tạo nên những kỷ niệm đáng nhớ cho hành trình của bạn.
+                        </p>
+                        <p class="under-img-info">
+                            Với những kinh nghiệm du lịch Quảng Bình được chia sẻ trong bài viết, hy vọng bạn có thể chuẩn bị được một kế hoạch xê dịch vừa giàu trải nghiệm vừa tiết kiệm chi phí. Chúc hành trình khám phá Quảng Bình của bạn sớm trở thành hiện thực.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="container">
+            <h2>Hotel Tourist</h2>
+            <div class="row">
+                <div class="end line-1 col-xl-4">
+                    <h5>CÔNG TY TNHH HOTEL TOURIST VIỆT NAM</h5>
+                    <p>Hà Nội: 024 7109 9999</p>
+                    <p>Hồ Chí Minh: 028 7109 9998</p>
+                    <p>Email: admin@Hotel-Tourist.vn</p>
+                    <p>Văn phòng Hà Nội: Tầng 4, tòa nhà GP Invest, 170 Đê La Thành, Đống Đa</p>
+                    <p>Văn phòng HCM: Tầng 5, tòa nhà HDTC, số 36 Bùi Thị Xuân, Q.1</p>
+                    <p>Lĩnh vực kinh doanh: Đại lý du lịch</p>
+                    <p>Địa chỉ tên miền: Hotel-Tourist.vn</p>
+                </div>
+                <div class="end line-2 col-xl-4">
+                    <h5>QUY ĐỊNH DÀNH CHO WEBSITE TMĐT BÁN HÀNG – DỊCH VỤ ĐẶT PHÒNG</h5>
+                    <a href="quydinhchung.html">
+                        <p>Chính sách và quy định chung</p>
+                    </a>
+                    <a href="./quydinhthanhtoan.html">
+                        <p>Quy định về thanh toán</p>
+                    </a>
+                    <a href="./xacnhandatphong.html">
+                        <p>Quy định về xác nhận thông tin đặt phòng</p>
+                    </a>
+                    <a href="http://online.gov.vn/Home/WebDetails/38507"><img src="./images/bocongthuong.jpg" alt="#"></a>
+                    <h5>QUY ĐỊNH CHO SÀN GDTMĐT - DỊCH VỤ ĐẶT PHÒNG VÀ DỊCH VỤ ĐẶT TOUR DU LỊCH</h5>
+
+                    <p>Chính sách bảo mật</p>
+
+
+                    <p>Quy trình giải quyết tranh chấp, khiếu nại</p>
+
+                    <a href="http://online.gov.vn/Home/WebDetails/358"><img src="./images/bocongthuong2.jpg" alt="#"></a>
+                </div>
+                <div class="end line-3 col-xl-4">
+                    <h5>KHÁCH HÀNG VÀ ĐỐI TÁC</h5>
+
+
+                    <p>Tích lũy Vpoint</p>
+
+
+                    <h5>TẢI MOBILE APP: Hotel-Tourist.VN</h5>
+                    <img src="./images/app.jpg" alt="#">
+                    <img src="./images/gg.jpg" alt="#"><br>
+                    <br>
+                    <h5>KẾT NỐI VỚI Hotel-Tourist.VN</h5>
+                    <div class="icon-fa">
+                        <a href="#">
+                            <div class="fa fa-facebook-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-google-plus-square"></div>
+                        </a>
+                        <a href="#">
+                            <div class="fa fa-instagram"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="./wow.min.js"></script>
+    <script src="./wow.js"></script>
+    <script src="fancybox-master/src/js/core.js"></script>
+    <script src="fancybox-master/src/js/fullscreen.js"></script>
+    <script src="fancybox-master/src/js/guestures.js"></script>
+    <script src="fancybox-master/src/js/hash.js"></script>
+    <script src="fancybox-master/src/js/media.js"></script>
+    <script src="fancybox-master/src/js/share.js"></script>
+    <script src="fancybox-master/src/js/slideshow.js"></script>
+    <script src="fancybox-master/src/js/thumbs.js"></script>
+    <script src="fancybox-master/src/js/wheel.js"></script>
+    <script src="camnang.js"></script>
+</body>
+
+</html>
+
+</html>
