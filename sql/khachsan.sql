@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 29, 2020 lúc 09:36 AM
+-- Thời gian đã tạo: Th5 29, 2020 lúc 10:38 AM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.4
 
@@ -20,24 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `khachsan`
 --
-
-DELIMITER $$
---
--- Thủ tục
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_CONTENT` (`p_ID` INT, `p_CONTENT_INDEX` INT, `p_ITEM_INDEX` INT, `p_SRC` VARCHAR(100), `p_CONTENT` VARCHAR(20000), `p_TAG` VARCHAR(10))  BEGIN
-    	IF EXISTS(SELECT ITEM_INDEX FROM ITEMS WHERE ITEMS.ITEM_INDEX = p_ITEM_INDEX)
-        THEN
-        	INSERT INTO CONTENTS(ID, CONTENT_INDEX, ITEM_INDEX, SRC, CONTENT, TAG) VALUES(p_ID, p_CONTENT_INDEX, p_ITEM_INDEX, p_SRC, p_CONTENT, p_TAG);
-        END IF;
-    END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `xoaLichSuDangNhap` (`maSo_ND` CHARACTER(20))  BEGIN
-   DELETE FROM dangnhap WHERE dangnhap.maSo_ND = maSo_ND;
-
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1777,14 +1759,6 @@ CREATE TABLE `dangnhap` (
   `thoiGianDangNhap` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
---
--- Đang đổ dữ liệu cho bảng `dangnhap`
---
-
-INSERT INTO `dangnhap` (`maTruyCap`, `maSo_ND`, `thoiGianDangNhap`) VALUES
-('MTC0027', 'ND0002', '2020-05-29 14:35:14'),
-('MTC0029', 'ND0001', '2020-05-29 14:33:10');
-
 -- --------------------------------------------------------
 
 --
@@ -1797,34 +1771,6 @@ CREATE TABLE `danhgiawebsite` (
   `cauHoi` varchar(1000) COLLATE utf8_vietnamese_ci NOT NULL,
   `email_sdt_lienhe` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- Đang đổ dữ liệu cho bảng `danhgiawebsite`
---
-
-INSERT INTO `danhgiawebsite` (`doHaiLong`, `gopY`, `cauHoi`, `email_sdt_lienhe`) VALUES
-('Không hài lòng', 'Góp ý Website', 'ngô minh toand', '0333033302'),
-('Không hài lòng', 'Góp ý Website', 'ngo', '2222222'),
-('Không hài lòng', 'Góp ý Website', 'sacsasx', 'ãs'),
-('Bình thường', 'Góp ý Website', 'rrrrrr', ''),
-('Bình thường', 'Góp ý Website', 'rrrrrr', ''),
-('Không hài lòng', 'Góp ý Website', 'rrrrrr', '2222222'),
-('Bình thường', 'Liên hệ', 'sdfcsc', ''),
-('Không hài lòng', 'Liên hệ', 'sdfcsc', ''),
-('Bình thường', 'Liên hệ', 'frefervf', 'drvdv'),
-('Bình thường', 'Liên hệ', 'xong roi', '44444'),
-('Không hài lòng', 'Đối tác khách sạn', 'no thing', ''),
-('Hài Lòng', 'Đối tác khách sạn', 'no thing', '552665'),
-('Bình thường', 'Liên hệ', 'rdgbgdbdfb', '453453'),
-('', 'Liên hệ', 'rdgbgdbdfb', '453453'),
-('Không hài lòng', 'Góp ý Website', 'trhhfthftgh', '53543'),
-('', 'Góp ý Website', 'trhhfthftgh', '53543'),
-('Không hài lòng', 'Liên hệ', 'trhhfthftgh', '453453'),
-('Rất Hài Lòng', 'Đối tác khách sạn', 'như nước mắm', '121212121'),
-('Rất không hài lòng', 'Góp ý Website', 'aaaaaaaaaaaaaaaa', 'aaaa'),
-('Rất không hài lòng', 'Góp ý Website', 'qaqaqa', 'qaqa'),
-('Rất không hài lòng', 'Góp ý Website', 'e', 'eee'),
-('Rất không hài lòng', 'Góp ý Website', 'bane ks', 'ss');
 
 -- --------------------------------------------------------
 
@@ -1852,22 +1798,6 @@ CREATE TABLE `hoadon` (
   `diaChiCongTy` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `diaChiNhanHoaDon` varchar(200) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- Đang đổ dữ liệu cho bảng `hoadon`
---
-
-INSERT INTO `hoadon` (`maHoaDon`, `maSo_KH`, `maKhachSan`, `maLoaiPhong`, `soLuong`, `giaPhong`, `tongGia`, `thanhTien`, `ngayGiaoDich`, `TG_layPhong`, `TG_traPhong`, `tuyChon`, `hinhThucThanhToan`, `trangThai`, `tenCongTy`, `maSoThue`, `diaChiCongTy`, `diaChiNhanHoaDon`) VALUES
-('HOADON0001', 'KH0006', 'MAKHACHSAN5_1', 'LOAIPHONG5_1_1', 1, 1924020, 1924020, 0, '2020-05-28 04:43:14', '2020-05-29 04:43:00', '2020-05-30 04:43:00', 'Bao gồm Bữa sáng', 'Chuyển Khoản', 'Đã hủy', '', '', '', ''),
-('HOADON0002', 'KH0006', 'MAKHACHSAN7_1', 'LOAIPHONG7_1_1', 10, 149408000, 1494080000, 0, '2020-05-28 04:49:35', '2020-05-29 04:49:20', '2020-08-29 04:49:20', 'Bao gồm Bữa sáng', 'Thẻ ATM Nội Địa', 'Đã hủy', '', '', '', ''),
-('HOADON0003', 'KH0001', 'MAKHACHSAN7_1', 'LOAIPHONG7_1_1', 1, 1624000, 1624000, 0, '2020-05-28 04:51:51', '2020-05-29 04:51:49', '2020-05-30 04:51:49', '', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0004', 'KH0001', 'MAKHACHSAN11_1', 'LOAIPHONG11_1_1', 1, 914500, 914500, 0, '2020-05-28 04:58:30', '2020-05-29 04:58:27', '2020-05-30 04:58:27', 'Bao gồm Bữa sáng', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0005', 'KH0001', 'MAKHACHSAN9_1', 'LOAIPHONG9_1_1', 1, 3015000, 3015000, 3316000, '2020-05-28 04:59:12', '2020-05-29 04:59:09', '2020-05-30 04:59:09', '', 'Thẻ Tín Dụng', 'Đã thanh toán', NULL, NULL, NULL, NULL),
-('HOADON0006', 'KH0001', 'MAKHACHSAN5_1', 'LOAIPHONG5_1_5', 1, 3051720, 3051720, 0, '2020-05-29 06:14:16', '2020-05-30 06:14:12', '2020-05-31 06:14:12', '', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0007', 'KH0001', 'MAKHACHSAN5_1', 'LOAIPHONG5_1_5', 1, 18310320, 18310320, 0, '2020-05-29 06:21:11', '2020-05-30 06:20:48', '2020-06-05 06:20:48', '', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0008', 'KH0001', 'MAKHACHSAN5_1', 'LOAIPHONG5_1_5', 1, 3051720, 3051720, 0, '2020-05-29 06:22:01', '2020-05-30 06:21:57', '2020-05-31 06:21:57', '', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0009', 'KH0001', 'MAKHACHSAN8_1', 'LOAIPHONG8_1_2', 1, 1028000, 1028000, 0, '2020-05-29 06:53:24', '2020-05-30 06:53:21', '2020-05-31 06:53:21', 'Bao gồm Bữa sáng', 'Thẻ Tín Dụng', 'Đã hủy', NULL, NULL, NULL, NULL),
-('HOADON0010', 'KH0001', 'MAKHACHSAN12_1', 'LOAIPHONG12_1_1', 1, 1987000, 1987000, 2185000, '2020-05-29 02:33:09', '2020-05-30 02:33:05', '2020-05-31 02:33:05', '', 'Thẻ Tín Dụng', 'Đang chờ duyệt', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2044,18 +1974,6 @@ CREATE TABLE `khachhang` (
   `tinhThanhPho_KH` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
---
--- Đang đổ dữ liệu cho bảng `khachhang`
---
-
-INSERT INTO `khachhang` (`maSo_KH`, `maTruyCap`, `maSo_ND`, `hoTen_KH`, `email_KH`, `SDT_KH`, `tinhThanhPho_KH`) VALUES
-('KH0001', NULL, 'ND0001', 'toan', '111111@gmail.com', '0346144237', 'An Giang'),
-('KH0002', 'MTC0002', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'Cần Thơ'),
-('KH0003', 'MTC0004', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', 'Cà Mau'),
-('KH0004', 'MTC0005', NULL, 'ffff', 'rfffff@gmail.com', 'fff', 'Cần Thơ'),
-('KH0005', 'MTC0007', NULL, 'ngô Toan', 'Minhtoan261099@gmail.com', '+1 0163935', ''),
-('KH0006', 'MTC0016', NULL, 'Toan Ngo', '111111@gmail.com', '1639354420', 'Đà Nẵng');
-
 -- --------------------------------------------------------
 
 --
@@ -2103,41 +2021,6 @@ CREATE TABLE `khachtruycap` (
   `maTruyCap` char(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `STT` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- Đang đổ dữ liệu cho bảng `khachtruycap`
---
-
-INSERT INTO `khachtruycap` (`diaChi_IP`, `maTruyCap`, `STT`) VALUES
-('::1', 'MTC0001', 1),
-('::1', 'MTC0002', 2),
-('::1', 'MTC0003', 3),
-('::1', 'MTC0004', 4),
-('::1', 'MTC0005', 5),
-('::1', 'MTC0006', 6),
-('::1', 'MTC0007', 7),
-('::1', 'MTC0008', 8),
-('::1', 'MTC0009', 9),
-('::1', 'MTC0010', 10),
-('::1', 'MTC0011', 11),
-('::1', 'MTC0012', 12),
-('::1', 'MTC0013', 13),
-('::1', 'MTC0014', 14),
-('::1', 'MTC0015', 15),
-('::1', 'MTC0016', 16),
-('::1', 'MTC0017', 17),
-('::1', 'MTC0018', 18),
-('::1', 'MTC0019', 19),
-('::1', 'MTC0020', 20),
-('::1', 'MTC0021', 21),
-('::1', 'MTC0022', 22),
-('::1', 'MTC0023', 23),
-('::1', 'MTC0024', 24),
-('::1', 'MTC0025', 25),
-('::1', 'MTC0026', 26),
-('::1', 'MTC0027', 27),
-('::1', 'MTC0028', 28),
-('::1', 'MTC0029', 29);
 
 --
 -- Bẫy `khachtruycap`
@@ -2281,14 +2164,6 @@ CREATE TABLE `nddatphong` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `nddatphong`
---
-
-INSERT INTO `nddatphong` (`maSo_ND`, `maPhong`, `ngayDat`, `thoiGianBatDau`, `thoiGianKetThuc`, `tongChiPhi`, `tuyChon`, `hinhThuc`, `email_2`, `SDT_2`, `hoTen_2`, `tinhThanhPho_2`) VALUES
-('ND0001', 'MAPHONG12_1_1_1', '2020-05-29 02:33:09', '2020-05-30 02:33:05', '2020-05-31 02:33:05', 1987000, '', 'Thẻ Tín Dụng', '111111@gmail.com', '0', 'Toan Ngo', 'Việt nam'),
-('ND0001', 'MAPHONG9_1_1_1', '2020-05-28 04:59:12', '2020-05-29 04:59:09', '2020-05-30 04:59:09', 3015000, '', 'Thẻ Tín Dụng', '111111@gmail.com', '0', 'Toan Ngo', 'Việt nam');
-
---
 -- Bẫy `nddatphong`
 --
 DELIMITER $$
@@ -2394,14 +2269,6 @@ CREATE TABLE `nguoidung` (
   `diaChi_ND` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `tinhThanhPho_ND` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
-
---
--- Đang đổ dữ liệu cho bảng `nguoidung`
---
-
-INSERT INTO `nguoidung` (`maSo_ND`, `hoTen_ND`, `tenDangNhap`, `matKhau_ND`, `email_ND`, `SDT_ND`, `quyenQuanTri`, `diaChi_ND`, `tinhThanhPho_ND`) VALUES
-('ND0001', 'Toan Ngo', NULL, '111111', '111111@gmail.com', '1639354420', b'0', 'tngo min', 'Việt nam'),
-('ND0002', NULL, NULL, '222222', '222222@gmail.com', NULL, b'1', NULL, NULL);
 
 --
 -- Bẫy `nguoidung`
