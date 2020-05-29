@@ -84,7 +84,8 @@
     console.log(sPage);
 
     userInfo = autoLogin();
-    if (userInfo.quyenQuanTri == '0') {
+    
+    if (!userInfo.success || userInfo.quyenQuanTri == '0') {
         window.location.replace("./Quanly.html");
     }
 
