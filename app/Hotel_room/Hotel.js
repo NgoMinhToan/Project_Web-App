@@ -129,7 +129,7 @@ for (var j = 0; j < questions.length; j++) {
 
 // Auto Login
 function autoLogin() {
-    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+    reqAjax('../php/login.php', {action: 'Auto-Login'}, res=>{
        if (res.success) {
            userInfo = res;
        }
@@ -212,7 +212,7 @@ function get(name){
 //LogOut
 function logOut() {
    let cont = false;
-   reqAjax('../../php/index.php', {
+   reqAjax('../php/index.php', {
        action: 'LogOut'
    }, res => {
        if (res.success)
@@ -227,7 +227,7 @@ function danhGia() {
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
     var cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'danhGia',
         doHaiLong,
         gopY,
@@ -255,13 +255,13 @@ function reqAjax(url, data, callBack, method = 'POST', async = false, dataType =
 
 function get_KS_Info(maKhachSan){
     let val;
-    reqAjax('../../php/hotel.php', {action: 'ks_info', maKhachSan: maKhachSan}, res=> val = res);
+    reqAjax('../php/hotel.php', {action: 'ks_info', maKhachSan: maKhachSan}, res=> val = res);
     return val;
 }    
 
 function get_LoaiPhong_info(maKhachSan){
     let val;
-    reqAjax('../../php/hotel.php', {action: 'getLoaiPhong', maKhachSan: maKhachSan}, res=> val = res);
+    reqAjax('../php/hotel.php', {action: 'getLoaiPhong', maKhachSan: maKhachSan}, res=> val = res);
     return val;
 }
 //Chuyển hướng
@@ -273,7 +273,7 @@ function room_Choose(maLoaiPhong, maKhachSan){
     else
         option = '';
     var cont = false;
-    reqAjax('../../php/hotel.php', {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend, option}, res=>{
+    reqAjax('../php/hotel.php', {action: 'direction', maKhachSan, maLoaiPhong, select_room, timestart, timeend, option}, res=>{
         if(res.success)
             cont=true;
         console.log(cont);

@@ -1,7 +1,7 @@
 // Tự động đăng nhập
 $.ajax({
     type: 'POST',
-    url: '../../php/login.php',
+    url: '../php/login.php',
     async: false,
     data: {action: 'Auto-Login'},
     dataType: 'json',
@@ -107,7 +107,7 @@ function onLogin(){
     var err_pwd=$('#error-message');
     $.ajax({
         type: 'POST',
-        url: '../../php/login.php',
+        url: '../php/login.php',
         async: false,
         data: {action: 'onLogin', email: email, pwd: pwd},
         dataType: 'json',
@@ -186,7 +186,7 @@ function onSignUp(){
     var err_email=$('#error2');
     $.ajax({
         type: 'POST',
-        url: '../../php/login.php',
+        url: '../php/login.php',
         async: false,
         data: {action: 'onSignUp', email: email, pwd: pwd},
         dataType: 'json',

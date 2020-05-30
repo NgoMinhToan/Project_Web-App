@@ -127,7 +127,7 @@ document.getElementById("myLink").click();
 
  // Auto Login
  function autoLogin() {
-    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+    reqAjax('../php/login.php', {action: 'Auto-Login'}, res=>{
        if (res.success) {
            userInfo = res;
        }
@@ -278,7 +278,7 @@ $(() => {
 //LogOut
 function logOut() {
    let cont = false;
-   reqAjax('../../php/index.php', {
+   reqAjax('../php/index.php', {
        action: 'LogOut'
    }, res => {
        if (res.success)
@@ -293,7 +293,7 @@ function danhGia() {
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
     var cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'danhGia',
         doHaiLong,
         gopY,
@@ -320,7 +320,7 @@ function reqAjax(url, data, callBack, method = 'POST', async = false, dataType =
 // Accept Link
 function get_LoaiPhong_info(){
     let result = '';
-    reqAjax('../../php/thanhToan.php', {action: 'getLoaiPhong'}, res=> {
+    reqAjax('../php/thanhToan.php', {action: 'getLoaiPhong'}, res=> {
         if(res.success)
             result = res;
         console.log(res);
@@ -329,12 +329,12 @@ function get_LoaiPhong_info(){
 }
 function getKS_Info(maKhachSan){
     let val;
-    reqAjax('../../php/hotel.php', {action: 'ks_info', maKhachSan}, res=> val=res);
+    reqAjax('../php/hotel.php', {action: 'ks_info', maKhachSan}, res=> val=res);
     return val;
 }
 function datPhong_Info(){
     let val;
-    reqAjax('../../php/thanhToan.php', {action: 'datPhong_info'}, res=> {
+    reqAjax('../php/thanhToan.php', {action: 'datPhong_info'}, res=> {
         console.log(res);
         val = res;
     })
@@ -342,7 +342,7 @@ function datPhong_Info(){
 }
 function btn_datPhong(){
     let cont = false;
-    reqAjax('../../php/thanhToan.php', {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company, option:phong_info.option}, res=>{
+    reqAjax('../php/thanhToan.php', {action: 'datPhong_confirm', dangnhap: userInfo.success, maSo_ND: userInfo.maSo_ND, select_room: phong_info.select_room, maLoaiPhong, timestart, timeend, night, chiPhi: phong_info.moTa.giaGiam, email, sdt, hoTen, tinhthanhpho, PTTT, address_bill, address_company, code, company, option:phong_info.option}, res=>{
         if(res.success)
             cont = true;
         console.log(res);

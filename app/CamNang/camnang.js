@@ -168,7 +168,7 @@
 
  // Auto Login
  function autoLogin() {
-    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+    reqAjax('../php/login.php', {action: 'Auto-Login'}, res=>{
        if (res.success) {
            userInfo = res;
        }
@@ -210,7 +210,7 @@ $(() => {
 //LogOut
 function logOut() {
    let cont = false;
-   reqAjax('../../php/index.php', {
+   reqAjax('../php/index.php', {
        action: 'LogOut'
    }, res => {
        if (res.success)
@@ -225,7 +225,7 @@ function danhGia() {
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
     var cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'danhGia',
         doHaiLong,
         gopY,

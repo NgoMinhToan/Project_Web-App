@@ -1,6 +1,3 @@
-<?php
-    session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,16 +10,8 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/animate.css">
     <title>Login</title>
-    <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/jquery-ui.js"></script>
-    <script src="../css/bootstrap.min.css"></script>
-    <script src="../js/wow.min.js"></script>
-    <script src="./login.js"></script>
-    
-    <!-- Script -->
-    <!-- <script type="text/javascript">
-    </script> -->
-    <!-- Script -->
+
+
 </head>
 
 <body>
@@ -127,7 +116,7 @@
                             <div class="login log fa fa-user-circle" id="login">
                                 <nav class="list" id="list">
                                     <ul class="list-group">
-                                        <li class="list-group-item"><a href="login.html">Đăng nhập và Đăng kí</a></li>
+                                        <li class="list-group-item"><a href="./login.html">Đăng nhập và Đăng kí</a></li>
                                         <li class="list-group-item"><a href="../Footer/quydinhchung.html">Chính sách và quy định</a></li>
                                     </ul>
                                 </nav>
@@ -145,7 +134,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 left wow zoomIn">
-                    <form action="../../php/login.php" method="POST" class="dangnhap"  name="form" onsubmit="return onLogin()"> <!--../../php/login.php-->
+                    <form action="../php/login.php" method="POST" class="dangnhap"  name="form" onsubmit="return onLogin()"> <!--../php/login.php-->
                         <p id="title-login">Đăng nhập bằng Email</p>
                         <div class="form-group">
                             <label for="email" id="email-label">Email <span class="sao">*</span></label>
@@ -194,7 +183,7 @@
             </div>
             <div class="row">
                 <div class="dangki col-sm-6">
-                    <form action="../../php/login.php" method="POST" name="form" onsubmit="return onSignUp()">
+                    <form action="../php/login.php" method="POST" name="form" onsubmit="return onSignUp()">
                         <p>ĐĂNG KÝ BẰNG EMAIL</p>
                         <div class="form-group">
                             <label for="email">Email <span class="sao">*</span></label>
@@ -299,5 +288,9 @@
 
 
 </body>
-
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/wow.min.js"></script>
+<script src="./login.js"></script>
 </html>

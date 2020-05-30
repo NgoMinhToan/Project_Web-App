@@ -66,7 +66,7 @@
  }
  // Auto Login
  function autoLogin() {
-     reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+     reqAjax('../php/login.php', {action: 'Auto-Login'}, res=>{
         if (res.success) {
             userInfo = res;
         }
@@ -101,14 +101,14 @@
     }
 
     let ks_info;
-    reqAjax('../../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
+    reqAjax('../php/hotel.php', {action: 'ks_info_all'}, res=> ks_info = res);
     console.log(ks_info);
 
     let phong_info = [];
     let hoaDon = [];
-    reqAjax('../../php/admin.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
+    reqAjax('../php/admin.php', {action: 'getHoaDon'}, res => {if (res.success) hoaDon = res.hoaDon});
     hoaDon.forEach(value=>{
-        reqAjax('../../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
+        reqAjax('../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
     })
 
     // Quan Ly Dat Phong
@@ -144,7 +144,7 @@
         });
         for (let i = 0; i < Object.keys(list).length; i++) {
             let maKhachSan = Object.keys(list)[i];
-            $.post('../../php/hotel.php', {
+            $.post('../php/hotel.php', {
                 'action': 'ks_info',
                 'maKhachSan': maKhachSan
             }, (data) => {
@@ -164,7 +164,7 @@
          danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
          danhGiaTable.append('<tbody></tbody>');
          let danhGiaTbody = danhGiaTable.find('tbody');
-         $.getJSON(`../../php/admin.php?action=getDanhGia`, data => {
+         $.getJSON(`../php/admin.php?action=getDanhGia`, data => {
              data.forEach((item, index) => {
                  danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
              })
@@ -190,7 +190,7 @@
  //LogOut
  function logOut() {
     let cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'LogOut'
     }, res => {
         if (res.success)
@@ -303,8 +303,8 @@
  function cancel(maHoaDon, maSo_KH) {
      if (userInfo.success) {
          if (confirm('Bạn có chắc muốn hủy đơn này không?')) {
-            reqAjax('../../php/admin.php', {action: 'duyet', accept: 0, maHoaDon, maSo_KH});
-            //  $.getJSON(`../../php/admin.php?action=duyet&&accept=0&maHoaDon=${maHoaDon}`);
+            reqAjax('../php/admin.php', {action: 'duyet', accept: 0, maHoaDon, maSo_KH});
+            //  $.getJSON(`../php/admin.php?action=duyet&&accept=0&maHoaDon=${maHoaDon}`);
              return true;
          } else
              return false;
@@ -315,8 +315,8 @@
  }
  function accept(maHoaDon, maSo_KH) {
      if (userInfo.success) {
-         reqAjax('../../php/admin.php', {action: 'duyet', accept: 1, maHoaDon, maSo_KH});
-        //  $.getJSON(`../../php/admin.php?action=duyet&accept=1&maHoaDon=${maHoaDon}`);
+         reqAjax('../php/admin.php', {action: 'duyet', accept: 1, maHoaDon, maSo_KH});
+        //  $.getJSON(`../php/admin.php?action=duyet&accept=1&maHoaDon=${maHoaDon}`);
          return true;
      } else {
          alert('Bạn không được quyền hủy đơn này!');

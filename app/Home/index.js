@@ -108,7 +108,7 @@ $(document).ready(function() {
 
 // Auto Login
 function autoLogin() {
-    reqAjax('../../php/login.php', {action: 'Auto-Login'}, res=>{
+    reqAjax('../php/login.php', {action: 'Auto-Login'}, res=>{
        if (res.success) {
            userInfo = res;
        }
@@ -186,7 +186,7 @@ $(() => {
     $('#btn_search').click((e)=>{
         // alert('chua tim dc'+keyword);
         searchEngine(keyword);
-        reqAjax('../../php/index.php', {action: 'search_info', timestart, timeend, numPhong, numNguoi}, res=>{});
+        reqAjax('../php/index.php', {action: 'search_info', timestart, timeend, numPhong, numNguoi}, res=>{});
         window.location.href = `../Hotel_index/KS.html?type=search&keyword=${keyword}`;
     })
 })
@@ -194,7 +194,7 @@ $(() => {
 //LogOut
 function logOut() {
    let cont = false;
-   reqAjax('../../php/index.php', {
+   reqAjax('../php/index.php', {
        action: 'LogOut'
    }, res => {
        if (res.success)
@@ -209,7 +209,7 @@ function danhGia() {
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
     var cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'danhGia',
         doHaiLong,
         gopY,
@@ -238,7 +238,7 @@ function searchEngine(keyword) {
     let rs = [];
     filter = keyword.toUpperCase();
 
-    $.getJSON(`../../php/hotel.php?action=ks_info_all`, data=>{
+    $.getJSON(`../php/hotel.php?action=ks_info_all`, data=>{
         list = data.map(value=>[value.maKhachSan, value.tenKhachSan]);
     }).done(()=>{
         for (i = 0; i < list.length; i++) {

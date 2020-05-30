@@ -69,7 +69,7 @@
  // Auto Login
  function autoLogin() {
     let = userInfo;
-    reqAjax('../../php/login.php', {
+    reqAjax('../php/login.php', {
         action: 'Auto-Login'
     }, res => {
         if (res.success) {
@@ -118,7 +118,7 @@ $(() => {
         let type = get('type');
         if(type=='index'){
             let maKhuVuc = get('maKhuVuc');
-            reqAjax('../../php/index.php', {action: 'getResult', type, maKhuVuc}, res=>{
+            reqAjax('../php/index.php', {action: 'getResult', type, maKhuVuc}, res=>{
                 if(res.success){
                     list = res;
                 }
@@ -127,7 +127,7 @@ $(() => {
         }
         else if(type=='search'){
             let keyword = get('keyword');
-            reqAjax('../../php/index.php', {action: 'getResult', type, keyword}, res=>{
+            reqAjax('../php/index.php', {action: 'getResult', type, keyword}, res=>{
                 if(res.success){
                     list = res;
                 }
@@ -142,11 +142,11 @@ $(() => {
                 newList = searchEngine(list.keyword);
             }
             if(list.type =='index'){
-                reqAjax('../../php/hotel.php', {action: 'setKhuVuc', maKhuVuc: list.maKhuVuc}, res=>{
+                reqAjax('../php/hotel.php', {action: 'setKhuVuc', maKhuVuc: list.maKhuVuc}, res=>{
                     list.tenKhuVuc = res[0].tenKhuVuc;
                     newList = res.map(e=>{
                         let value;
-                        reqAjax('../../php/hotel.php', {action: 'ks_info', maKhachSan: e.maKhachSan}, res2=> value = res2);
+                        reqAjax('../php/hotel.php', {action: 'ks_info', maKhachSan: e.maKhachSan}, res2=> value = res2);
                         return value;
                     })
                 })
@@ -168,7 +168,7 @@ function searchEngine(keyword) {
     let rs = [];
     filter = keyword.toUpperCase();
 
-    reqAjax(`../../php/hotel.php`, {action: 'ks_info_all'}, res=> list=res);
+    reqAjax(`../php/hotel.php`, {action: 'ks_info_all'}, res=> list=res);
     for (i = 0; i < list.length; i++) {
         if (list[i].tenKhachSan.toUpperCase().indexOf(filter) > -1) {
             rs.push(list[i]);
@@ -227,7 +227,7 @@ function get(name){
 //LogOut
 function logOut() {
     let cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'LogOut'
     }, res => {
         if (res.success)
@@ -242,7 +242,7 @@ function danhGia() {
     let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
     var cont = false;
-    reqAjax('../../php/index.php', {
+    reqAjax('../php/index.php', {
         action: 'danhGia',
         doHaiLong,
         gopY,

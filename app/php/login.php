@@ -31,7 +31,7 @@
         $result = Db::dangNhap($email, $pwd, Db::getTruyCap($maTruyCap));
         echo json_encode($result);
         if($result['success'])
-            header('location: ../app/Home/index.html');
+            header('location: ../Home/index.html');
         else
             echo json_encode(['success'=>false, 'msg'=>'Lỗi không xác định! | login.php ']);
 

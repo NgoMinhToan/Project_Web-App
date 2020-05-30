@@ -68,7 +68,7 @@
  // Auto Login
  function autoLogin() {
      let = userInfo;
-     reqAjax('../../php/login.php', {
+     reqAjax('../php/login.php', {
          action: 'Auto-Login'
      }, res => {
          if (res.success) {
@@ -126,18 +126,18 @@
 
      // Quan Ly Dat Phong
      let ks_info;
-     reqAjax('../../php/hotel.php', {
+     reqAjax('../php/hotel.php', {
          action: 'ks_info_all'
      }, res => ks_info = res);
      let phong_info = [];
      let hoaDon = [];
-     reqAjax('../../php/quanLy.php', {
+     reqAjax('../php/quanLy.php', {
          action: 'getHoaDon'
      }, res => {
          if (res.success) hoaDon = res.hoaDon
      });
      hoaDon.forEach(value => {
-         reqAjax('../../php/hotel.php', {
+         reqAjax('../php/hotel.php', {
              action: 'getLoaiPhong1',
              'maLoaiPhong': value.maLoaiPhong
          }, res => phong_info.push(res));
@@ -157,7 +157,7 @@
  //LogOut
  function logOut() {
      let cont = false;
-     reqAjax('../../php/index.php', {
+     reqAjax('../php/index.php', {
          action: 'LogOut'
      }, res => {
          if (res.success)
@@ -172,7 +172,7 @@
      let email_sdt_lienhe = $('#email_sdt_lienhe').val();
 
      var cont = false;
-     reqAjax('../../php/index.php', {
+     reqAjax('../php/index.php', {
          action: 'danhGia',
          doHaiLong,
          gopY,
@@ -293,7 +293,7 @@
  function cancel(maHoaDon) {
      if (userInfo.success) {
          if (confirm('Bạn có chắc muốn hủy đơn này không?')) {
-             $.getJSON(`../../php/quanLy.php?action=cancel&maHoaDon=${maHoaDon}`);
+             $.getJSON(`../php/quanLy.php?action=cancel&maHoaDon=${maHoaDon}`);
              return true;
          } else
              return false;
