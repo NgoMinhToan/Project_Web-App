@@ -139,7 +139,7 @@ function autoLogin() {
 }
 // MAIN 
 let userInfo = {};
-let maKhachSan;//------------------------------
+let maKhachSan = 'MAKHACHSAN1_1';//------------------------------
 let gopY = '';
 let timestart = '1-1-2000';
 let timeend = '1-1-2000';
@@ -171,22 +171,15 @@ $(() => {
         })
     }
 
-    reqAjax('../../php/hotel.php', {action:'setMaKhachSan'});
-    reqAjax('../../php/hotel.php', {action:'maKhachSan'}, res=>{
-        maKhachSan=res.maKhachSan;
-        let ks_info = get_KS_Info(maKhachSan);
-        let loaiphong_info = get_LoaiPhong_info(maKhachSan);
-        loadPage(ks_info, loaiphong_info);
-    });
+
+ /// get khachs san o day
+    maKhachSan = get('maKhachSan');
+    let ks_info = get_KS_Info(maKhachSan);
+    let loaiphong_info = get_LoaiPhong_info(maKhachSan);
+    loadPage(ks_info, loaiphong_info);
 
     // thong tin tim kiem
     // time picker
-
-    // let keyword = '';
-    // $('#search').on('change', (e)=>{
-    //     keyword = $(e.target).val();
-    //     console.log(keyword);
-    // })
     $('#calendar').on('change', ()=>{
         timestart = $('#calendar').val();
         console.log(timestart);
@@ -212,6 +205,10 @@ $(() => {
     })
 })
 
+function get(name){
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
 //LogOut
 function logOut() {
    let cont = false;

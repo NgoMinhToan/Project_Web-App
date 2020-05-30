@@ -145,11 +145,15 @@ $(() => {
             gopY = $($('.check > p')[i]).text();
         })
     }
+
     for(let i=0;i<$('.number').length;i++){
         $(`.number.number-${i+1}`).click((e)=>{
-            $.getJSON(`../../php/index.php?action=setKhuVuc&maKhuVuc=KHUVUC${dsKV[i]}`);
+            window.location.href = `../Hotel_index/KS.html?type=index&maKhuVuc=KHUVUC${dsKV[i]}`;
+            // localStorage.setItem('maKhuVuc', `KHUVUC${dsKV[i]}`);
         })
     }
+    
+
     // Tìm kiếm
     // time picker
     let timestart = '1-1-2000';
@@ -182,8 +186,9 @@ $(() => {
     $('#btn_search').click((e)=>{
         // alert('chua tim dc'+keyword);
         searchEngine(keyword);
+        reqAjax('../../php/index.php', {action: 'search_info', timestart, timeend, numPhong, numNguoi}, res=>{});
+        window.location.href = `../Hotel_index/KS.html?type=search&keyword=${keyword}`;
     })
-
 })
 
 //LogOut

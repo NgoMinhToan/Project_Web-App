@@ -9,14 +9,9 @@
     
 
     
-    if($action == 'setMaKhachSan'){
-        //-----------------------
-        $rs = DB::ksInKv($_SESSION['maKhuVuc']);
-        $_SESSION['maKhachSan'] = $rs[0]['maKhachSan'];
-        //-----------------------
-    }
-    if($action == 'maKhachSan'){
-        echo json_encode(['maKhachSan'=>$_SESSION['maKhachSan']]);
+    if($action == 'setKhuVuc'){
+        $rs = DB::ksInKv($_POST['maKhuVuc']);
+        echo json_encode($rs);
     }
     
     if($action == 'getLoaiPhong'){

@@ -217,7 +217,6 @@
                     $rs[] = ['tenKhuVuc'=>$tenKhuVuc, 'maKhachSan'=>$maKhachSan];
                 }
                 $stmt->close();
-
             }
             return $rs;
         }
@@ -449,8 +448,23 @@
                 $stmt->bind_param('s', $maKhachSan);
                 $stmt->execute();
                 $stmt->bind_result($maKhachSan, $maKhuVuc, $tenKhachSan, $diaChi_KS, $Review, $diemDen, $tienNghi, $anhReview);
-                while ($stmt->fetch()){
+                if ($stmt->fetch()){
                     $rs = ['maKhachSan'=>$maKhachSan, 'maKhuVuc'=>$maKhuVuc, 'tenKhachSan'=>htmlspecialchars_decode($tenKhachSan), 'diaChi_KS'=>$diaChi_KS, 'Review'=>$Review, 'diemDen'=>$diemDen, 'tienNghi'=>$tienNghi, 'anhReview'=>$anhReview];
+                }
+                $stmt->close();
+            }
+            return $rs;
+        }
+
+
+        static function get_Kv_Info($maKhuVuc){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM khuVuc WHERE maKhuVuc= ?")){
+                $stmt->bind_param('s', $maKhuVuc);
+                $stmt->execute();
+                $stmt->bind_result($maKhuVuc, $tenKhuVuc);
+                if ($stmt->fetch()){
+                    $rs = ['maKhuVuc'=>$maKhuVuc, 'tenKhuVuc'=>htmlspecialchars_decode($tenKhuVuc)];
                 }
                 $stmt->close();
             }

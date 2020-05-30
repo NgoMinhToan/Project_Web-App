@@ -13,10 +13,8 @@
 
     // Log Out
     if($action == 'LogOut'){
-        // echo $_COOKIE['maTruyCap'];
         if($_SESSION['maTruyCap']){
             echo json_encode(Db::dangXuat($_SESSION['maTruyCap']));
-            // setcookie('maTruyCap', '', time() - (86400 * 30), "/"); // 86400 = 1 day
             unset($_SESSION['maTruyCap']);
             
         }
@@ -26,10 +24,23 @@
         echo json_encode(Db::danhGiaWebSite($_POST['doHaiLong'], $_POST['gopY'], $_POST['cauHoi'], $_POST['email_sdt_lienhe']));
     }
 
-    if($action == 'setKhuVuc'){
-        $_SESSION['maKhuVuc'] = $_REQUEST['maKhuVuc'];
-        echo json_encode(['msg'=>'Set khuVuc done!']);
+    if($action=='search_info'){
+        $_SESSION['timestart'] = $_POST['timestart'];
+        $_SESSION['timeend'] = $_POST['timeend'];
+        $_SESSION['numPhong'] = $_POST['numPhong'];
+        $_SESSION['numNguoi'] = $_POST['numNguoi'];
     }
 
-
+    if($action == 'getResult'){
+        $type = $_REQUEST['type'];
+        if($type == 'index'){
+            echo json_encode(['success'=>true, 'type'=>$type, 'maKhuVuc'=>$_POST['maKhuVuc']]);
+        }
+        else if($type == 'search'){
+            echo json_encode(['success'=>true, 'type'=>$type, 'keyword'=>$_POST['keyword'], 'timestart'=>$_SESSION['timestart']??'', 'timeend'=>$_SESSION['timeend']??'', 'numPhong'=>$_SESSION['numPhong']??1, 'numNguoi'=>$_SESSION['numNguoi']??2]);
+        }
+        else{
+            echo json_encode(['success'=>false]);
+        }
+    }
 ?>
