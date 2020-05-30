@@ -1,8 +1,6 @@
 <?php
     session_start();
     require_once 'db.php';
-    require_once 'object.php';
-    require_once 'decode.php';
     $action = '';
     if(isset($_REQUEST['action']))
         $action = $_REQUEST['action'];

@@ -1,8 +1,5 @@
 <?php
-    require_once 'contents.php';
-    require_once 'items.php';
     require_once 'service.php';
-    require_once 'object.php';
     date_default_timezone_set("Asia/Ho_Chi_Minh");
     Db::$mysql = new mysqli('localhost', 'root', '', 'khachsan');
     if(mysqli_connect_errno()){

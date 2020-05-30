@@ -146,6 +146,11 @@ $(() => {
         })
     }
 
+    for(let i=0;i<$('#list_2 li.list-group-item').length;i++){
+        $($('#list_2 li.list-group-item')[i]).click(e=>{
+            window.location.href = `../Hotel_index/KS.html?type=index&maKhuVuc=KHUVUC${dsKV[i]}`;
+        })
+    }
     for(let i=0;i<$('.number').length;i++){
         $(`.number.number-${i+1}`).click((e)=>{
             window.location.href = `../Hotel_index/KS.html?type=index&maKhuVuc=KHUVUC${dsKV[i]}`;
