@@ -99,7 +99,7 @@ $(() => {
     if (userInfo.success) {
         let list_group = $('#login ul.list-group');
         list_group.children('li').first().remove();
-        list_group.append('<li class="list-group-item"><a href="../accounttaikhoan.html">Quản lý tài khoản</a></li>')
+        list_group.append('<li class="list-group-item"><a href="../account/taikhoan.html">Quản lý tài khoản</a></li>')
         list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
         let account = $('<li class="list-group-item bg-primary"><a href="../account/taikhoan.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
         account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
