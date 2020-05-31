@@ -4,10 +4,12 @@ function CheckForm() {
     var emailcheck = document.getElementById("email");
     var phonecheck = document.getElementById("phone");
     var namecheck = document.getElementById("name");
+    var provincecheck = document.getElementById("province");
 
     var email = emailcheck.value;
     var phone = phonecheck.value;
     var name = namecheck.value;
+    var province = provincecheck.value;
 
     var error_email = document.getElementById("error-email");
     var error_phone = document.getElementById("error-phone");
@@ -28,6 +30,8 @@ function CheckForm() {
     } else if (name === "") {
         error_name.innerHTML = "Vui lòng nhập Họ và Tên !";
         namecheck.focus();
+        return false;
+    }else if (province==1){
         return false;
     }
     return true;
@@ -78,8 +82,10 @@ function selectValid(obj) {
     for (var i = 0; i < options.length; i++) {
         if (options[i].selected) {
             error_address.innerHTML = "Bạn đã chọn thành công !";
+            return true;
         } else if (options[0].selected) {
             error_address.innerHTML = "Bạn chưa chọn Tỉnh/Thành Phố !";
+            return false;
         }
     }
 }
