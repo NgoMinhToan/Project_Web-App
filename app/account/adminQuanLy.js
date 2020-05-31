@@ -86,16 +86,16 @@
     userInfo = autoLogin();
     
     if (!userInfo.success || userInfo.quyenQuanTri == '0') {
-        window.location.replace("./Quanly.html");
+        window.location.replace("../account/Quanly.html");
     }
 
-     $('#login ul.list-group').append('<li class="list-group-item"><a href="./adminQuanLy.html">Quản lý đơn phòng</a></li>');
+     $('#login ul.list-group').append('<li class="list-group-item"><a href="../account/adminQuanLy.html">Quản lý đơn phòng</a></li>');
     if (userInfo.success) {
         let list_group = $('#login ul.list-group');
         list_group.children('li').first().remove();
-        list_group.append('<li class="list-group-item"><a href="./taiKhoanAdmin.html">Quản lý tài khoản</a></li>')
+        list_group.append('<li class="list-group-item"><a href="../account/taiKhoanAdmin.html">Quản lý tài khoản</a></li>')
         list_group.append('<li class="list-group-item"><a href="../Login/login.html" onclick="return logOut()">Đăng xuất</a></li>')
-        let account = $('<li class="list-group-item bg-primary"><a href="./taiKhoanAdmin.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
+        let account = $('<li class="list-group-item bg-primary"><a href="../account/taiKhoanAdmin.html" class="text-light"><strong>Thông tin tài khoản</strong></a></li>');
         account.children('a').append('<br><span>' + userInfo['email_ND'] + '</span>');
         list_group.append(account);
     }
@@ -111,98 +111,201 @@
         reqAjax('../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
     })
 
-
-    // Quan Ly Dat Phong
-     if (sPage == "adminQuanLy.html") {
-         let paging = 'all';
-         loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-         $('#typePage').on('change', e=>{
-            paging = $(e.target).val();
-            loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
-         })
-        $('#search_hoaDon').keyup((e)=>{
-            loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
-        })
-     }
-     // thống kê doanh thu
-     else if (sPage == 'thongKe.html') {
-        let thongKeTable = $('#_table');
-        thongKeTable.empty().append('<table></table>');
-        thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
-        thongKeTable.find('table').append('<tbody> </tbody>');
-        let list = {};
-        hoaDon.forEach((e, i) => {
-            if (list.hasOwnProperty(e.maKhachSan)) {
-                list[e.maKhachSan].tongDoanhThu += e.thanhTien;
-                list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
-                list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
-            } else {
-                list[e.maKhachSan] = {};
-                list[e.maKhachSan].batDau = e.TG_layPhong;
-                list[e.maKhachSan].ketThuc = e.TG_traPhong;
-                list[e.maKhachSan].tongDoanhThu = e.thanhTien;
-            }
-        });
-        for (let i = 0; i < Object.keys(list).length; i++) {
-            let maKhachSan = Object.keys(list)[i];
-            $.post('../php/hotel.php', {
-                'action': 'ks_info',
-                'maKhachSan': maKhachSan
-            }, (data) => {
-                list[maKhachSan].tenKhachSan = data.tenKhachSan;
-            }, 'json').done(() => {
-
-                item = list[maKhachSan];
-                thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
-
-            })
-        }
-     }
-     // Quản lý khách hàng
-     else if (sPage == 'khachHang.html') {
-        let khachHangTable = $('#_table');
-        khachHangTable.empty().append('<table></table>');
-        // maSo_KH maTruyCap maSo_ND hoTen_KH email_KH SDT_KH tinhThanhPho_KH
-        khachHangTable.find('table').append('<thead> <th>Mã Khách Hàng</th> <th>Mã truy cập</th> <th>Mã số người dùng</th> <th>Họ tên</th> <th>Email</th> <th>Số điện thoại</th> <th>Tỉnh thành phố</th> </thead>');
-        khachHangTable.find('table').append('<tbody> </tbody>');
-        khachHangTable = khachHangTable.find('table > tbody');
-        reqAjax('../php/admin.php', {action: 'getKhachHang'}, res=> {
-            if (res.success){
-                res.khachHang.forEach(e=>{
-                    khachHangTable.append(`<tr><td>${e.maSo_KH}</td><td>${e.maTruyCap}</td><td>${e.maSo_ND}</td><td>${e.hoTen_KH}</td><td>${e.email_KH}</td><td>${e.SDT_KH}</td><td>${e.tinhThanhPho_KH}</td></tr>`);
+        // Quan Ly
+        if (sPage == "adminQuanLy.html") {
+            let page = get('page');
+            // Dat Phong
+            if(page=='datPhong'){
+                $('#title, title').text('QUẢN LÝ ĐẶT PHÒNG');
+                let paging = 'all';
+                loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+                $('#typePage').on('change', e=>{
+                   paging = $(e.target).val();
+                   loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
                 })
+               $('#search_hoaDon').keyup((e)=>{
+                   loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+               })
             }
-        });
-     }
-     // quản lý đánh giá
-     else if (sPage == 'danhgia.html') {
-         $('#_table').empty().append('<table></table>');
-         let danhGiaTable = $('#_table > table');
-         danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
-         danhGiaTable.append('<tbody></tbody>');
-         let danhGiaTbody = danhGiaTable.find('tbody');
-         $.getJSON(`../php/admin.php?action=getDanhGia`, data => {
-             data.forEach((item, index) => {
-                 danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
-             })
-             console.log(data);
-         });
-     }
-     // About account
-     else if (sPage == 'taiKhoanAdmin.html'){
-         if (userInfo.success) {
-             $('#name').val(userInfo.hoTen_ND);
-             $('#email').val(userInfo.email_ND);
-             $('#phone').val(userInfo.SDT_ND);
-             $('#address').val(userInfo.diaChi_ND);
-             $('#city').val(userInfo.tinhThanhPho_ND);
-             $('#account > input').attr('disabled', 'on');
-         } else {
-             $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
-         }
-     }
+            // thống kê doanh thu
+            else if(page=='thongKe'){
+                $('#title, title').text('THỐNG KÊ DOANH THU');
+                let thongKeTable = $('#_table');
+                thongKeTable.empty().append('<table></table>');
+                thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
+                thongKeTable.find('table').append('<tbody> </tbody>');
+                let list = {};
+                hoaDon.forEach((e, i) => {
+                    if (list.hasOwnProperty(e.maKhachSan)) {
+                        list[e.maKhachSan].tongDoanhThu += e.thanhTien;
+                        list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
+                        list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
+                    } else {
+                        list[e.maKhachSan] = {};
+                        list[e.maKhachSan].batDau = e.TG_layPhong;
+                        list[e.maKhachSan].ketThuc = e.TG_traPhong;
+                        list[e.maKhachSan].tongDoanhThu = e.thanhTien;
+                    }
+                });
+                for (let i = 0; i < Object.keys(list).length; i++) {
+                    let maKhachSan = Object.keys(list)[i];
+                    $.post('../php/hotel.php', {
+                        'action': 'ks_info',
+                        'maKhachSan': maKhachSan
+                    }, (data) => {
+                        list[maKhachSan].tenKhachSan = data.tenKhachSan;
+                    }, 'json').done(() => {
+        
+                        item = list[maKhachSan];
+                        thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
+        
+                    })
+                }
+            }
+            // Quản lý khách hàng
+            else if(page=='khachHang'){
+                $('#title, title').text('QUẢN LÝ KHÁCH HÀNG');
+                let khachHangTable = $('#_table');
+                khachHangTable.empty().append('<table></table>');
+                // maSo_KH maTruyCap maSo_ND hoTen_KH email_KH SDT_KH tinhThanhPho_KH
+                khachHangTable.find('table').append('<thead> <th>Mã Khách Hàng</th> <th>Mã truy cập</th> <th>Mã số người dùng</th> <th>Họ tên</th> <th>Email</th> <th>Số điện thoại</th> <th>Tỉnh thành phố</th> </thead>');
+                khachHangTable.find('table').append('<tbody> </tbody>');
+                khachHangTable = khachHangTable.find('table > tbody');
+                reqAjax('../php/admin.php', {action: 'getKhachHang'}, res=> {
+                    if (res.success){
+                        res.khachHang.forEach(e=>{
+                            khachHangTable.append(`<tr><td>${e.maSo_KH}</td><td>${e.maTruyCap}</td><td>${e.maSo_ND}</td><td>${e.hoTen_KH}</td><td>${e.email_KH}</td><td>${e.SDT_KH}</td><td>${e.tinhThanhPho_KH}</td></tr>`);
+                        })
+                    }
+                });
+            }
+            // quản lý đánh giá
+            else if(page=='danhGia'){
+                $('#title, title').text('QUẢN LÝ ĐÁNH GIÁ WEBSITE');
+                $('#_table').empty().append('<table></table>');
+                let danhGiaTable = $('#_table > table');
+                danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
+                danhGiaTable.append('<tbody></tbody>');
+                let danhGiaTbody = danhGiaTable.find('tbody');
+                $.getJSON(`../php/admin.php?action=getDanhGia`, data => {
+                    data.forEach((item, index) => {
+                        danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
+                    })
+                    console.log(data);
+                });
+            }
+            else{
+                window.location.replace('./adminQuanLy.html?page=datPhong');
+            }
+        }
+        // About account
+        else if (sPage == 'taiKhoanAdmin.html'){
+            if (userInfo.success) {
+                $('#name').val(userInfo.hoTen_ND);
+                $('#email').val(userInfo.email_ND);
+                $('#phone').val(userInfo.SDT_ND);
+                $('#address').val(userInfo.diaChi_ND);
+                $('#city').val(userInfo.tinhThanhPho_ND);
+                $('#account > input').attr('disabled', 'on');
+            } else {
+                $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
+            }
+        }
+        else{
+            window.location.replace('./adminQuanLy.html?page=datPhong');
+        }
+    })
+//     // Quan Ly Dat Phong
+//      if (sPage == "adminQuanLy.html") {
+//          let paging = 'all';
+//          loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+//          $('#typePage').on('change', e=>{
+//             paging = $(e.target).val();
+//             loadQuanLyPage(hoaDon, ks_info, phong_info, paging);
+//          })
+//         $('#search_hoaDon').keyup((e)=>{
+//             loadQuanLyPage(searchEngine($(e.target).val(), hoaDon, ks_info, phong_info), ks_info, phong_info, paging);
+//         })
+//      }
+//      // thống kê doanh thu
+//      else if (sPage == 'thongKe.html') {
+//         let thongKeTable = $('#_table');
+//         thongKeTable.empty().append('<table></table>');
+//         thongKeTable.find('table').append('<thead> <th>Mã Khách Sạn</th> <th>Tên Khách Sạn</th> <th>Từ ngày</th> <th>Đến ngày</th> <th>Tổng doanh thu</th> </thead>');
+//         thongKeTable.find('table').append('<tbody> </tbody>');
+//         let list = {};
+//         hoaDon.forEach((e, i) => {
+//             if (list.hasOwnProperty(e.maKhachSan)) {
+//                 list[e.maKhachSan].tongDoanhThu += e.thanhTien;
+//                 list[e.maKhachSan].batDau = list[e.maKhachSan].batDau > e.TG_layPhong ? e.TG_layPhong : list[e.maKhachSan].batDau;
+//                 list[e.maKhachSan].ketThuc = list[e.maKhachSan].ketThuc < e.TG_traPhong ? e.TG_traPhong : list[e.maKhachSan].ketThuc;
+//             } else {
+//                 list[e.maKhachSan] = {};
+//                 list[e.maKhachSan].batDau = e.TG_layPhong;
+//                 list[e.maKhachSan].ketThuc = e.TG_traPhong;
+//                 list[e.maKhachSan].tongDoanhThu = e.thanhTien;
+//             }
+//         });
+//         for (let i = 0; i < Object.keys(list).length; i++) {
+//             let maKhachSan = Object.keys(list)[i];
+//             $.post('../php/hotel.php', {
+//                 'action': 'ks_info',
+//                 'maKhachSan': maKhachSan
+//             }, (data) => {
+//                 list[maKhachSan].tenKhachSan = data.tenKhachSan;
+//             }, 'json').done(() => {
 
- })
+//                 item = list[maKhachSan];
+//                 thongKeTable.find('table > tbody').append(`<tr><td>${maKhachSan}</td> <td>${item.tenKhachSan}</td> <td>${item.batDau}</td> <td>${item.ketThuc}</td> <td>${inttomoney(item.tongDoanhThu)} đ</td></tr>`);
+
+//             })
+//         }
+//      }
+//      // Quản lý khách hàng
+//      else if (sPage == 'khachHang.html') {
+//         let khachHangTable = $('#_table');
+//         khachHangTable.empty().append('<table></table>');
+//         // maSo_KH maTruyCap maSo_ND hoTen_KH email_KH SDT_KH tinhThanhPho_KH
+//         khachHangTable.find('table').append('<thead> <th>Mã Khách Hàng</th> <th>Mã truy cập</th> <th>Mã số người dùng</th> <th>Họ tên</th> <th>Email</th> <th>Số điện thoại</th> <th>Tỉnh thành phố</th> </thead>');
+//         khachHangTable.find('table').append('<tbody> </tbody>');
+//         khachHangTable = khachHangTable.find('table > tbody');
+//         reqAjax('../php/admin.php', {action: 'getKhachHang'}, res=> {
+//             if (res.success){
+//                 res.khachHang.forEach(e=>{
+//                     khachHangTable.append(`<tr><td>${e.maSo_KH}</td><td>${e.maTruyCap}</td><td>${e.maSo_ND}</td><td>${e.hoTen_KH}</td><td>${e.email_KH}</td><td>${e.SDT_KH}</td><td>${e.tinhThanhPho_KH}</td></tr>`);
+//                 })
+//             }
+//         });
+//      }
+//      // quản lý đánh giá
+//      else if (sPage == 'danhgia.html') {
+//          $('#_table').empty().append('<table></table>');
+//          let danhGiaTable = $('#_table > table');
+//          danhGiaTable.append('<thead> <tr> <th>Độ hài lòng</th> <th>Góp ý</th> <th>Câu hỏi</th> <th>Liên hệ</th></tr> </thead>');
+//          danhGiaTable.append('<tbody></tbody>');
+//          let danhGiaTbody = danhGiaTable.find('tbody');
+//          $.getJSON(`../php/admin.php?action=getDanhGia`, data => {
+//              data.forEach((item, index) => {
+//                  danhGiaTbody.append(`<tr><td>${item.doHaiLong}</td><td>${item.gopY}</td><td>${item.cauHoi}</td><td>${item.email_sdt_lienhe}</td></tr>`);
+//              })
+//              console.log(data);
+//          });
+//      }
+//      // About account
+//      else if (sPage == 'taiKhoanAdmin.html'){
+//          if (userInfo.success) {
+//              $('#name').val(userInfo.hoTen_ND);
+//              $('#email').val(userInfo.email_ND);
+//              $('#phone').val(userInfo.SDT_ND);
+//              $('#address').val(userInfo.diaChi_ND);
+//              $('#city').val(userInfo.tinhThanhPho_ND);
+//              $('#account > input').attr('disabled', 'on');
+//          } else {
+//              $('#account').empty().append('<a href="../Login/login.html" role="button" class="btn btn-primary">Đăng Nhập</a>');
+//          }
+//      }
+
+//  })
 
  //LogOut
  function logOut() {
@@ -269,6 +372,11 @@
     // console.log(rs);
     return rs;
 }
+
+function get(name){
+    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+       return decodeURIComponent(name[1]);
+ }
 
  function loadQuanLyPage(hoaDon, ks_info, phong_info, page='all'){
      console.log(hoaDon)
