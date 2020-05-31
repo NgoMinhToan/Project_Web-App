@@ -1,7 +1,8 @@
 <?php
     require_once 'service.php';
+    require_once 'config.php';
     date_default_timezone_set("Asia/Ho_Chi_Minh");
-    Db::$mysql = new mysqli('localhost', 'root', '', 'khachsan');
+    Db::$mysql = new mysqli($HOST, $USER, $PASSWORD, $DB_NAME);
     if(mysqli_connect_errno()){
         die('Lỗi Kết Nối CSDL: '.mysqli_connect_error());
     }
