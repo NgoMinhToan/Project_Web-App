@@ -280,7 +280,6 @@ $(() => {
     })
 
 })
-
 //LogOut
 function logOut() {
    let cont = false;
@@ -292,7 +291,6 @@ function logOut() {
    })
    return cont;
 }
-
 function danhGia() {
     let doHaiLong = $('.modal-content.note div.fa.emoj.ra > p').text();
     let cauHoi = $('#placetext-1').val();
@@ -311,7 +309,6 @@ function danhGia() {
     })
     return cont;
 }
-
 function reqAjax(url, data, callBack, method = 'POST', async = false, dataType = 'json') {
     $.ajax({
         type: method,
@@ -322,7 +319,6 @@ function reqAjax(url, data, callBack, method = 'POST', async = false, dataType =
         success: callBack
     });
 }
-
 // Accept Link
 function get_LoaiPhong_info(){
     let result = '';

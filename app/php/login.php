@@ -34,7 +34,6 @@
             header('location: ../Home/index.html');
         else
             echo json_encode(['success'=>false, 'msg'=>'Lỗi không xác định! | login.php ']);
-
     }
 
     // Auto Login
@@ -50,13 +49,11 @@
             }
             else
                 echo json_encode($loginInfo);
-            // print_r($loginInfo);
         }
         else{
             $maTruyCap = Db::taoTruyCap()['maTruyCap'];
         }
         $_SESSION['maTruyCap'] = $maTruyCap;
-        // echo $maTruyCap;
     }
 
 

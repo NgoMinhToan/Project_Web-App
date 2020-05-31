@@ -16,7 +16,6 @@
         if($_SESSION['maTruyCap']){
             echo json_encode(Db::dangXuat($_SESSION['maTruyCap']));
             unset($_SESSION['maTruyCap']);
-            
         }
     }
 
