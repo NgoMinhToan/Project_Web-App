@@ -16,3 +16,7 @@ Thành viên:
  - import file khachsan.sql trong thư mục ./app/sql/
  - Cấu hình thông tin host, tên người dùng csdl, mật khẩu, tên cơ sở dữ liệu trong file ./php/config.php
  - Xuất phát trong thư mục ./app
+
+----- ADMIN -----
+email: admin@gmail.com
+password: admin123
