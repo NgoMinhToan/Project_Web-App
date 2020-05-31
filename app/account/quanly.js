@@ -204,6 +204,8 @@
  function edit(e) {
      $(e).attr('onclick', 'return confirmEdit(this)');
      $('#account > input').removeAttr('disabled');
+     
+     $('#account > input#email').after(`<label for="username">Tên người dùng:</label><input type="text" name="username" id="username" value='${userInfo.tenDangNhap}'><br>`);
      $('#account > button').last().before(`<label for="pwd">Mật khẩu:</label><input type="password" name="pwd" id="pwd"><br>`);
      $('#account > button').last().before(`<label for="new_pwd">Mật khẩu mới:</label><input type="password" name="new_pwd" id="new_pwd" value='${userInfo.matKhau_ND}'><br>`);
      $('#account > button').last().before(`<label for="confirm_pwd">Xác thực mật khẩu mới:</label><input type="password" name="confirm_pwd" id="confirm_pwd" value='${userInfo.matKhau_ND}'><br>`);

@@ -46,12 +46,13 @@
         $rs = Db::getUser($_SESSION['maTruyCap']);
         if($rs['success']){
             $name = $_POST['name'];
+            $tenDangNhap = $_POST['username'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
             $city = $_POST['city'];
             $new_pwd = $_POST['new_pwd'];
-            echo json_encode(Db::changeInfo($rs['maSo_ND'], $name, $email, $phone, $address, $city, $new_pwd));
+            echo json_encode(Db::changeInfo($rs['maSo_ND'], $name, $email, $tenDangNhap, $phone, $address, $city, $new_pwd));
             header('location: ../account/taikhoan.html');
         }
 

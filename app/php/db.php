@@ -180,19 +180,12 @@
 
         static function dangNhap($tenDangNhap_email_ND, $matKhau_SDT_ND, $truyCap){
             // nếu tồn tại trong đăng nhâp
-            // $diaChi_IP = $truyCap['diaChi_IP'];
-            // print_r($truyCap);
-            // echo '<br>';
-            // echo $tenDangNhap_email_ND.'<br>';
-            // echo $matKhau_SDT_ND.'<br>';
             $result = self::$mysql->query("SELECT dangNhap.maSo_ND, dangNhap.maTruyCap
                 FROM dangNhap JOIN nguoiDung ON dangNhap.maSo_ND=nguoiDung.maSo_ND
                                 JOIN khachTruyCap ON dangNhap.maTruyCap = khachTruyCap.maTruyCap
                 WHERE (email_ND='$tenDangNhap_email_ND' AND matKhau_ND='$matKhau_SDT_ND' 
                     OR tenDangNhap='$tenDangNhap_email_ND' AND SDT_ND='$matKhau_SDT_ND')");
-            // print_r($diaChi_IP);
-            // print_r($result);
-            // echo $result->num_rows;
+
             if ($result->num_rows==1){
                 $result = $result->fetch_assoc();
                 $maSo_ND = $result['maSo_ND'];
@@ -204,8 +197,7 @@
                 $result = $result->fetch_assoc();
                 $maTruyCap = $truyCap['maTruyCap'];
                 $maSo_ND = $result['maSo_ND'];
-                // echo $maTruyCap.'<br>';
-                // echo $maSo_ND.'<br>';
+ 
                 self::$mysql->query("INSERT INTO dangNhap (maTruyCap, maSo_ND) VALUES('$maTruyCap', '$maSo_ND')");
                 if(self::$mysql->affected_rows==1)
                     return array_merge(['success'=>true, 'msg'=>'Đăng nhập thành công!'], $result);
@@ -502,8 +494,26 @@
                     $rs[] = $row;
                 }
                 $stmt->close();
+                return ['success'=>true, 'hoaDon'=>$rs];
             }
-            return $rs;
+            return ['success'=>false];
+        }
+
+
+
+
+        static function thongTinKhachHangADMIN(){
+            $rs = [];
+            if($stmt = self::$mysql->prepare("SELECT * FROM khachHang")){
+                $stmt->execute();
+                $rs2 = $stmt->get_result();
+                while ($row = $rs2->fetch_assoc()){
+                    $rs[] = $row;
+                }
+                $stmt->close();
+                return ['success'=>true, 'khachHang'=>$rs];
+            }
+            return ['success'=>false];
         }
 
 
@@ -562,8 +572,8 @@
         }
 
 
-        static function changeInfo($maSo_ND, $name, $email, $phone, $address, $city, $new_pwd){
-            $result = self::$mysql->query("UPDATE nguoiDung SET hoTen_ND = '$name', email_ND = '$email', SDT_ND = '$phone', diaChi_ND = '$address', tinhThanhPho_ND = '$city', matKhau_ND = '$new_pwd' WHERE maSo_ND='$maSo_ND' ");
+        static function changeInfo($maSo_ND, $name, $email, $tenDangNhap, $phone, $address, $city, $new_pwd){
+            $result = self::$mysql->query("UPDATE nguoiDung SET hoTen_ND = '$name', tenDangNhap = '$tenDangNhap', email_ND = '$email', SDT_ND = '$phone', diaChi_ND = '$address', tinhThanhPho_ND = '$city', matKhau_ND = '$new_pwd' WHERE maSo_ND='$maSo_ND' ");
             if(self::$mysql->affected_rows!=0)
                 return ['success'=>true, 'msg'=>'Cập nhật thông tin thành công!'];
         }

@@ -111,6 +111,7 @@
         reqAjax('../php/hotel.php', { action: 'getLoaiPhong1', 'maLoaiPhong': value.maLoaiPhong}, res => phong_info.push(res));
     })
 
+
     // Quan Ly Dat Phong
      if (sPage == "adminQuanLy.html") {
          let paging = 'all';
@@ -156,6 +157,22 @@
 
             })
         }
+     }
+     // Quản lý khách hàng
+     else if (sPage == 'khachHang.html') {
+        let khachHangTable = $('#_table');
+        khachHangTable.empty().append('<table></table>');
+        // maSo_KH maTruyCap maSo_ND hoTen_KH email_KH SDT_KH tinhThanhPho_KH
+        khachHangTable.find('table').append('<thead> <th>Mã Khách Hàng</th> <th>Mã truy cập</th> <th>Mã số người dùng</th> <th>Họ tên</th> <th>Email</th> <th>Số điện thoại</th> <th>Tỉnh thành phố</th> </thead>');
+        khachHangTable.find('table').append('<tbody> </tbody>');
+        khachHangTable = khachHangTable.find('table > tbody');
+        reqAjax('../php/admin.php', {action: 'getKhachHang'}, res=> {
+            if (res.success){
+                res.khachHang.forEach(e=>{
+                    khachHangTable.append(`<tr><td>${e.maSo_KH}</td><td>${e.maTruyCap}</td><td>${e.maSo_ND}</td><td>${e.hoTen_KH}</td><td>${e.email_KH}</td><td>${e.SDT_KH}</td><td>${e.tinhThanhPho_KH}</td></tr>`);
+                })
+            }
+        });
      }
      // quản lý đánh giá
      else if (sPage == 'danhgia.html') {
@@ -216,6 +233,8 @@
  function edit(e) {
      $(e).attr('onclick', 'return confirmEdit(this)');
      $('#account > input').removeAttr('disabled');
+     
+     $('#account > input#email').after(`<br><label for="username">Tên người dùng:</label><input type="text" name="username" id="username" value='${userInfo.tenDangNhap}'>`);
      $('#account > button').last().before(`<label for="pwd">Mật khẩu:</label><input type="password" name="pwd" id="pwd"><br>`);
      $('#account > button').last().before(`<label for="new_pwd">Mật khẩu mới:</label><input type="password" name="new_pwd" id="new_pwd" value='${userInfo.matKhau_ND}'><br>`);
      $('#account > button').last().before(`<label for="confirm_pwd">Xác thực mật khẩu mới:</label><input type="password" name="confirm_pwd" id="confirm_pwd" value='${userInfo.matKhau_ND}'><br>`);
