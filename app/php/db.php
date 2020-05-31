@@ -12,7 +12,7 @@
         static $mysql;
         static function taoTruyCap(){
             $ID = 1;
-            $lastID = self::$mysql->query("SELECT count(STT) as 'num' from khachTruyCap");
+            $lastID = self::$mysql->query("SELECT count(*) as 'num' from khachTruyCap");
             if ($lastID->fetch_assoc()['num'] != 0){
                 $lastID = self::$mysql->query("SELECT max(STT) as lastID from khachTruyCap");
                 preg_match_all('!\d+!', $lastID->fetch_assoc()['lastID'], $lastID);
