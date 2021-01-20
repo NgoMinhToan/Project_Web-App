@@ -8,7 +8,7 @@
 ### BÀI BÁO CÁO MÔN LẬP TRÌNH WEB VÀ ỨNG DỤNG
 
 ***Đề tài:*** *Website đặt phòng khách sạn trực tuyến*
-***Thành viên: ***
+***Thành viên:***
 - *1.* **Nguyễn Hữu Tường – 51801036**
 - *2.* **Huỳnh Hữu Hiệp – 51800677**
 - *3.* **Nguyễn Đình Luân – 51800994**
@@ -22,4 +22,4 @@
 
 ### ADMIN
 *email:* **admin@gmail.com** 
-*password: **admin123**
+*password:* **admin123**
